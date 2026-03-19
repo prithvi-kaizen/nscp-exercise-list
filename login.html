@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netaji Sports Club — Member Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg: #f0e9df;
+    --bg2: #e8dfd3;
+    --bg3: #ddd3c5;
+    --terra: #c1440e;
+    --terra-dim: rgba(193,68,14,0.10);
+    --ink: #1a1208;
+    --muted: #7a6a56;
+    --card-border: #c4b49e;
+    --shadow: 4px 4px 0px #1a1208;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, rgba(193,68,14,0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: 'Lora', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    border-bottom: 3px solid var(--ink);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    background: var(--bg2);
+  }
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--ink);
+    background: var(--terra);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+  }
+
+  .header-text h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .header-text p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--terra);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 5px;
+    font-weight: 400;
+  }
+
+  .login-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+
+  .login-box {
+    background: var(--bg2);
+    border: 2.5px solid var(--ink);
+    border-left: 6px solid var(--terra);
+    box-shadow: var(--shadow);
+    padding: 40px 44px;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .login-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .login-heading {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+
+  .login-heading span {
+    color: var(--terra);
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .field input {
+    width: 100%;
+    background: var(--bg);
+    border: 2.5px solid var(--ink);
+    padding: 12px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .field input:focus {
+    box-shadow: 3px 3px 0 var(--terra);
+  }
+
+  .field input::placeholder {
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Lora', serif;
+  }
+
+  .login-btn {
+    width: 100%;
+    background: var(--terra);
+    color: #fff;
+    border: 2.5px solid var(--ink);
+    padding: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 8px;
+  }
+
+  .login-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  .login-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  .login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow);
+  }
+
+  .error-msg {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 2px solid var(--terra);
+    background: var(--terra-dim);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--terra);
+    letter-spacing: 0.5px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  .login-note {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1.5px dashed var(--card-border);
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 500px) {
+    header { padding: 20px; }
+    .login-box { padding: 28px 24px; }
+    .login-heading { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark"><span>NSC</span></div>
+  <div class="header-text">
+    <h1>Netaji Sports Club</h1>
+    <p>Member Access — Pandharpur</p>
+  </div>
+</header>
+
+<div class="login-wrapper">
+  <div class="login-box">
+    <div class="login-title">Members Only</div>
+    <div class="login-heading">Sign in to <span>Exercise</span> Reference</div>
+
+    <div class="field">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="your@email.com" autocomplete="email" />
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Your password" autocomplete="current-password" />
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In →</button>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="login-note">
+      Access is available to active NSC members only. Contact the front desk if you haven't received your login credentials.
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── PASTE YOUR SUPABASE CREDENTIALS HERE ──────────────────────────────────
+  const SUPABASE_URL = 'https://fodfiogubheodnejkzod.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGZpb2d1Ymhlb2RuZWprem9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTM0ODIsImV4cCI6MjA4OTQ4OTQ4Mn0.0b8knQDQxSvHvmlVveFcRZKVVkM46HP8cThqmzfqDqU';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const { createClient } = supabase;
+  const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // If already logged in, go straight to the app
+  client.auth.getSession().then(({ data }) => {
+    if (data.session) window.location.replace('/index.html');
+  });
+
+  // Allow Enter key to submit
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
+  document.getElementById('email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
+
+  async function handleLogin() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('loginBtn');
+    const errEl = document.getElementById('errorMsg');
+
+    errEl.classList.remove('visible');
+
+    if (!email || !password) {
+      showError('Please enter your email and password.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+
+    const { error } = await client.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      showError('Invalid email or password. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Sign In →';
+    } else {
+      window.location.replace('/index.html');
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+</script>
+</body>
+</html>

@@ -704,3 +704,28 @@ function setGroup(g) {
 
 renderMuscleGrid();
 renderExercises();
+// ─────────────────────────────────────────────────────────────────────────
+// NSC AUTH — append this block to the bottom of your existing script.js
+// ─────────────────────────────────────────────────────────────────────────
+
+// ── PASTE YOUR SUPABASE CREDENTIALS HERE ──────────────────────────────────
+const SUPABASE_URL = 'https://fodfiogubheodnejkzod.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGZpb2d1Ymhlb2RuZWprem9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTM0ODIsImV4cCI6MjA4OTQ4OTQ4Mn0.0b8knQDQxSvHvmlVveFcRZKVVkM46HP8cThqmzfqDqU';
+// ─────────────────────────────────────────────────────────────────────────
+
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// On load: verify session, redirect to login if missing
+(async () => {
+  const { data } = await supabaseClient.auth.getSession();
+  if (!data.session) {
+    window.location.replace('/login.html');
+  }
+})();
+
+// Sign out when needed — call signOut() from a button if you add one
+async function signOut() {
+  await supabaseClient.auth.signOut();
+  window.location.replace('/login.html');
+}
