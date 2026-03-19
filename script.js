@@ -240,6 +240,16 @@ const exercises = [
   // TRICEPS
   {
     group: "Triceps",
+    name: "Skull Crusher",
+    equipment: "Flat Bench, EZ Curl Bar, Grip Weight Plates",
+    primary: "Triceps",
+    secondary: "Anconeus",
+    difficulty: "Intermediate",
+    form: "Lie on a flat bench holding an EZ bar with a narrow overhand grip. Lower the bar toward your forehead or slightly behind your head by bending the elbows, keeping the upper arms stationary, then extend back up.",
+    cues: "- Keep your elbows pointing toward the ceiling, not flaring too far out.\n- Control the eccentric (lowering) phase carefully.\n- Do not move your upper arm; all movement is at the elbow joint."
+  },
+  {
+    group: "Triceps",
     name: "Cable Tricep Pushdown",
     equipment: "Dual Adjustable Pulley / Functional Trainer, Mag Handle",
     primary: "Triceps",
