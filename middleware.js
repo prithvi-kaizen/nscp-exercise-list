@@ -1,5 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
+// Vercel Edge Middleware
 // ── PASTE YOUR SUPABASE CREDENTIALS HERE ──────────────────────────────────
 const SUPABASE_URL = 'https://fodfiogubheodnejkzod.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvZGZpb2d1Ymhlb2RuZWprem9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTM0ODIsImV4cCI6MjA4OTQ4OTQ4Mn0.0b8knQDQxSvHvmlVveFcRZKVVkM46HP8cThqmzfqDqU';
