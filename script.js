@@ -5,7 +5,7 @@ const exercises = [
     name: "Barbell Bench Press",
     equipment: "Flat Olympic Press station, 7ft Olympic Barbell, Grip Weight Plates",
     primary: "Chest",
-    secondary: "Anterior Deltoid, Triceps",
+    secondary: "Front Shoulder, Triceps",
     difficulty: "Intermediate",
     form: "Lie flat, grip slightly wider than shoulder-width, lower the bar to mid-chest with control and press up to full extension without locking out.",
     cues: "- Keep wrists straight.\n- Don't flare elbows fully out.\n- Maintain 5 points of contact (feet, glutes, upper back, head)."
@@ -15,7 +15,7 @@ const exercises = [
     name: "Incline Barbell Press",
     equipment: "Incline Bench Press station, 7ft Olympic Barbell, Grip Weight Plates",
     primary: "Upper Chest",
-    secondary: "Anterior Deltoid, Triceps",
+    secondary: "Front Shoulder, Triceps",
     difficulty: "Intermediate",
     form: "Set the incline to ~30–45°, grip just outside shoulder-width, and press the bar in a slight arc toward the upper chest, keeping shoulders back.",
     cues: "- Avoid pressing over the face.\n- Don't push your lower back off the bench heavily.\n- Keep shoulder blades retracted."
@@ -25,7 +25,7 @@ const exercises = [
     name: "Smith Machine Bench Press",
     equipment: "Smith Machine, Flat Bench, Grip Weight Plates",
     primary: "Chest",
-    secondary: "Anterior Deltoid, Triceps",
+    secondary: "Front Shoulder, Triceps",
     difficulty: "Beginner",
     form: "Position the bench inside the Smith Machine, unrack the bar directly above your chest, lower with a 2-second tempo, and press up without drifting the path.",
     cues: "- Ensure the bar lowers to mid-chest, not the neck.\n- Keep feet planted for stability.\n- Engage core throughout the movement."
@@ -35,7 +35,7 @@ const exercises = [
     name: "Cable Chest Fly (High-to-Low)",
     equipment: "Dual Adjustable Pulley / Functional Trainer",
     primary: "Lower Chest",
-    secondary: "Anterior Deltoid",
+    secondary: "Front Shoulder",
     difficulty: "Intermediate",
     form: "Set pulleys high, step forward into a split stance, and draw the handles down and together in a wide arc, keeping a slight elbow bend throughout.",
     cues: "- Keep a slight bend in the elbows to protect the biceps.\n- Squeeze chest at the bottom.\n- Maintain a proud chest; avoid rounding forward."
@@ -45,7 +45,7 @@ const exercises = [
     name: "Dumbbell Flat Press",
     equipment: "Flat Bench, Dumbbells",
     primary: "Chest",
-    secondary: "Anterior Deltoid, Triceps",
+    secondary: "Front Shoulder, Triceps",
     difficulty: "Intermediate",
     form: "Lie flat with dumbbells at chest level, press them up until arms are extended, then lower slowly with elbows at ~45° to the torso.",
     cues: "- Keep dumbbells level.\n- Do not forcefully clink bells together at top.\n- Tuck elbows slightly (45 deg) to protect shoulders."
@@ -55,10 +55,10 @@ const exercises = [
     name: "Chest Fly Machine",
     equipment: "Chest Fly / Rear Delt Machine",
     primary: "Chest",
-    secondary: "Anterior Deltoid",
+    secondary: "Front Shoulder",
     difficulty: "Beginner",
     form: "Adjust the seat so handles align with your chest, press the pads together in a controlled arc, and squeeze the chest at full contraction before returning slowly.",
-    cues: "- Ensure elbows remain high but slightly below shoulders.\n- Control the eccentric phase; don't let it slam back.\n- Keep your back flat against the pad."
+    cues: "- Ensure elbows remain high but slightly below shoulders.\n- Control the lowering phase; don't let it slam back.\n- Keep your back flat against the pad."
   },
 
   // BACK
@@ -66,8 +66,8 @@ const exercises = [
     group: "Back",
     name: "Lat Pulldown",
     equipment: "Lat Pulldown Machine",
-    primary: "Latissimus Dorsi",
-    secondary: "Biceps, Rhomboids, Traps",
+    primary: "Lats (Outer Back)",
+    secondary: "Biceps, Mid-Back, Upper Back",
     difficulty: "Beginner",
     form: "Sit with thighs anchored, grip wide overhand, lean back slightly, and pull the bar to your upper chest by driving your elbows down and back.",
     cues: "- Lead with the elbows.\n- Don't pull behind the neck.\n- Minimize momentum and arching."
@@ -76,20 +76,20 @@ const exercises = [
     group: "Back",
     name: "Seated Cable Row",
     equipment: "Seated Row Machine",
-    primary: "Mid-Back / Rhomboids",
+    primary: "Mid-Back / Mid-Back",
     secondary: "Lats, Biceps, Traps",
     difficulty: "Beginner",
     form: "Sit upright with a slight lean forward, pull the handle into your lower abdomen, squeeze the shoulder blades together at the end, and return with control.",
-    cues: "- Do not round the lower back.\n- Avoid leaning back excessively to pull the weight.\n- Focus on scapular retraction at the peak."
+    cues: "- Do not round the lower back.\n- Avoid leaning back excessively to pull the weight.\n- Focus on squeezing your shoulder blades together at the peak."
   },
   {
     group: "Back",
     name: "Barbell Bent-Over Row",
     equipment: "7ft Olympic Barbell, Grip Weight Plates, Weight Lifting Platform",
-    primary: "Lats / Rhomboids",
-    secondary: "Spinal Erectors, Biceps, Traps",
+    primary: "Lats / Mid-Back",
+    secondary: "Lower Back, Biceps, Traps",
     difficulty: "Advanced",
-    form: "Hinge at the hips to ~45°, pull the bar to your lower ribcage with a pronated grip, lead with the elbows, and maintain a neutral spine throughout.",
+    form: "Hinge at the hips to ~45°, pull the bar to your lower ribcage with a palms-down grip, lead with the elbows, and maintain a neutral spine throughout.",
     cues: "- Keep your lower back braced and neutral.\n- Pull towards the belly button, not the chest.\n- Don't jerk your torso up to move the weight."
   },
   {
@@ -97,7 +97,7 @@ const exercises = [
     name: "Single-Arm Dumbbell Row",
     equipment: "Flat Bench, Dumbbells",
     primary: "Lats",
-    secondary: "Biceps, Rhomboids, Traps",
+    secondary: "Biceps, Mid-Back, Upper Back",
     difficulty: "Intermediate",
     form: "Place one hand and knee on the bench for support, pull the dumbbell straight up toward your hip, keeping your elbow close to your torso.",
     cues: "- Pull the bell to your hip (J-curve path).\n- Keep your torso flat; resist rotating your shoulders.\n- Keep your elbow tight to your side."
@@ -107,7 +107,7 @@ const exercises = [
     name: "Cable Straight-Arm Pulldown",
     equipment: "Dual Adjustable Pulley / Functional Trainer",
     primary: "Lats",
-    secondary: "Posterior Deltoid, Triceps (Long Head)",
+    secondary: "Rear Shoulder, Triceps (Long Head)",
     difficulty: "Intermediate",
     form: "Set the pulley high, hold the rope with straight arms, and pull it down to your thighs in a sweeping arc while keeping your core braced.",
     cues: "- Avoid bending the elbows to use triceps.\n- Hinge slightly at the hips.\n- Focus heavily on getting a deep stretch at the top."
@@ -117,9 +117,9 @@ const exercises = [
     name: "Assisted Pull-Up (Chin-Up Grip)",
     equipment: "Assisted Dip / Chin Machine",
     primary: "Lats / Biceps",
-    secondary: "Traps, Rhomboids",
+    secondary: "Traps, Mid-Back",
     difficulty: "Beginner",
-    form: "Use the counterweight to assist, grip the handles supinated (palms facing you), and pull yourself up until your chin clears the bar, then lower with control.",
+    form: "Use the counterweight to assist, grip the handles palms-up (palms facing you), and pull yourself up until your chin clears the bar, then lower with control.",
     cues: "- Fully extend arms at the bottom.\n- Do not kick your legs for momentum.\n- Puff your chest out to meet the bar."
   },
 
@@ -128,8 +128,8 @@ const exercises = [
     group: "Shoulders",
     name: "Dumbbell Overhead Press",
     equipment: "Dumbbells, Utility Bench (or standing)",
-    primary: "Anterior / Lateral Deltoid",
-    secondary: "Triceps, Upper Traps",
+    primary: "Anterior / Side Shoulder",
+    secondary: "Triceps, Upper Back/Neck",
     difficulty: "Intermediate",
     form: "Hold dumbbells at ear level with palms facing forward, press straight up overhead until arms are nearly extended, then lower back to start without flaring the elbows excessively.",
     cues: "- Avoid excessive arching in the lower back.\n- Keep forearms stacked vertically beneath dumbbells.\n- Press slightly backwards, ending with biceps by ears."
@@ -138,8 +138,8 @@ const exercises = [
     group: "Shoulders",
     name: "Dumbbell Lateral Raise",
     equipment: "Dumbbells",
-    primary: "Lateral Deltoid",
-    secondary: "Anterior Deltoid, Upper Traps",
+    primary: "Side Shoulder",
+    secondary: "Front Shoulder, Upper Back/Neck",
     difficulty: "Beginner",
     form: "Stand with a slight forward lean, raise the dumbbells out to your sides with a slight elbow bend until they reach shoulder height, leading with the elbows.",
     cues: "- Initiate the lift with your elbows, not wrists.\n- Do not swing your torso for momentum.\n- Pinkies slightly up at the top (like pouring water)."
@@ -148,8 +148,8 @@ const exercises = [
     group: "Shoulders",
     name: "Cable Face Pull",
     equipment: "Dual Adjustable Pulley / Functional Trainer, Mag Handle / Rope",
-    primary: "Rear Deltoid / Rotator Cuff",
-    secondary: "Mid-Traps, Rhomboids",
+    primary: "Rear Deltoid / shoulder stabilizers",
+    secondary: "Mid-Back, Mid-Back",
     difficulty: "Intermediate",
     form: "Set the cable at forehead height, pull the rope toward your face while externally rotating your arms so your hands finish beside your ears.",
     cues: "- Flare the elbows high and wide.\n- Point the thumbs backward.\n- Keep your chest tall."
@@ -159,7 +159,7 @@ const exercises = [
     name: "Rear Delt Machine Fly",
     equipment: "Chest Fly / Rear Delt Machine",
     primary: "Rear Deltoid",
-    secondary: "Rhomboids, Mid-Traps",
+    secondary: "Mid-Back, Mid-Back",
     difficulty: "Beginner",
     form: "Face the machine pad, grip the rear handles with arms extended, and squeeze the handles apart in a wide arc, leading with the elbows and not the hands.",
     cues: "- Retract the shoulders gently, don't over-shrug.\n- Press the chest firmly into the pad.\n- Focus on sweeping widely, not just pulling back."
@@ -168,8 +168,8 @@ const exercises = [
     group: "Shoulders",
     name: "Smith Machine Overhead Press",
     equipment: "Smith Machine, Utility Bench, Grip Weight Plates",
-    primary: "Anterior Deltoid",
-    secondary: "Triceps, Upper Traps",
+    primary: "Front Shoulder",
+    secondary: "Triceps, Upper Back/Neck",
     difficulty: "Beginner",
     form: "Sit upright on a bench inside the Smith, unrack the bar just in front of your nose, press straight up to full extension, and lower with control to chin height.",
     cues: "- Find the natural bar path so it drops just in front of your face.\n- Ensure the bench is fully upright or at an 85° angle.\n- Don't bounce the weight at the bottom."
@@ -178,8 +178,8 @@ const exercises = [
     group: "Shoulders",
     name: "Dumbbell Front Raise",
     equipment: "Dumbbells",
-    primary: "Anterior Deltoid",
-    secondary: "Pectoralis Major (Clavicular Head)",
+    primary: "Front Shoulder",
+    secondary: "Upper Chest",
     difficulty: "Beginner",
     form: "Stand with dumbbells in front of your thighs, raise them alternately or together to shoulder height with straight arms, then lower slowly.",
     cues: "- Avoid rocking back and forth.\n- Don't shrug your shoulders up to lift.\n- Control the descent strictly."
@@ -191,9 +191,9 @@ const exercises = [
     name: "EZ Bar Curl",
     equipment: "EZ Curl Bar, Grip Weight Plates",
     primary: "Biceps",
-    secondary: "Brachialis, Forearm Flexors",
+    secondary: "Side Bicep, Forearm Flexors",
     difficulty: "Beginner",
-    form: "Stand with the EZ bar at arm's length using a semi-supinated grip, curl the bar to shoulder height while keeping elbows pinned to your sides, then lower fully.",
+    form: "Stand with the EZ bar at arm's length using a semi-palms-up grip, curl the bar to shoulder height while keeping elbows pinned to your sides, then lower fully.",
     cues: "- Do not use hip swing/momentum.\n- Keep elbows glued to the ribs.\n- Extend arms completely at the bottom."
   },
   {
@@ -201,7 +201,7 @@ const exercises = [
     name: "Preacher Curl (Barbell)",
     equipment: "Preacher Curl Station, EZ Curl Bar / Short Barbell, Grip Weight Plates",
     primary: "Biceps (long head isolation)",
-    secondary: "Brachialis, Brachioradialis",
+    secondary: "Side Bicep, Forearm Muscle",
     difficulty: "Intermediate",
     form: "Sit with the back of your upper arms flat against the preacher pad, curl the bar up to peak contraction, then extend fully for a complete stretch at the bottom.",
     cues: "- Ensure your armpits sit flush with the top of the pad.\n- Don't lift your elbows off the pad at the bottom.\n- Lower slowly to avoid bicep tears under heavy load."
@@ -210,10 +210,10 @@ const exercises = [
     group: "Biceps",
     name: "Dumbbell Hammer Curl",
     equipment: "Dumbbells",
-    primary: "Brachialis / Biceps",
-    secondary: "Brachioradialis (Forearms)",
+    primary: "Side Bicep / Biceps",
+    secondary: "Forearm Muscle (Forearms)",
     difficulty: "Beginner",
-    form: "Hold dumbbells with a neutral grip (palms facing each other) and curl them alternately to shoulder height while keeping your elbows stationary at your sides.",
+    form: "Hold dumbbells with a palms facing each other (palms facing each other) and curl them alternately to shoulder height while keeping your elbows stationary at your sides.",
     cues: "- Avoid swinging the body.\n- Squeeze the handle tightly to engage forearms.\n- Curl across the body slightly if regular form strains elbows."
   },
   {
@@ -221,9 +221,9 @@ const exercises = [
     name: "Cable Bicep Curl",
     equipment: "Dual Adjustable Pulley / Functional Trainer",
     primary: "Biceps",
-    secondary: "Brachialis, Forearm Flexors",
+    secondary: "Side Bicep, Forearm Flexors",
     difficulty: "Beginner",
-    form: "Set the cable low, grip the bar with a supinated grip, and curl upward while keeping constant tension through the cable — do not swing at the top.",
+    form: "Set the cable low, grip the bar with a palms-up grip, and curl upward while keeping constant tension through the cable — do not swing at the top.",
     cues: "- Use the cable's direct tension; don't rush the tempo.\n- Walk back one step to keep tension at the very bottom.\n- Maintain an upright posture."
   },
   {
@@ -231,9 +231,9 @@ const exercises = [
     name: "Incline Dumbbell Curl",
     equipment: "Adjustable Bench (incline), Dumbbells",
     primary: "Biceps (long head stretch)",
-    secondary: "Brachialis, Brachioradialis",
+    secondary: "Side Bicep, Forearm Muscle",
     difficulty: "Intermediate",
-    form: "Set the bench to ~60° incline, let arms hang straight down, and curl the dumbbells with a supinated grip — the stretched starting position maximises long-head tension.",
+    form: "Set the bench to ~60° incline, let arms hang straight down, and curl the dumbbells with a palms-up grip — the stretched starting position maximises long-head tension.",
     cues: "- Let your arms hang completely straight behind your torso.\n- Roll your wrists outward to maximize bicep peak contraction.\n- Don't let elbows drift forward during the curl."
   },
 
@@ -243,17 +243,17 @@ const exercises = [
     name: "Skull Crusher",
     equipment: "Flat Bench, EZ Curl Bar, Grip Weight Plates",
     primary: "Triceps",
-    secondary: "Anconeus",
+    secondary: "Elbow Joint Muscle",
     difficulty: "Intermediate",
     form: "Lie on a flat bench holding an EZ bar with a narrow overhand grip. Lower the bar toward your forehead or slightly behind your head by bending the elbows, keeping the upper arms stationary, then extend back up.",
-    cues: "- Keep your elbows pointing toward the ceiling, not flaring too far out.\n- Control the eccentric (lowering) phase carefully.\n- Do not move your upper arm; all movement is at the elbow joint."
+    cues: "- Keep your elbows pointing toward the ceiling, not flaring too far out.\n- Control the lowering phase carefully.\n- Do not move your upper arm; all movement is at the elbow joint."
   },
   {
     group: "Triceps",
     name: "Cable Tricep Pushdown",
     equipment: "Dual Adjustable Pulley / Functional Trainer, Mag Handle",
     primary: "Triceps",
-    secondary: "Anconeus",
+    secondary: "Elbow Joint Muscle",
     difficulty: "Beginner",
     form: "Set the cable high, grip the handle overhand with elbows tucked, and push the bar straight down until arms are fully extended, squeezing the triceps at the bottom.",
     cues: "- Lock the elbows at the sides.\n- Fully straighten the arm downward.\n- Yield only until forearms break 90 degrees on the way up."
@@ -263,7 +263,7 @@ const exercises = [
     name: "Overhead Cable Tricep Extension",
     equipment: "Dual Adjustable Pulley / Functional Trainer, Rope Attachment",
     primary: "Triceps (long head)",
-    secondary: "Anconeus",
+    secondary: "Elbow Joint Muscle",
     difficulty: "Intermediate",
     form: "Face away from the cable, hold the rope overhead with elbows bent, and extend your arms forward and up while keeping your upper arms stationary.",
     cues: "- Keep your upper arms beside your head.\n- Hinge slightly at hips to create a stable base.\n- Spread the rope apart at the top peak."
@@ -273,17 +273,17 @@ const exercises = [
     name: "Assisted Tricep Dip",
     equipment: "Assisted Dip / Chin Machine",
     primary: "Triceps",
-    secondary: "Chest, Anterior Deltoids",
+    secondary: "Chest, Front Shoulders",
     difficulty: "Beginner",
     form: "Use the counterweight for assistance, grip the parallel bars, lean slightly forward, lower until elbows reach ~90°, and press back up to straight arms.",
-    cues: "- Keep your torso upright to target the triceps.\n- Don't let shoulders roll forward excessively.\n- Maintain control in the eccentric phase."
+    cues: "- Keep your torso upright to target the triceps.\n- Don't let shoulders roll forward excessively.\n- Maintain control in the lowering phase."
   },
   {
     group: "Triceps",
     name: "Close-Grip Bench Press",
     equipment: "Flat Olympic Press station, 7ft Barbell, Grip Weight Plates",
     primary: "Triceps",
-    secondary: "Chest, Anterior Deltoids",
+    secondary: "Chest, Front Shoulders",
     difficulty: "Advanced",
     form: "Grip the bar at shoulder-width (no narrower), lower to the lower chest, and press up — the reduced grip width shifts emphasis from the chest to the triceps.",
     cues: "- Tuck your elbows tightly to your sides.\n- Do not grip too close (hands touching) to save your wrists.\n- Lower to the bottom of the sternum."
@@ -293,7 +293,7 @@ const exercises = [
     name: "Dumbbell Overhead Tricep Extension",
     equipment: "Dumbbell",
     primary: "Triceps (long head)",
-    secondary: "Anconeus",
+    secondary: "Elbow Joint Muscle",
     difficulty: "Intermediate",
     form: "Hold one dumbbell with both hands overhead, lower it behind your head by bending your elbows, then extend fully — keep your upper arms close to your ears.",
     cues: "- Brace your core and avoid heavily arching the lower back.\n- Create a diamond/heart shape with your hands under the top plates.\n- Get a deep stretch behind the neck."
@@ -305,7 +305,7 @@ const exercises = [
     name: "Hack Squat",
     equipment: "Hack Squat Machine, Bumper/Grip Plates",
     primary: "Quadriceps",
-    secondary: "Glutes, Adductors, Calves",
+    secondary: "Glutes, Inner Thighs, Calves",
     difficulty: "Intermediate",
     form: "Shoulder-width stance on the footplate, unhook the safeties, descend until your thighs are parallel (or deeper), then drive through your heels to full extension.",
     cues: "- Place feet lower on the platform to maximise quad bias.\n- Don't bounce out of the bottom hole.\n- Ensure your back stays flat against the pad at all times."
@@ -315,10 +315,10 @@ const exercises = [
     name: "45° Leg Press",
     equipment: "45 Degree Leg Press, Grip Weight Plates",
     primary: "Quadriceps",
-    secondary: "Glutes, Hamstrings, Adductors",
+    secondary: "Glutes, Hamstrings, Inner Thighs",
     difficulty: "Beginner",
     form: "Place feet shoulder-width on the sled, release the safeties, lower until thighs reach 90°, then push the platform away without locking your knees at the top.",
-    cues: "- DO NOT lock elbows with hands on knees to push.\n- Never fully lock out the knees (hyper-extend) at the top.\n- Keep your glutes firmly rooted to the seat pad."
+    cues: "- DO NOT lock elbows with hands on knees to push.\n- Never fully lock out the knees (bend backwards too far) at the top.\n- Keep your glutes firmly rooted to the seat pad."
   },
   {
     group: "Legs (Quads)",
@@ -328,7 +328,7 @@ const exercises = [
     secondary: "None",
     difficulty: "Beginner",
     form: "Sit with the roller pad on your lower shins, extend your legs until straight, hold for a brief squeeze at the top, then return slowly — do not let the weight slam.",
-    cues: "- Adjust pad to sit immediately above the top of your shoes.\n- Brace firmly into the seat handles.\n- Pull your toes backwards (dorsiflexion) for better contraction."
+    cues: "- Adjust pad to sit immediately above the top of your shoes.\n- Brace firmly into the seat handles.\n- Pull your toes backwards (pulling your toes up) for better contraction."
   },
   {
     group: "Legs (Quads)",
@@ -357,7 +357,7 @@ const exercises = [
     name: "Seated Leg Curl",
     equipment: "Seated Leg Curl Machine",
     primary: "Hamstrings",
-    secondary: "Calves (Gastrocnemius)",
+    secondary: "Calves (Upper Calf)",
     difficulty: "Beginner",
     form: "Sit with the roller pad on top of your lower shins, curl the pad back toward your glutes through the full range of motion, then extend slowly under control.",
     cues: "- Secure the lap pad firmly over your thighs.\n- Squeeze hamstrings tightly at the peak contraction.\n- Control the eccentric; do not slam the weight stack."
@@ -367,7 +367,7 @@ const exercises = [
     name: "Romanian Deadlift",
     equipment: "7ft Olympic Barbell, Grip Weight Plates, Weight Lifting Platform",
     primary: "Hamstrings / Glutes",
-    secondary: "Spinal Erectors, Forearms, Traps",
+    secondary: "Lower Back, Forearms, Traps",
     difficulty: "Advanced",
     form: "Hold the bar at hip-width, hinge at the hips while keeping a slight knee bend and a neutral spine — feel the hamstring stretch at the bottom, then drive the hips forward to stand.",
     cues: "- Push your hips back until you feel a deep stretch in hamstrings.\n- Do NOT reach for the floor; stop when hips stop moving back.\n- Keep the barbell sliding right up and down your thighs/shins."
@@ -377,7 +377,7 @@ const exercises = [
     name: "Dumbbell Romanian Deadlift",
     equipment: "Dumbbells",
     primary: "Hamstrings",
-    secondary: "Glutes, Spinal Erectors, Forearms",
+    secondary: "Glutes, Lower Back, Forearms",
     difficulty: "Intermediate",
     form: "Hold dumbbells in front of your thighs, hinge forward with a neutral back until you feel a full hamstring stretch, then squeeze your glutes to return upright.",
     cues: "- Drag dumbbells down the front of the legs.\n- Prevent the back from rounding.\n- Chin tucked neutrally."
@@ -387,7 +387,7 @@ const exercises = [
     name: "Smith Machine Romanian Deadlift",
     equipment: "Smith Machine, Grip Weight Plates",
     primary: "Hamstrings / Glutes",
-    secondary: "Spinal Erectors, Forearms",
+    secondary: "Lower Back, Forearms",
     difficulty: "Intermediate",
     form: "Set the bar at hip height in the Smith, use an overhand grip, hinge back with control, hold the stretch for a second at the bottom, then return by driving the hips through.",
     cues: "- Allows focus purely on the hip hinge mechanics.\n- Stand slightly away from the bar so it runs along the shins.\n- Squeeze the glutes powerfully at the top."
@@ -397,7 +397,7 @@ const exercises = [
     name: "Cable Pull-Through",
     equipment: "Dual Adjustable Pulley / Functional Trainer, Rope Attachment",
     primary: "Hamstrings / Glutes",
-    secondary: "Spinal Erectors, Core",
+    secondary: "Lower Back, Core",
     difficulty: "Beginner",
     form: "Face away from the cable with the rope between your legs, hinge at the hips until your torso is near parallel, then drive your hips forward to stand tall.",
     cues: "- Arms and shoulders completely relaxed.\n- Let the cable pull your hips backward.\n- Contract the glutes to force the hips through."
@@ -408,7 +408,7 @@ const exercises = [
     group: "Legs (Calves)",
     name: "Seated Calf Raise",
     equipment: "Seated Calf Raise Machine, Grip Weight Plates",
-    primary: "Soleus (Calves)",
+    primary: "Lower Calf (Calves)",
     secondary: "None",
     difficulty: "Beginner",
     form: "Place the pads on your lower thighs just above the knees, position the balls of your feet on the edge, drop heels fully for a stretch, then rise onto tiptoes.",
@@ -418,7 +418,7 @@ const exercises = [
     group: "Legs (Calves)",
     name: "Standing Calf Raise (Smith Machine)",
     equipment: "Smith Machine, Grip Weight Plates",
-    primary: "Gastrocnemius (Calves)",
+    primary: "Upper Calf (Calves)",
     secondary: "Core (Stabilization)",
     difficulty: "Intermediate",
     form: "Stand on a plate or raised surface under the Smith bar, unhook and rise up on the balls of your feet for a full contraction, then lower slowly for a deep stretch.",
@@ -428,21 +428,21 @@ const exercises = [
     group: "Legs (Calves)",
     name: "Leg Press Calf Raise",
     equipment: "45 Degree Leg Press",
-    primary: "Gastrocnemius (Calves)",
+    primary: "Upper Calf (Calves)",
     secondary: "None",
     difficulty: "Beginner",
-    form: "Place only the balls of your feet at the edge of the sled, straighten your legs, then push through your toes to full plantarflexion and slowly lower back down.",
+    form: "Place only the balls of your feet at the edge of the sled, straighten your legs, then push through your toes to full pointing your toes and slowly lower back down.",
     cues: "- Keep safety stops engaged on the machine.\n- Ensure feet do not slip off the bottom edge.\n- Keep knees fixed in a very slight bend."
   },
   {
     group: "Legs (Calves)",
     name: "Dumbbell Single-Leg Calf Raise",
     equipment: "Dumbbell, Weight Plate (for elevation)",
-    primary: "Gastrocnemius (unilateral)",
-    secondary: "Soleus, Stabilizers",
+    primary: "Upper Calf (one-sided)",
+    secondary: "Lower Calf, Stabilizers",
     difficulty: "Intermediate",
     form: "Hold a dumbbell in one hand, stand on one foot on a plate or step, and rise onto the ball of your foot — pause at the top, then lower fully to maximise the stretch.",
-    cues: "- Hold a stationary object with the empty hand for balance.\n- Slow eccentric (lowering) phase to build maximum tension.\n- Complete full range of motion heavily loading the single calf."
+    cues: "- Hold a stationary object with the empty hand for balance.\n- Slow lowering phase to build maximum tension.\n- Complete full range of motion heavily loading the single calf."
   },
 
   // GLUTES
@@ -450,7 +450,7 @@ const exercises = [
     group: "Glutes",
     name: "Hip Thrust (Smith Machine)",
     equipment: "Smith Machine, Flat Bench, Grip Weight Plates",
-    primary: "Gluteus Maximus",
+    primary: "Glutes (Butt)",
     secondary: "Hamstrings, Core",
     difficulty: "Intermediate",
     form: "Rest your upper back on the bench, feet flat on the floor under the bar, and thrust your hips upward until your thighs are parallel to the ground — squeeze hard at the top.",
@@ -460,7 +460,7 @@ const exercises = [
     group: "Glutes",
     name: "Cable Kickback",
     equipment: "Dual Adjustable Pulley / Functional Trainer",
-    primary: "Gluteus Maximus",
+    primary: "Glutes (Butt)",
     secondary: "Hamstrings, Core Stabilizers",
     difficulty: "Beginner",
     form: "Attach the cable low, face the machine, brace on the frame, and kick one leg back in a controlled arc — avoid rotating the hips and keep the movement at the hip joint.",
@@ -471,7 +471,7 @@ const exercises = [
     name: "45° Leg Press (High Foot Placement)",
     equipment: "45 Degree Leg Press, Grip Weight Plates",
     primary: "Glutes / Hamstrings",
-    secondary: "Quadriceps, Adductors",
+    secondary: "Quadriceps, Inner Thighs",
     difficulty: "Intermediate",
     form: "Place your feet high on the sled and use a wide stance — this shifts load from the quads toward the glutes and hamstrings as you press through the full range.",
     cues: "- Push distinctly through the heels, not the toes.\n- Squeeze knees out slightly tracking toes.\n- Ensure glutes don't tuck under and lift off the pad."
@@ -480,8 +480,8 @@ const exercises = [
     group: "Glutes",
     name: "Barbell Sumo Deadlift",
     equipment: "7ft Olympic Barbell, Grip Weight Plates, Weight Lifting Platform",
-    primary: "Glutes / Adductors",
-    secondary: "Hamstrings, Quads, Spinal Erectors, Traps",
+    primary: "Glutes / Inner Thighs",
+    secondary: "Hamstrings, Quads, Lower Back, Traps",
     difficulty: "Advanced",
     form: "Take a wide stance with toes turned out, grip the bar inside your legs, keep your chest tall, and drive through your heels while pushing your knees out to stand.",
     cues: "- Shins must remain vertical against the bar.\n- Hips drop before you initiate the pull.\n- Push the floor away laterally (spread the floor)."
@@ -500,9 +500,9 @@ const exercises = [
   // CORE
   {
     group: "Core",
-    name: "Rectus Abdominis Machine Crunch",
-    equipment: "Rectus Abdominis Trainer",
-    primary: "Rectus Abdominis",
+    name: "Abs Machine Crunch",
+    equipment: "Abs Trainer",
+    primary: "Abs",
     secondary: "Obliques",
     difficulty: "Beginner",
     form: "Sit in the machine, grip the handles, and flex forward at the waist — focus on curling the ribcage toward the pelvis rather than pulling with your arms or hip flexors.",
@@ -512,8 +512,8 @@ const exercises = [
     group: "Core",
     name: "Cable Woodchop",
     equipment: "Dual Adjustable Pulley / Functional Trainer",
-    primary: "Obliques / Transverse Abdominis",
-    secondary: "Shoulders, Rectus Abdominis",
+    primary: "Obliques / Deep Core",
+    secondary: "Shoulders, Abs",
     difficulty: "Intermediate",
     form: "Set the cable high on one side, hold with both hands, and rotate your torso diagonally downward across your body while keeping your arms extended and hips stable.",
     cues: "- Keep the arms straight; don't chop with arm strength.\n- Turn the shoulders aggressively.\n- Maintain strong footing on the ground."
@@ -522,8 +522,8 @@ const exercises = [
     group: "Core",
     name: "Gym Ball Crunch",
     equipment: "Gym Ball (75cm)",
-    primary: "Rectus Abdominis",
-    secondary: "Transverse Abdominis",
+    primary: "Abs",
+    secondary: "Deep Core",
     difficulty: "Beginner",
     form: "Lie with your lower back on the ball, feet flat on the floor, and crunch upward by contracting the abs — the ball provides a greater range of motion than a flat floor crunch.",
     cues: "- Keep lower back moulded around the curvature of the ball.\n- Squeeze the core deliberately; do not strain the neck.\n- Get a full stretch over the ball at the bottom."
@@ -532,17 +532,17 @@ const exercises = [
     group: "Core",
     name: "Adjustable Ab Bench Sit-Up",
     equipment: "Adjustable Ab Bench",
-    primary: "Rectus Abdominis / Hip Flexors",
+    primary: "Abs / Hip Flexors",
     secondary: "Obliques",
     difficulty: "Intermediate",
-    form: "Hook your feet under the roller pads, set an angle that challenges you, and perform a controlled sit-up — lower all the way down to maximise the eccentric phase.",
+    form: "Hook your feet under the roller pads, set an angle that challenges you, and perform a controlled sit-up — lower all the way down to maximise the lowering phase.",
     cues: "- Try to reduce reliance on flinging momentum.\n- Breathe out deeply ascending.\n- Control the drop heavily; don't just fall backward."
   },
   {
     group: "Core",
     name: "Barbell Rollout",
     equipment: "Short Barbell (4ft or 5ft), Weight Lifting Platform",
-    primary: "Transverse Abdominis / Core Stability",
+    primary: "Deep Core / Core Stability",
     secondary: "Lats, Triceps, Shoulders",
     difficulty: "Advanced",
     form: "Kneel on the platform, grip a loaded barbell with hands shoulder-width, roll forward from the knees until your body is nearly parallel to the floor, then pull back using your abs.",
@@ -651,17 +651,17 @@ function toggleCard(id) {
 }
 
 const learningData = {
-  "Chest": { desc: "The chest (pectoralis major and minor) handles pushing movements and horizontal adduction.", video: "https://www.youtube.com/watch?v=JtFM_fF1UOY" },
-  "Back": { desc: "The back includes the latissimus dorsi, rhomboids, trapezius, and erector spinae, vital for pulling and posture.", video: "https://www.youtube.com/watch?v=SUPLFfyA1Zg" },
-  "Shoulders": { desc: "The deltoids consist of three heads (anterior, lateral, posterior) controlling arm abduction and rotation.", video: "https://www.youtube.com/watch?v=wyc2rCJl4qE" },
-  "Biceps": { desc: "The biceps brachii features a long head and a short head, primarily responsible for elbow flexion and forearm supination.", video: "https://www.youtube.com/watch?v=lqDSKvxSYE4" },
-  "Triceps": { desc: "The triceps make up roughly 2/3 of upper arm mass, composed of three heads dedicated to elbow extension.", video: "https://www.youtube.com/watch?v=pOb1ENhYoYg" },
-  "Legs (Quads)": { desc: "The quadriceps are your powerful frontal thigh muscles responsible for knee extension and squatting.", video: "https://www.youtube.com/watch?v=8b-7mJmWHmA" },
-  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of the thigh and heavily govern knee flexion and hip extension.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
-  "Legs (Calves)": { desc: "The calves consist predominantly of the gastrocnemius (visible heart shape) and underlying soleus muscles.", video: "https://www.youtube.com/watch?v=DHd-5TpPWq4" },
-  "Glutes": { desc: "The gluteus maximus is the largest and most powerful muscle in the body, essential for hip extension.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
-  "Core": { desc: "The core provides vital stability, handling spinal flexion, resistance to rotation, and transferring force.", video: "https://www.youtube.com/watch?v=iqRzWHSpAJo" },
-  "Cardio": { desc: "Cardiovascular training strengthens the heart muscle and significantly improves stamina and metabolic health.", video: "https://www.youtube.com/watch?v=VI4gTm5lvjo" }
+  "Chest": { desc: "The chest muscles are used for pushing things away and bringing your arms together in front of you.", video: "https://www.youtube.com/watch?v=JtFM_fF1UOY" },
+  "Back": { desc: "The back includes the lats (outer back), mid-back, and lower back, which are essential for pulling things and keeping a straight posture.", video: "https://www.youtube.com/watch?v=SUPLFfyA1Zg" },
+  "Shoulders": { desc: "The shoulders consist of three parts (front, side, and rear) that help you lift your arms in all directions.", video: "https://www.youtube.com/watch?v=wyc2rCJl4qE" },
+  "Biceps": { desc: "The biceps are on the front of your arm and are responsible for bending your elbow and turning your palms up.", video: "https://www.youtube.com/watch?v=lqDSKvxSYE4" },
+  "Triceps": { desc: "The triceps make up about two-thirds of your upper arm and are used to completely straighten your arm.", video: "https://www.youtube.com/watch?v=pOb1ENhYoYg" },
+  "Legs (Quads)": { desc: "The quads are the large muscles on the front of your thigh, used for straightening your knee and pushing up from a squat.", video: "https://www.youtube.com/watch?v=8b-7mJmWHmA" },
+  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of your thigh and help you bend your knee and push your hips forward.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
+  "Legs (Calves)": { desc: "The calves are located on the back of your lower leg and help you point your toes and push off the ground.", video: "https://www.youtube.com/watch?v=DHd-5TpPWq4" },
+  "Glutes": { desc: "The glutes (your buttocks) are the largest and most powerful muscles in your body, essential for standing up and walking.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
+  "Core": { desc: "The core includes your abs and deeper midsection muscles, keeping you balanced and protecting your spine.", video: "https://www.youtube.com/watch?v=iqRzWHSpAJo" },
+  "Cardio": { desc: "Cardio workouts strengthen your heart and lungs, building your stamina so you don't get out of breath easily.", video: "https://www.youtube.com/watch?v=VI4gTm5lvjo" }
 };
 
 function renderExercises() {
