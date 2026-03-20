@@ -266,30 +266,32 @@
   const { createClient } = supabase;
   const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Handle invite / password-reset tokens in the URL hash
-const hash = window.location.hash;
-if (hash && hash.includes('access_token')) {
-  const params = new URLSearchParams(hash.substring(1));
-  const accessToken = params.get('access_token');
-  const refreshToken = params.get('refresh_token');
-  const type = params.get('type');
+(async () => {
+  const hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    const params = new URLSearchParams(hash.substring(1));
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    const type = params.get('type');
 
-  if (accessToken && (type === 'invite' || type === 'recovery')) {
-    // Set the session from the invite token
-    const { error } = await client.auth.setSession({
-      access_token: accessToken,
-      refresh_token: refreshToken
-    });
+    if (accessToken && (type === 'invite' || type === 'recovery')) {
+      // Set the session from the invite token
+      const { error } = await client.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
 
-    if (!error) {
-      // First time — prompt them to set a password, then redirect
-      const newPassword = prompt('Welcome! Please set your password:');
-      if (newPassword) {
-        await client.auth.updateUser({ password: newPassword });
+      if (!error) {
+        // First time — prompt them to set a password, then redirect
+        const newPassword = prompt('Welcome! Please set your password:');
+        if (newPassword) {
+          await client.auth.updateUser({ password: newPassword });
+        }
+        window.location.replace('/index.html');
       }
-      window.location.replace('/index.html');
     }
   }
-}
+})();
   // If already logged in, go straight to the app
   client.auth.getSession().then(({ data }) => {
     if (data.session) window.location.replace('/index.html');
