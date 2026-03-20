@@ -651,17 +651,17 @@ function toggleCard(id) {
 }
 
 const learningData = {
-  "Chest": { desc: "The chest (pectoralis major and minor) handles pushing movements and horizontal adduction.", video: "https://www.youtube.com/results?search_query=chest+muscle+anatomy+explained+for+bodybuilding" },
-  "Back": { desc: "The back includes the latissimus dorsi, rhomboids, trapezius, and erector spinae, vital for pulling and posture.", video: "https://www.youtube.com/results?search_query=back+muscle+anatomy+explained+for+bodybuilding" },
-  "Shoulders": { desc: "The deltoids consist of three heads (anterior, lateral, posterior) controlling arm abduction and rotation.", video: "https://www.youtube.com/results?search_query=shoulder+muscle+anatomy+explained+for+bodybuilding" },
-  "Biceps": { desc: "The biceps brachii features a long head and a short head, primarily responsible for elbow flexion and forearm supination.", video: "https://www.youtube.com/results?search_query=biceps+muscle+anatomy+explained+for+bodybuilding" },
-  "Triceps": { desc: "The triceps make up roughly 2/3 of upper arm mass, composed of three heads dedicated to elbow extension.", video: "https://www.youtube.com/results?search_query=triceps+muscle+anatomy+explained+for+bodybuilding" },
-  "Legs (Quads)": { desc: "The quadriceps are your powerful frontal thigh muscles responsible for knee extension and squatting.", video: "https://www.youtube.com/results?search_query=quadriceps+muscle+anatomy+explained+for+bodybuilding" },
-  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of the thigh and heavily govern knee flexion and hip extension.", video: "https://www.youtube.com/results?search_query=hamstrings+muscle+anatomy+explained+for+bodybuilding" },
-  "Legs (Calves)": { desc: "The calves consist predominantly of the gastrocnemius (visible heart shape) and underlying soleus muscles.", video: "https://www.youtube.com/results?search_query=calves+muscle+anatomy+explained+for+bodybuilding" },
-  "Glutes": { desc: "The gluteus maximus is the largest and most powerful muscle in the body, essential for hip extension.", video: "https://www.youtube.com/results?search_query=glutes+muscle+anatomy+explained+for+bodybuilding" },
-  "Core": { desc: "The core provides vital stability, handling spinal flexion, resistance to rotation, and transferring force.", video: "https://www.youtube.com/results?search_query=core+abs+muscle+anatomy+explained+for+bodybuilding" },
-  "Cardio": { desc: "Cardiovascular training strengthens the heart muscle and significantly improves stamina and metabolic health.", video: "https://www.youtube.com/results?search_query=cardiovascular+system+benefits+for+bodybuilding" }
+  "Chest": { desc: "The chest (pectoralis major and minor) handles pushing movements and horizontal adduction.", video: "https://www.youtube.com/results?search_query=trainer+winny+chest+workout+guide" },
+  "Back": { desc: "The back includes the latissimus dorsi, rhomboids, trapezius, and erector spinae, vital for pulling and posture.", video: "https://www.youtube.com/results?search_query=trainer+winny+back+workout+guide" },
+  "Shoulders": { desc: "The deltoids consist of three heads (anterior, lateral, posterior) controlling arm abduction and rotation.", video: "https://www.youtube.com/results?search_query=trainer+winny+shoulder+workout+guide" },
+  "Biceps": { desc: "The biceps brachii features a long head and a short head, primarily responsible for elbow flexion and forearm supination.", video: "https://www.youtube.com/results?search_query=trainer+winny+biceps+workout+guide" },
+  "Triceps": { desc: "The triceps make up roughly 2/3 of upper arm mass, composed of three heads dedicated to elbow extension.", video: "https://www.youtube.com/results?search_query=trainer+winny+triceps+workout+guide" },
+  "Legs (Quads)": { desc: "The quadriceps are your powerful frontal thigh muscles responsible for knee extension and squatting.", video: "https://www.youtube.com/results?search_query=trainer+winny+quads+leg+workout+guide" },
+  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of the thigh and heavily govern knee flexion and hip extension.", video: "https://www.youtube.com/results?search_query=trainer+winny+hamstrings+workout+guide" },
+  "Legs (Calves)": { desc: "The calves consist predominantly of the gastrocnemius (visible heart shape) and underlying soleus muscles.", video: "https://www.youtube.com/results?search_query=trainer+winny+calves+workout+guide" },
+  "Glutes": { desc: "The gluteus maximus is the largest and most powerful muscle in the body, essential for hip extension.", video: "https://www.youtube.com/results?search_query=trainer+winny+glutes+workout+guide" },
+  "Core": { desc: "The core provides vital stability, handling spinal flexion, resistance to rotation, and transferring force.", video: "https://www.youtube.com/results?search_query=trainer+winny+abs+core+workout+guide" },
+  "Cardio": { desc: "Cardiovascular training strengthens the heart muscle and significantly improves stamina and metabolic health.", video: "https://www.youtube.com/results?search_query=trainer+winny+cardio+guide" }
 };
 
 function renderExercises() {
