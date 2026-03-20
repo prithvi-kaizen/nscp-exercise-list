@@ -363,3 +363,49 @@ header {
 .ex-details .yt-btn {
   margin-top: 12px;
 }
+
+/* LEARNING BANNER */
+.learning-banner {
+  grid-column: 1 / -1;
+  background: var(--terra);
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+  animation: fadeUp 0.22s ease both;
+}
+.learning-banner h3 {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.learning-banner p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+.learning-banner .banner-btn {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--ink);
+  align-self: flex-start;
+  margin-top: 0;
+}
+.learning-banner .banner-btn .yt-icon {
+  fill: var(--terra);
+}
+@media (min-width: 768px) {
+  .learning-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .learning-banner .banner-btn {
+    flex-shrink: 0;
+  }
+}

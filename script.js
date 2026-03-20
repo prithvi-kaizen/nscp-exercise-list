@@ -650,6 +650,20 @@ function toggleCard(id) {
   }
 }
 
+const learningData = {
+  "Chest": { desc: "The chest (pectoralis major and minor) handles pushing movements and horizontal adduction.", video: "#placeholder_chest_video" },
+  "Back": { desc: "The back includes the latissimus dorsi, rhomboids, trapezius, and erector spinae, vital for pulling and posture.", video: "#placeholder_back_video" },
+  "Shoulders": { desc: "The deltoids consist of three heads (anterior, lateral, posterior) controlling arm abduction and rotation.", video: "#placeholder_shoulders_video" },
+  "Biceps": { desc: "The biceps brachii features a long head and a short head, primarily responsible for elbow flexion and forearm supination.", video: "#placeholder_biceps_video" },
+  "Triceps": { desc: "The triceps make up roughly 2/3 of upper arm mass, composed of three heads dedicated to elbow extension.", video: "#placeholder_triceps_video" },
+  "Legs (Quads)": { desc: "The quadriceps are your powerful frontal thigh muscles responsible for knee extension and squatting.", video: "#placeholder_quads_video" },
+  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of the thigh and heavily govern knee flexion and hip extension.", video: "#placeholder_hamstrings_video" },
+  "Legs (Calves)": { desc: "The calves consist predominantly of the gastrocnemius (visible heart shape) and underlying soleus muscles.", video: "#placeholder_calves_video" },
+  "Glutes": { desc: "The gluteus maximus is the largest and most powerful muscle in the body, essential for hip extension.", video: "#placeholder_glutes_video" },
+  "Core": { desc: "The core provides vital stability, handling spinal flexion, resistance to rotation, and transferring force.", video: "#placeholder_core_video" },
+  "Cardio": { desc: "Cardiovascular training strengthens the heart muscle and significantly improves stamina and metabolic health.", video: "#placeholder_cardio_video" }
+};
+
 function renderExercises() {
   const filtered = activeGroup === "All" ? exercises : exercises.filter(e => e.group === activeGroup);
   const grid = document.getElementById('exerciseGrid');
@@ -668,7 +682,24 @@ function renderExercises() {
     return;
   }
 
-  grid.innerHTML = filtered.map((ex, i) => `
+  let html = '';
+
+  if (activeGroup !== "All" && learningData[activeGroup]) {
+    const data = learningData[activeGroup];
+    html += `
+      <div class="learning-banner">
+        <div class="banner-content">
+          <h3>${activeGroup} Anatomy</h3>
+          <p>${data.desc}</p>
+        </div>
+        <a class="yt-btn banner-btn" href="${data.video}" target="_blank" rel="noopener">
+          ${ytIcon()} Study Muscle
+        </a>
+      </div>
+    `;
+  }
+
+  html += filtered.map((ex, i) => `
     <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.04}s" onclick="toggleCard('card-${i}')">
       <div class="card-header">
         <div class="ex-name">${ex.name}</div>
@@ -694,6 +725,8 @@ function renderExercises() {
       </div>
     </div>
   `).join('');
+
+  grid.innerHTML = html;
 }
 
 function setGroup(g) {
