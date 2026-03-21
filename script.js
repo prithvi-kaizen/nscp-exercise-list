@@ -612,17 +612,73 @@ const exercises = [
   },
   {
     group: "Cardio",
-    name: "Boxing Bag Rounds",
     equipment: "Boxing Bag (40kg)",
     primary: "Cardiovascular System / Upper Body Power",
     secondary: "Shoulders, Core, Calves",
     difficulty: "Intermediate",
     form: "Work in 3-minute rounds using a combination of jabs, crosses, hooks, and body shots — maintain a fighting stance, keep your hands up, and move your feet between combinations.",
     cues: "- Wrap your hands internally or wear proper gloves always.\n- Snap the punches back immediately, do not merely 'push' the bag.\n- Twist hips powerfully on all crosses and hooks."
+  },
+
+  // MOBILITY
+  {
+    group: "Mobility",
+    name: "Squat University: Ankle Mobility Assessment & Fix",
+    equipment: "Bodyweight, Resistance Band, or Kettlebell",
+    primary: "Ankle Joint (Dorsiflexion)",
+    secondary: "Upper Calf / Lower Calf",
+    difficulty: "Beginner",
+    form: "Use the 5-inch wall test to check ankle mobility. If restricted, perform banded joint mobilizations and loaded stretches (goblet squat holds) to improve ankle flexibility.",
+    cues: "- Do not force through a 'pinch' in the front of your ankle.\n- Keep your heel firmly planted on the ground.\n- Perform slow, continuous stretching.",
+    video: "https://www.youtube.com/watch?v=IikP_teeLkI"
+  },
+  {
+    group: "Mobility",
+    name: "Squat University: The BEST Hip Mobility Routine",
+    equipment: "Bodyweight / Mat",
+    primary: "Hip Joint",
+    secondary: "Glutes (Butt), Lower Back",
+    difficulty: "Beginner",
+    form: "Perform the Faber test, Thomas Test, and Squat tests. Use the 90/90 stretch, pigeon stretch, and banded hip mobilizations to unglue restricted hips.",
+    cues: "- Breathe deeply to allow tissues to relax.\n- Keep your torso tall during seated stretches.\n- Consistent daily work yields the best results.",
+    video: "https://www.youtube.com/watch?v=tASa_2DB_ms"
+  },
+  {
+    group: "Mobility",
+    name: "Squat University: How to Fix Shoulder Pain & Mobility",
+    equipment: "Resistance Band, Light Dumbbells",
+    primary: "Shoulder Joint",
+    secondary: "Shoulder Stabilizers (Rotator Cuff), Mid-Back",
+    difficulty: "Beginner",
+    form: "Focus on opening the thoracic spine and strengthening the rotator cuff using band pull-aparts, external rotations, and PVC pipe dislocates.",
+    cues: "- Move slowly and continuously without snapping.\n- Avoid overarching the lower back to compensate for stiff shoulders.\n- Stop if sharp pain is felt.",
+    video: "https://www.youtube.com/watch?v=d8CuwaUenR4"
+  },
+  {
+    group: "Mobility",
+    name: "Squat University: Low Back Pain Relief (McGill Big 3)",
+    equipment: "Bodyweight / Mat",
+    primary: "Spinal Stability",
+    secondary: "Abs, Deep Core, Lower Back",
+    difficulty: "Beginner",
+    form: "Perform Dr. Stuart McGill's 'Big 3': the McGill Curl-Up, the Side Plank, and the Bird-Dog to build immense core endurance and relieve back pain.",
+    cues: "- Brace your core solidly as if expecting a punch.\n- Do not move your spine during the bird-dog; keep it perfectly rigid.\n- Hold each rep for no more than 10 seconds.",
+    video: "https://www.youtube.com/watch?v=9KcTz0sOMys"
+  },
+  {
+    group: "Mobility",
+    name: "Squat University: How to Fix Knee Pain",
+    equipment: "Bodyweight, Step/Box",
+    primary: "Knee Joint",
+    secondary: "Front Thighs (Quads), Glutes (Butt)",
+    difficulty: "Beginner",
+    form: "Identify the root cause of the pain (often weak hips or poor ankles). Use the Touchdown Squat or Spanish Squat to comfortably load the knee and tendon.",
+    cues: "- Control the lowering phase extremely slowly.\n- Ensure your knee tracks directly over your toes.\n- Avoid movements that recreate a sharp 10/10 pain.",
+    video: "https://www.youtube.com/watch?v=KGGUnLvVZKI"
   }
 ];
 
-const groups = ["All", "Chest", "Back", "Shoulders", "Biceps", "Triceps", "Legs (Quads)", "Legs (Hamstrings)", "Legs (Calves)", "Glutes", "Core", "Cardio"];
+const groups = ["All", "Chest", "Back", "Shoulders", "Biceps", "Triceps", "Legs (Quads)", "Legs (Hamstrings)", "Legs (Calves)", "Glutes", "Core", "Cardio", "Mobility"];
 
 let activeGroup = "All";
 
@@ -661,7 +717,8 @@ const learningData = {
   "Legs (Calves)": { desc: "The calves are located on the back of your lower leg and help you point your toes and push off the ground.", video: "https://www.youtube.com/watch?v=DHd-5TpPWq4" },
   "Glutes": { desc: "The glutes (your buttocks) are the largest and most powerful muscles in your body, essential for standing up and walking.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
   "Core": { desc: "The core includes your abs and deeper midsection muscles, keeping you balanced and protecting your spine.", video: "https://www.youtube.com/watch?v=iqRzWHSpAJo" },
-  "Cardio": { desc: "Cardio workouts strengthen your heart and lungs, building your stamina so you don't get out of breath easily.", video: "https://www.youtube.com/watch?v=VI4gTm5lvjo" }
+  "Cardio": { desc: "Cardio workouts strengthen your heart and lungs, building your stamina so you don't get out of breath easily.", video: "https://www.youtube.com/watch?v=VI4gTm5lvjo" },
+  "Mobility": { desc: "Mobility training improves joint health, reduces pain, and drastically enhances your performance in the gym. Explore Squat University's highly-regarded mobility blogs here.", video: "https://squatuniversity.com/featured-links/blog/" }
 };
 
 function renderExercises() {
@@ -693,7 +750,7 @@ function renderExercises() {
           <p>${data.desc}</p>
         </div>
         <a class="yt-btn banner-btn" href="${data.video}" target="_blank" rel="noopener">
-          ${ytIcon()} Study Muscle
+          ${activeGroup === 'Mobility' ? '📖 Read Blogs' : ytIcon() + ' Study Muscle'}
         </a>
       </div>
     `;
@@ -719,7 +776,7 @@ function renderExercises() {
           <strong>Common Cues & Mistakes:</strong><br/>
           ${ex.cues.replace(/\n/g, '<br/>')}
         </div>
-        <a class="yt-btn" href="${ytUrl(ex.name)}" target="_blank" rel="noopener">
+        <a class="yt-btn" href="${ex.video ? ex.video : ytUrl(ex.name)}" target="_blank" rel="noopener">
           ${ytIcon()} Watch Tutorial
         </a>
       </div>
