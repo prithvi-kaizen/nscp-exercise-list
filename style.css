@@ -345,7 +345,9 @@ header {
   color: #5a4a38;
 }
 .exercise-card.expanded .ex-details {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 .ex-details strong {
   font-family: 'Space Mono', monospace;
@@ -361,7 +363,8 @@ header {
 .tag.intermediate { background: #fef7e0; color: #b06000; border-color: #fce8b2; }
 .tag.advanced { background: #fce8e6; color: #c5221f; border-color: #fad2cf; }
 .ex-details .yt-btn {
-  margin-top: 12px;
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 /* LEARNING BANNER */
