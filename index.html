@@ -77,16 +77,25 @@
     </button>
   </div>
 
-  <!-- Scientific Medical Anatomy Atlas (Collapsible) -->
-  <section class="body-map-wrapper" id="bodyMapWrapper" style="display: none;" aria-label="Musculoskeletal Anatomy Guide">
+  <!-- Anatomy Guide (Full Body & Zoomed-In Focus) -->
+  <section class="body-map-wrapper" id="bodyMapWrapper" style="display: none;" aria-label="Interactive Anatomy Guide">
     <div class="body-map-header">
       <div>
-        <div class="section-label" id="bodyMapLabel">Musculoskeletal Anatomy Guide</div>
-        <div class="body-view-hint" id="bodyViewHint">Select any anatomical region to isolate target exercises</div>
+        <div class="section-label" id="bodyMapLabel">Interactive Anatomy Guide</div>
+        <div class="body-view-hint" id="bodyViewHint">Tap any muscle to zoom in and inspect how it works</div>
       </div>
+      <button class="zoom-back-btn" id="zoomBackBtn" onclick="resetBodyMapZoom()" style="display: none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span id="zoomBackText">Back to Full Body</span>
+      </button>
     </div>
+    <!-- Master Dual Full-Body Plates (Anterior / Posterior) -->
     <div class="medical-atlas-duo" id="bodyMapDuo">
       <!-- Injected by script.js with authentic medical illustrations and coordinate hotspots -->
+    </div>
+    <!-- Dedicated Close-Up Zoom View (Shown on muscle tap) -->
+    <div class="zoomed-muscle-view" id="zoomedMuscleView" style="display: none;">
+      <!-- Injected dynamically on muscle selection -->
     </div>
   </section>
 

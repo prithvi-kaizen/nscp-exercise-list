@@ -953,8 +953,8 @@ const translations = {
     searchPlaceholder: "Search exercises, machines, muscles...",
     showBodyMap: "Anatomy Guide",
     hideBodyMap: "Hide Anatomy Guide",
-    bodyMapLabel: "Musculoskeletal Anatomy Guide",
-    bodyViewHint: "Select any anatomical region to isolate target exercises",
+    bodyMapLabel: "Interactive Anatomy Guide",
+    bodyViewHint: "Tap any muscle to zoom in and inspect how it works",
     muscleSectionLabel: "Filter by Muscle Group",
     equipmentSectionLabel: "NSC Gym Equipment & Machine Directory",
     equipmentSubhead: "Select any machine or station to inspect matching exercises",
@@ -968,7 +968,13 @@ const translations = {
     allExercises: "All Exercises",
     musclesTabMob: "Muscles",
     equipTabMob: "Machines",
-    bodyTabMob: "Anatomy"
+    bodyTabMob: "Anatomy",
+    zoomBackText: "Back to Full Body",
+    viewExercisesText: "View Matching Exercises",
+    whatItDoes: "What it does:",
+    keyMovements: "Key NSC movements:",
+    muscleParts: "Anatomical regions:",
+    focusedViewBadge: "Focused Muscle View"
   },
   mr: {
     headerSubhead: "पंढरपूर · 90 11 44 5000",
@@ -978,7 +984,7 @@ const translations = {
     showBodyMap: "अॅनाटॉमी मार्गदर्शक",
     hideBodyMap: "मार्गदर्शक लपवा",
     bodyMapLabel: "स्नायू व शरीरशास्त्र मार्गदर्शक",
-    bodyViewHint: "त्या भागातील व्यायाम पाहण्यासाठी स्नायू निवडा",
+    bodyViewHint: "तपशील पाहण्यासाठी कोणत्याही स्नायूवर टॅप करा",
     muscleSectionLabel: "स्नायू गटानुसार व्यायाम",
     equipmentSectionLabel: "नेताजी स्पोर्ट्स क्लब जिम मशिन्स व साहित्य",
     equipmentSubhead: "त्या मशीनवरील व्यायाम पाहण्यासाठी मशीन निवडा",
@@ -992,7 +998,13 @@ const translations = {
     allExercises: "सर्व व्यायाम",
     musclesTabMob: "स्नायू",
     equipTabMob: "मशिन्स",
-    bodyTabMob: "अॅनाटॉमी"
+    bodyTabMob: "अॅनाटॉमी",
+    zoomBackText: "संपूर्ण शरीर दृश्य",
+    viewExercisesText: "संबंधित व्यायाम पहा",
+    whatItDoes: "मुख्य कार्य:",
+    keyMovements: "महत्त्वाचे व्यायाम प्रकार:",
+    muscleParts: "स्नायूंचे भाग:",
+    focusedViewBadge: "स्नायू तपशील"
   }
 };
 
@@ -1022,7 +1034,13 @@ function toggleLanguage() {
   renderEquipmentCatTabs();
   renderEquipmentGrid();
   renderExercises();
-  if (bodyMapVisible) renderScientificBodyMap();
+  if (bodyMapVisible) {
+    if (zoomedMuscleGroup) {
+      showZoomedMuscle(zoomedMuscleGroup);
+    } else {
+      renderScientificBodyMap();
+    }
+  }
 }
 
 function applyLanguage() {
@@ -1052,6 +1070,9 @@ function applyLanguage() {
 
   const bodyViewHnt = document.getElementById('bodyViewHint');
   if (bodyViewHnt) bodyViewHnt.textContent = t.bodyViewHint;
+
+  const zoomBack = document.getElementById('zoomBackText');
+  if (zoomBack) zoomBack.textContent = t.zoomBackText;
 
   const muscleSecLbl = document.getElementById('muscleSectionLabel');
   if (muscleSecLbl) muscleSecLbl.textContent = t.muscleSectionLabel;
@@ -1110,97 +1131,87 @@ function toggleTheme() {
   applyTheme(next);
 }
 
-// ─── SCIENTIFIC MEDICAL ANATOMY ATLAS ─────────────────────────────────────────
+// ─── SIMPLE LAYMAN HOTSPOTS (NO LATIN CONFUSION) ──────────────────────────────
 const anteriorHotspots = [
   {
     group: "Chest",
     x: 50,
     y: 25,
-    label: "Pectoralis Major",
-    latin: "Musculus pectoralis major",
-    actionEn: "Humeral horizontal adduction, flexion & internal rotation.",
-    actionMr: "छातीचे स्नायू: हातांची पुढची हालचाल व आकुंचन."
+    label: "Chest",
+    descEn: "Pushes weight away and brings arms together.",
+    descMr: "छाती: वजन पुढे ढकलणे आणि आकुंचन."
   },
   {
     group: "Shoulders",
     x: 35,
     y: 22,
-    label: "Anterior Deltoid",
-    latin: "Pars clavicularis deltoidei",
-    actionEn: "Arm flexion, horizontal adduction & internal rotation.",
-    actionMr: "पुढील खांदा: हात वर उचलणे व पुढे नेणे."
+    label: "Front Shoulder",
+    descEn: "Lifts and presses arms upward overhead.",
+    descMr: "पुढील खांदा: हात वर उचलणे."
   },
   {
     group: "Shoulders",
     x: 65,
     y: 22,
-    label: "Anterior Deltoid",
-    latin: "Pars clavicularis deltoidei",
-    actionEn: "Arm flexion, horizontal adduction & internal rotation.",
-    actionMr: "पुढील खांदा: हात वर उचलणे व पुढे नेणे."
+    label: "Front Shoulder",
+    descEn: "Lifts and presses arms upward overhead.",
+    descMr: "पुढील खांदा: हात वर उचलणे."
   },
   {
     group: "Biceps",
     x: 32,
     y: 35,
-    label: "Biceps Brachii",
-    latin: "Musculus biceps brachii",
-    actionEn: "Elbow flexion and forearm supination.",
-    actionMr: "बायसेप्स: कोपर वाकवणे व हाताचा पंजा फिरवणे."
+    label: "Biceps",
+    descEn: "Bends elbow and curls weight upward.",
+    descMr: "बायसेप्स: कोपर वाकवून वजन वर उचलणे."
   },
   {
     group: "Biceps",
     x: 68,
     y: 35,
-    label: "Biceps Brachii",
-    latin: "Musculus biceps brachii",
-    actionEn: "Elbow flexion and forearm supination.",
-    actionMr: "बायसेप्स: कोपर वाकवणे व हाताचा पंजा फिरवणे."
+    label: "Biceps",
+    descEn: "Bends elbow and curls weight upward.",
+    descMr: "बायसेप्स: कोपर वाकवून वजन वर उचलणे."
   },
   {
     group: "Core",
     x: 50,
     y: 38,
-    label: "Rectus Abdominis",
-    latin: "Musculus rectus abdominis & obliques",
-    actionEn: "Trunk flexion, spine support & intra-abdominal pressure.",
-    actionMr: "पोटाचे स्नायू (Abs): पाठीच्या कण्याला आधार व लवचिकता."
+    label: "Abs & Core",
+    descEn: "Protects spine and stabilizes torso during all lifts.",
+    descMr: "पोट व कोअर: कंबर तोलणे व पोटाचे स्नायू."
   },
   {
     group: "Legs (Quads)",
     x: 43,
     y: 62,
-    label: "Quadriceps Femoris",
-    latin: "Musculus quadriceps femoris",
-    actionEn: "Knee extension and anterior hip stabilization.",
-    actionMr: "पुढील मांडी (Quads): गुडघा सरळ करणे व स्क्वॅट हालचाल."
+    label: "Quads (Thigh)",
+    descEn: "Straightens knee to stand, squat, and jump.",
+    descMr: "पुढील मांडी (Quads): गुडघा सरळ करणे व स्क्वॉट करणे."
   },
   {
     group: "Legs (Quads)",
     x: 57,
     y: 62,
-    label: "Quadriceps Femoris",
-    latin: "Musculus quadriceps femoris",
-    actionEn: "Knee extension and anterior hip stabilization.",
-    actionMr: "पुढील मांडी (Quads): गुडघा सरळ करणे व स्क्वॅट हालचाल."
+    label: "Quads (Thigh)",
+    descEn: "Straightens knee to stand, squat, and jump.",
+    descMr: "पुढील मांडी (Quads): गुडघा सरळ करणे व स्क्वॉट करणे."
   },
   {
     group: "Legs (Calves)",
     x: 43,
     y: 82,
-    label: "Gastrocnemius / Tibialis",
-    latin: "Musculus tibialis anterior & gastrocnemius",
-    actionEn: "Ankle plantarflexion and propulsion.",
-    actionMr: "पोटऱ्या: घोटा फिरवणे व पायाचा तोल सांभाळणे."
+    label: "Calves",
+    descEn: "Raises heels and pushes off the floor.",
+    descMr: "पोटऱ्या: टाचा वर उचलणे व पायाला ताकद देणे."
   },
   {
     group: "Legs (Calves)",
     x: 57,
     y: 82,
-    label: "Gastrocnemius / Tibialis",
-    latin: "Musculus tibialis anterior & gastrocnemius",
-    actionEn: "Ankle plantarflexion and propulsion.",
-    actionMr: "पोटऱ्या: घोटा फिरवणे व पायाचा तोल सांभाळणे."
+    label: "Calves",
+    descEn: "Raises heels and pushes off the floor.",
+    descMr: "पोटऱ्या: टाचा वर उचलणे व पायाला ताकद देणे."
   }
 ];
 
@@ -1208,103 +1219,208 @@ const posteriorHotspots = [
   {
     group: "Back",
     x: 50,
-    y: 28,
-    label: "Lats & Trapezius",
-    latin: "Musculus latissimus dorsi & trapezius",
-    actionEn: "Scapular retraction, depression & humeral adduction.",
-    actionMr: "पाठीचे स्नायू (Lats & Traps): वजन ओढणे व खांदे मागे घेणे."
+    y: 20,
+    label: "Upper Back",
+    descEn: "Pulls shoulders back and supports strong posture.",
+    descMr: "वरची पाठ व खांदे मागे घेणे."
+  },
+  {
+    group: "Back",
+    x: 50,
+    y: 32,
+    label: "Lats (Back)",
+    descEn: "Pulls weights down and widens your back.",
+    descMr: "लॅट्स: वजन खाली ओढणे व पाठीला रुंदी देणे."
   },
   {
     group: "Shoulders",
     x: 34,
     y: 23,
-    label: "Posterior Deltoid",
-    latin: "Pars spinalis deltoidei",
-    actionEn: "Horizontal abduction and external rotation of the arm.",
-    actionMr: "मागील खांदे (Rear Delts): हात मागे खेचणे."
+    label: "Rear Shoulder",
+    descEn: "Pulls arms backwards for balanced 3D shoulders.",
+    descMr: "मागील खांदे (Rear Delts): हात मागे खेचणे."
   },
   {
     group: "Shoulders",
     x: 66,
     y: 23,
-    label: "Posterior Deltoid",
-    latin: "Pars spinalis deltoidei",
-    actionEn: "Horizontal abduction and external rotation of the arm.",
-    actionMr: "मागील खांदे (Rear Delts): हात मागे खेचणे."
+    label: "Rear Shoulder",
+    descEn: "Pulls arms backwards for balanced 3D shoulders.",
+    descMr: "मागील खांदे (Rear Delts): हात मागे खेचणे."
   },
   {
     group: "Triceps",
     x: 31,
     y: 35,
-    label: "Triceps Brachii",
-    latin: "Musculus triceps brachii",
-    actionEn: "Complete elbow extension and posterior joint fixation.",
-    actionMr: "ट्रायसेप्स: हात पूर्ण सरळ करणे व वजन ढकलणे."
+    label: "Triceps",
+    descEn: "Straightens arm when pushing. Makes up 60% of arm size!",
+    descMr: "ट्रायसेप्स: हात पूर्ण सरळ करणे व वजन ढकलणे."
   },
   {
     group: "Triceps",
     x: 69,
     y: 35,
-    label: "Triceps Brachii",
-    latin: "Musculus triceps brachii",
-    actionEn: "Complete elbow extension and posterior joint fixation.",
-    actionMr: "ट्रायसेप्स: हात पूर्ण सरळ करणे व वजन ढकलणे."
-  },
-  {
-    group: "Back",
-    x: 50,
-    y: 38,
-    label: "Erector Spinae",
-    latin: "Musculus erector spinae",
-    actionEn: "Vertebral column extension, lateral flexion & upright stance.",
-    actionMr: "कंबर व पाठीचा कणा: शरीर सरळ ठेवण्यासाठी मुख्य ताकद."
+    label: "Triceps",
+    descEn: "Straightens arm when pushing. Makes up 60% of arm size!",
+    descMr: "ट्रायसेप्स: हात पूर्ण सरळ करणे व वजन ढकलणे."
   },
   {
     group: "Glutes",
     x: 50,
     y: 49,
-    label: "Gluteus Maximus",
-    latin: "Musculus gluteus maximus",
-    actionEn: "Hip extension, external rotation & pelvis stabilization.",
-    actionMr: "नितंब (Glutes): मांड्या मागे ढकलणे व उठणे."
+    label: "Glutes (Hips)",
+    descEn: "Drives hips forward for standing, sprinting, and lifting.",
+    descMr: "नितंब (Glutes): मांड्या मागे ढकलणे व उठणे."
   },
   {
     group: "Legs (Hamstrings)",
     x: 43,
     y: 64,
-    label: "Hamstrings Complex",
-    latin: "Musculi ischiocrurales (biceps femoris)",
-    actionEn: "Knee flexion, hip extension & posterior deceleration.",
-    actionMr: "मागील मांडी (Hamstrings): गुडघा वाकवणे व धावणे."
+    label: "Hamstrings",
+    descEn: "Bends knee and pulls legs backwards.",
+    descMr: "मागील मांडी (Hamstrings): गुडघा वाकवणे व धावणे."
   },
   {
     group: "Legs (Hamstrings)",
     x: 57,
     y: 64,
-    label: "Hamstrings Complex",
-    latin: "Musculi ischiocrurales (biceps femoris)",
-    actionEn: "Knee flexion, hip extension & posterior deceleration.",
-    actionMr: "मागील मांडी (Hamstrings): गुडघा वाकवणे व धावणे."
+    label: "Hamstrings",
+    descEn: "Bends knee and pulls legs backwards.",
+    descMr: "मागील मांडी (Hamstrings): गुडघा वाकवणे व धावणे."
   },
   {
     group: "Legs (Calves)",
     x: 43,
     y: 82,
-    label: "Gastrocnemius & Soleus",
-    latin: "Musculus triceps surae",
-    actionEn: "Powerful plantarflexion and propulsion of the lower extremity.",
-    actionMr: "पोटऱ्या: पायाची ताकद, चालणे व उडी मारणे."
+    label: "Calves",
+    descEn: "Raises heels and powers your steps and jumps.",
+    descMr: "पोटऱ्या: पायाची ताकद, चालणे व उडी मारणे."
   },
   {
     group: "Legs (Calves)",
     x: 57,
     y: 82,
-    label: "Gastrocnemius & Soleus",
-    latin: "Musculus triceps surae",
-    actionEn: "Powerful plantarflexion and propulsion of the lower extremity.",
-    actionMr: "पोटऱ्या: पायाची ताकद, चालणे व उडी मारणे."
+    label: "Calves",
+    descEn: "Raises heels and powers your steps and jumps.",
+    descMr: "पोटऱ्या: पायाची ताकद, चालणे व उडी मारणे."
   }
 ];
+
+// ─── DEDICATED CLOSE-UP MUSCLE ATLAS DATA ─────────────────────────────────────
+const muscleCloseups = {
+  "Chest": {
+    nameEn: "Chest (Pectorals)",
+    nameMr: "छाती (Chest)",
+    image: "assets/muscle_chest.jpg",
+    simpleRoleEn: "Pushes weights away from your chest and hugs your arms together.",
+    simpleRoleMr: "वजन पुढे ढकलणे आणि दोन्ही हात छातीजवळ एकत्र आणणे.",
+    laymanTipEn: "Key movements: Flat Barbell Bench Press, Incline Dumbbell Press, Cable Flys, and Dips.",
+    laymanTipMr: "मुख्य व्यायाम: बेंच प्रेस, इनक्लाइन डंबेल प्रेस, केबल फ्लाय आणि डिप्स.",
+    targetHeadsEn: "Upper Chest (Clavicular) · Mid & Lower Chest (Sternocostal)",
+    targetHeadsMr: "वरची छाती · मधली व खालची छाती"
+  },
+  "Triceps": {
+    nameEn: "Triceps (Back of Arm)",
+    nameMr: "ट्रायसेप्स (Triceps)",
+    image: "assets/muscle_triceps.jpg",
+    simpleRoleEn: "Straightens your elbow when pushing weights. Makes up 60% of your total arm thickness!",
+    simpleRoleMr: "हात पूर्ण सरळ करणे व वजन ढकलणे. हाताचा ६०% आकार ट्रायसेप्समुळे असतो!",
+    laymanTipEn: "Key movements: Cable Pushdowns, Skull Crushers, Overhead Dumbbell Extension, and Dips.",
+    laymanTipMr: "मुख्य व्यायाम: केबल पुशडाऊन, स्कल क्रशर, ओव्हरहेड एक्स्टेंशन आणि डिप्स.",
+    targetHeadsEn: "Long Head (Back fullness) · Lateral Head (Outer horseshoe) · Medial Head (Elbow stability)",
+    targetHeadsMr: "लॉंग हेड · लॅटरल हेड (बाहेरचा हॉर्सशू आकार) · मीडिअल हेड"
+  },
+  "Biceps": {
+    nameEn: "Biceps (Front of Arm)",
+    nameMr: "बायसेप्स (Biceps)",
+    image: "assets/muscle_biceps.jpg",
+    simpleRoleEn: "Bends your elbow and pulls weight up toward your shoulders.",
+    simpleRoleMr: "हात कोपऱ्यातून वाकवून वजन वर उचलणे व पंजा फिरवणे.",
+    laymanTipEn: "Key movements: Standing Barbell Curls, Dumbbell Hammer Curls, Preacher Curls, and Chin-Ups.",
+    laymanTipMr: "मुख्य व्यायाम: बार्बेल कर्ल, डंबेल हॅमर कर्ल, प्रीचर कर्ल आणि चिन-अप्स.",
+    targetHeadsEn: "Long Head (Peak) · Short Head (Inner Thickness) · Brachialis",
+    targetHeadsMr: "लॉंग हेड (पीक) · शॉर्ट हेड (आतील जाडी) · ब्रेकियालिस"
+  },
+  "Back": {
+    nameEn: "Back (Lats & Upper Back)",
+    nameMr: "पाठ व लॅट्स (Back)",
+    image: "assets/muscle_back.jpg",
+    simpleRoleEn: "Pulls weights toward your body, creates a wide athletic V-taper, and reinforces upright posture.",
+    simpleRoleMr: "वजन आपल्याकडे ओढणे, पाठीला रुंदी देणे आणि शरीर ताठ ठेवणे.",
+    laymanTipEn: "Key movements: Lat Pulldowns, Seated Cable Rows, Barbell Bent-Over Rows, and Deadlifts.",
+    laymanTipMr: "मुख्य व्यायाम: लॅट पुलडाऊन, सीटेड केबल रो, बार्बेल रो आणि डेडलिफ्ट.",
+    targetHeadsEn: "Latissimus Dorsi (Lats) · Trapezius (Traps) · Rhomboids · Lower Back",
+    targetHeadsMr: "लॅट्स · ट्रॅप्स · र्हॉम्बॉइड्स · लोअर बॅक"
+  },
+  "Shoulders": {
+    nameEn: "Shoulders (Deltoids)",
+    nameMr: "खांदे (Shoulders)",
+    image: "assets/muscle_shoulders.jpg",
+    simpleRoleEn: "Lifts and rotates your arms overhead, out to the sides, and backwards for 3D shoulder shape.",
+    simpleRoleMr: "हात वर उचलणे, बाजूंना पसरवणे आणि गोल मजबूत खांदे बनवणे.",
+    laymanTipEn: "Key movements: Overhead Military Press, Dumbbell Lateral Raises, Face Pulls, and Reverse Flys.",
+    laymanTipMr: "मुख्य व्यायाम: ओव्हरहेड प्रेस, लॅटरल रेज, फेस पुल आणि रिव्हर्स फ्लाय.",
+    targetHeadsEn: "Front Deltoid (Pressing) · Side Deltoid (Width) · Rear Deltoid (Posture & balance)",
+    targetHeadsMr: "पुढील खांदे · बाजूचे खांदे (रुंदी) · मागील खांदे"
+  },
+  "Legs (Quads)": {
+    nameEn: "Quads (Front Thigh)",
+    nameMr: "क्वाड्स (Front Thigh)",
+    image: "assets/muscle_quads.jpg",
+    simpleRoleEn: "Straightens your knee to stand up, squat, jump, and walk upstairs with strength.",
+    simpleRoleMr: "गुडघा सरळ करणे, उठणे, स्क्वॉट करणे आणि ताकदीने पायऱ्या चढणे.",
+    laymanTipEn: "Key movements: Barbell Back Squats, Leg Press Machine, Leg Extensions, and Lunges.",
+    laymanTipMr: "मुख्य व्यायाम: स्क्वॉट, लेग प्रेस मशीन, लेग एक्स्टेंशन आणि लाँजेस.",
+    targetHeadsEn: "Rectus Femoris · Vastus Lateralis (Outer sweep) · Vastus Medialis (Teardrop above knee)",
+    targetHeadsMr: "चार मुख्य स्नायू (क्वॉड्रिसेप्स फिमोरिस)"
+  },
+  "Legs (Hamstrings)": {
+    nameEn: "Hamstrings (Back Thigh)",
+    nameMr: "हॅमस्ट्रिंग्स (Back Thigh)",
+    image: "assets/muscle_hamstrings.jpg",
+    simpleRoleEn: "Bends your knee and pulls your legs backwards when walking, running, or deadlifting.",
+    simpleRoleMr: "गुडघा वाकवणे, पाय मागे खेचणे आणि धावताना वेग देणे.",
+    laymanTipEn: "Key movements: Lying Leg Curls, Romanian Deadlifts (RDLs), and Glute-Ham Raises.",
+    laymanTipMr: "मुख्य व्यायाम: लेग कर्ल, रोमानियन डेडलिफ्ट आणि ग्लूट-हॅम रेज.",
+    targetHeadsEn: "Biceps Femoris · Semitendinosus · Semimembranosus",
+    targetHeadsMr: "बायसेप्स फेमोरिस · सेमीटेंडिनोसस"
+  },
+  "Legs (Calves)": {
+    nameEn: "Calves (Lower Leg)",
+    nameMr: "पोटऱ्या (Calves)",
+    image: "assets/muscle_calves.jpg",
+    simpleRoleEn: "Raises your heels and points your toes. Essential for ankle stability and explosive jumps.",
+    simpleRoleMr: "टाचा वर उचलणे, चालताना पायाला ताकद देणे व उडी मारणे.",
+    laymanTipEn: "Key movements: Standing Calf Raises, Seated Calf Machine, and Donkey Calf Raises.",
+    laymanTipMr: "मुख्य व्यायाम: स्टँडिंग काफ रेज, सीटेड काफ मशीन.",
+    targetHeadsEn: "Gastrocnemius (Upper diamond muscle) · Soleus (Deep endurance muscle)",
+    targetHeadsMr: "गॅस्ट्रोक्नेमियस · सोलियस"
+  },
+  "Glutes": {
+    nameEn: "Glutes (Hips & Butt)",
+    nameMr: "ग्लूट्स (Glutes)",
+    image: "assets/muscle_glutes.jpg",
+    simpleRoleEn: "The strongest muscle group in your body! Drives hips forward when walking, jumping, and lifting.",
+    simpleRoleMr: "शरीरातील सर्वात मजबूत स्नायू! उठणे आणि वजन उचलण्यासाठी मुख्य शक्ती.",
+    laymanTipEn: "Key movements: Barbell Hip Thrusts, Bulgarian Split Squats, Sumo Deadlifts, and Cable Kickbacks.",
+    laymanTipMr: "मुख्य व्यायाम: हिप थ्रस्ट, बल्गेरियन स्प्लिट स्क्वॉट, आणि केबल किक-बॅक.",
+    targetHeadsEn: "Gluteus Maximus (Power & size) · Gluteus Medius & Minimus (Pelvic stability)",
+    targetHeadsMr: "ग्लूटियस मॅक्सिमस · ग्लूटियस मीडिअस"
+  },
+  "Core": {
+    nameEn: "Abs & Core",
+    nameMr: "पोट व कंबर (Abs & Core)",
+    image: "assets/muscle_core.jpg",
+    simpleRoleEn: "Protects your lower back, stabilizes your spine, and helps you sit up and twist with power.",
+    simpleRoleMr: "कंबर सुरक्षित ठेवणे, शरीर तोलणे आणि पोटाचे सिक्स-पॅक स्नायू.",
+    laymanTipEn: "Key movements: Hanging Leg Raises, Planks, Cable Woodchoppers, and Ab Crunch Machine.",
+    laymanTipMr: "मुख्य व्यायाम: हँगिंग लेग रेज, प्लँक, आणि केबल क्रंच.",
+    targetHeadsEn: "Six-Pack (Rectus Abdominis) · Side Abs (Obliques) · Deep Core (Transverse Abdominis)",
+    targetHeadsMr: "सिक्स-पॅक स्नायू · बाजूचे ऑब्लिक्स · डीप कोअर"
+  }
+};
+
+let zoomedMuscleGroup = null;
 
 function toggleBodyMap() {
   bodyMapVisible = !bodyMapVisible;
@@ -1320,31 +1436,139 @@ function toggleBodyMap() {
   if (text) text.textContent = bodyMapVisible ? t.hideBodyMap : t.showBodyMap;
 
   if (bodyMapVisible) {
-    renderScientificBodyMap();
-    updateBodyMapHighlights();
+    if (activeGroup !== 'All' && muscleCloseups[activeGroup]) {
+      showZoomedMuscle(activeGroup);
+    } else {
+      resetBodyMapZoom();
+      renderScientificBodyMap();
+    }
+  }
+}
+
+function handleHotspotClick(group) {
+  activeGroup = group;
+  activeEquipmentId = null;
+  searchQuery = "";
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+
+  renderMuscleGrid();
+  renderEquipmentGrid();
+  renderExercises();
+  showZoomedMuscle(group);
+}
+
+function showZoomedMuscle(group) {
+  const data = muscleCloseups[group];
+  const duo = document.getElementById('bodyMapDuo');
+  const zoomView = document.getElementById('zoomedMuscleView');
+  const backBtn = document.getElementById('zoomBackBtn');
+  const t = translations[currentLang];
+
+  if (!data || !zoomView) {
+    resetBodyMapZoom();
+    return;
+  }
+
+  zoomedMuscleGroup = group;
+  if (duo) duo.style.display = 'none';
+  zoomView.style.display = 'grid';
+  if (backBtn) backBtn.style.display = 'inline-flex';
+
+  const title = currentLang === 'mr' ? data.nameMr : data.nameEn;
+  const role = currentLang === 'mr' ? data.simpleRoleMr : data.simpleRoleEn;
+  const tips = currentLang === 'mr' ? data.laymanTipMr : data.laymanTipEn;
+  const parts = currentLang === 'mr' ? data.targetHeadsMr : data.targetHeadsEn;
+  const matchCount = exercises.filter(e => e.group === group).length;
+
+  zoomView.innerHTML = `
+    <div class="zoom-img-card">
+      <div class="zoom-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        <span>${t.focusedViewBadge}</span>
+      </div>
+      <img src="${data.image}" alt="${title} anatomical illustration" loading="eager">
+    </div>
+
+    <div class="zoom-content">
+      <div class="zoom-header">
+        <div class="zoom-tag-row">
+          <span class="zoom-tag">NSC Anatomy Focus</span>
+          <span class="pill-badge">${matchCount} exercises</span>
+        </div>
+        <h2 class="zoom-title">${title}</h2>
+      </div>
+
+      <div class="zoom-description-box">
+        <span class="zoom-role-heading">${t.whatItDoes}</span>
+        <p class="zoom-role-text">${role}</p>
+      </div>
+
+      <div class="zoom-details-grid">
+        <div class="zoom-detail-item">
+          <span class="zoom-detail-lbl">${t.muscleParts}</span>
+          <span class="zoom-detail-val">${parts}</span>
+        </div>
+        <div class="zoom-detail-item">
+          <span class="zoom-detail-lbl">${t.keyMovements}</span>
+          <span class="zoom-detail-val">${tips}</span>
+        </div>
+      </div>
+
+      <div class="zoom-actions">
+        <button class="zoom-view-exercises-btn" onclick="scrollToExercises()">
+          <span>${t.viewExercisesText} (${matchCount})</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+        </button>
+        <button class="zoom-return-btn" onclick="resetBodyMapZoom()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>${t.zoomBackText}</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function resetBodyMapZoom() {
+  zoomedMuscleGroup = null;
+  const duo = document.getElementById('bodyMapDuo');
+  const zoomView = document.getElementById('zoomedMuscleView');
+  const backBtn = document.getElementById('zoomBackBtn');
+
+  if (duo) duo.style.display = 'grid';
+  if (zoomView) zoomView.style.display = 'none';
+  if (backBtn) backBtn.style.display = 'none';
+  updateBodyMapHighlights();
+}
+
+function scrollToExercises() {
+  const target = document.getElementById('activeFilterBar') || document.getElementById('exercisesHeader');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
 function renderHotspotElements(hotspots) {
   return hotspots.map(spot => {
     const matchingCount = exercises.filter(e => e.group === spot.group).length;
-    const actionText = currentLang === 'mr' ? spot.actionMr : spot.actionEn;
+    const actionText = currentLang === 'mr' ? spot.descMr : spot.descEn;
     const isSelected = activeGroup === spot.group;
 
     return `
       <button class="anatomy-hotspot ${isSelected ? 'active' : ''}" 
               style="left: ${spot.x}%; top: ${spot.y}%;" 
               data-group="${spot.group}"
-              onclick="setGroup('${spot.group.replace(/'/g, "\\'")}')"
-              aria-label="Filter by ${spot.label}">
+              onclick="handleHotspotClick('${spot.group.replace(/'/g, "\\'")}')"
+              aria-label="Filter and zoom ${spot.label}">
         <span class="hotspot-dot"></span>
         <span class="hotspot-label">${spot.label}</span>
         
         <div class="hotspot-tooltip" role="tooltip">
-          <div style="font-weight:700; font-size:12px; color:var(--ink);">${spot.label}</div>
-          <div class="tooltip-latin">${spot.latin}</div>
-          <div class="tooltip-action">${actionText}</div>
-          <div class="tooltip-count">${matchingCount} exercises at NSC</div>
+          <div style="font-weight:800; font-size:12.5px; color:var(--ink);">${spot.label}</div>
+          <div class="tooltip-action" style="margin-top:3px;">${actionText}</div>
+          <div class="tooltip-count">${matchingCount} exercises at NSC · Tap to zoom</div>
         </div>
       </button>
     `;
@@ -1362,7 +1586,7 @@ function renderScientificBodyMap() {
         <span>Anterior Muscular System (Front)</span>
       </div>
       <div class="medical-image-wrapper">
-        <img src="assets/anatomy_anterior.jpg" class="medical-plate-img" alt="Scientific illustration of human anterior muscular system" loading="lazy">
+        <img src="assets/anatomy_anterior.jpg" class="medical-plate-img" alt="Anterior muscular system plate" loading="lazy">
         ${renderHotspotElements(anteriorHotspots)}
       </div>
     </div>
@@ -1373,7 +1597,7 @@ function renderScientificBodyMap() {
         <span>Posterior Muscular System (Back)</span>
       </div>
       <div class="medical-image-wrapper">
-        <img src="assets/anatomy_posterior.jpg" class="medical-plate-img" alt="Scientific illustration of human posterior muscular system" loading="lazy">
+        <img src="assets/anatomy_posterior.jpg" class="medical-plate-img" alt="Posterior muscular system plate" loading="lazy">
         ${renderHotspotElements(posteriorHotspots)}
       </div>
     </div>
@@ -1713,8 +1937,16 @@ function setGroup(g) {
   renderExercises();
   updateBodyMapHighlights();
 
+  if (bodyMapVisible) {
+    if (g !== 'All' && muscleCloseups[g]) {
+      showZoomedMuscle(g);
+    } else {
+      resetBodyMapZoom();
+    }
+  }
+
   const target = document.getElementById('exercisesHeader');
-  if (target) {
+  if (target && !bodyMapVisible) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
