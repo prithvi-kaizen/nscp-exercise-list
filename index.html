@@ -31,12 +31,6 @@
     <button class="action-pill-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch to Marathi / English" aria-label="Switch Language">
       <span class="pill-badge" id="langBadge">मराठी</span> <span id="langLabel" class="pill-text">English</span>
     </button>
-
-    <!-- Workout Session Drawer Opener -->
-    <button class="action-pill-btn session-btn" id="sessionToggleBtn" onclick="toggleRoutineDrawer()" title="View Today's Routine" aria-label="View Today's Routine">
-      <span>📋</span> <span id="sessionLabel" class="pill-text">Session</span>
-      <span class="session-badge-count" id="sessionCount">0</span>
-    </button>
   </div>
 </header>
 
@@ -61,25 +55,27 @@
     </div>
   </div>
 
-  <!-- Body Map Toggle Bar -->
+  <!-- Scientific Anatomy Atlas Toggle Bar -->
   <div class="body-map-controls">
     <button class="body-map-toggle-btn" id="bodyMapToggleBtn" onclick="toggleBodyMap()" aria-expanded="false">
-      <span class="body-map-icon">👤</span>
-      <span id="bodyMapToggleText">Show Interactive Anatomy Map</span>
+      <span class="body-map-icon">🔬</span>
+      <span id="bodyMapToggleText">Show Scientific Anatomy Atlas</span>
       <span class="toggle-arrow" id="bodyMapArrow">▼</span>
     </button>
   </div>
 
-  <!-- Interactive Visual Body Map (Collapsible) -->
-  <div class="body-map-wrapper" id="bodyMapWrapper" style="display: none;">
+  <!-- Scientific Medical Anatomy Atlas (Collapsible) -->
+  <section class="body-map-wrapper" id="bodyMapWrapper" style="display: none;" aria-label="Scientific Anatomy Atlas">
     <div class="body-map-header">
-      <div class="section-label" id="bodyMapLabel">Interactive Anatomy Map — Tap Any Muscle to Filter</div>
-      <div class="body-view-hint" id="bodyViewHint">Anterior (Front) & Posterior (Back) Views</div>
+      <div>
+        <div class="section-label" id="bodyMapLabel">Medical Muscular System Atlas — Tap Any Hotspot to Filter</div>
+        <div class="body-view-hint" id="bodyViewHint">Authentic Medical Anatomical Plates (Anterior & Posterior) with Biomechanical Hotspots</div>
+      </div>
     </div>
-    <div class="body-map-duo" id="bodyMapDuo">
-      <!-- Injected by script.js -->
+    <div class="medical-atlas-duo" id="bodyMapDuo">
+      <!-- Injected by script.js with authentic medical illustrations and coordinate hotspots -->
     </div>
-  </div>
+  </section>
 
   <!-- Section 1: Muscle Groups Filter -->
   <div class="filter-section" id="muscleSection">
@@ -119,56 +115,7 @@
   <div class="exercise-grid" id="exerciseGrid"></div>
 </div>
 
-<!-- Floating Rest Timer Widget -->
-<aside class="floating-timer" id="floatingTimer" aria-label="Gym Rest Timer">
-  <div class="timer-minimized" id="timerMinimized" onclick="expandTimer()">
-    <span class="timer-icon">⏱️</span>
-    <span class="timer-digits" id="timerMiniDigits">01:00</span>
-    <span class="timer-status-dot" id="timerStatusDot"></span>
-  </div>
-  <div class="timer-expanded" id="timerExpanded" style="display: none;">
-    <div class="timer-card-top">
-      <span class="timer-title" id="timerCardTitle">⏱️ Rest Timer</span>
-      <button class="timer-close-btn" onclick="minimizeTimer()" title="Minimize timer" aria-label="Minimize timer">✕</button>
-    </div>
-    <div class="timer-display-wrap">
-      <div class="timer-big-digits" id="timerBigDigits">01:00</div>
-      <div class="timer-bar"><div class="timer-bar-fill" id="timerBarFill" style="width: 100%;"></div></div>
-    </div>
-    <div class="timer-presets">
-      <button class="preset-btn" onclick="setTimerPreset(45)">45s</button>
-      <button class="preset-btn active" onclick="setTimerPreset(60)">60s</button>
-      <button class="preset-btn" onclick="setTimerPreset(90)">90s</button>
-      <button class="preset-btn" onclick="setTimerPreset(120)">120s</button>
-    </div>
-    <div class="timer-actions">
-      <button class="timer-ctrl-btn primary" id="timerPlayBtn" onclick="toggleTimerPlay()">▶ Start</button>
-      <button class="timer-ctrl-btn" onclick="resetRestTimer()">↺ Reset</button>
-      <button class="timer-ctrl-btn sound-btn" id="soundToggleBtn" onclick="toggleTimerSound()" title="Toggle Sound / Beep" aria-label="Toggle Sound">🔊</button>
-    </div>
-  </div>
-</aside>
-
-<!-- My Routine / Today's Session Drawer -->
-<div class="routine-drawer-backdrop" id="routineBackdrop" onclick="toggleRoutineDrawer()" style="display: none;"></div>
-<aside class="routine-drawer" id="routineDrawer" style="display: none;" aria-label="Today's Workout Session">
-  <div class="routine-drawer-header">
-    <div class="routine-header-left">
-      <h3 id="routineTitle">📋 Today's Session</h3>
-      <span class="routine-subtitle" id="routineSubtitle">0 exercises added</span>
-    </div>
-    <button class="drawer-close-btn" onclick="toggleRoutineDrawer()" title="Close session drawer" aria-label="Close session drawer">✕</button>
-  </div>
-  <div class="routine-list" id="routineList">
-    <!-- Injected dynamically -->
-  </div>
-  <div class="routine-footer">
-    <button class="routine-action-btn clear-btn" id="clearRoutineBtn" onclick="clearRoutine()">Clear Session</button>
-    <button class="routine-action-btn timer-btn" id="openTimerBtn" onclick="expandTimer(); toggleRoutineDrawer();">Open Rest Timer</button>
-  </div>
-</aside>
-
-<!-- Mobile Sticky Bottom Navigation -->
+<!-- Mobile Sticky Bottom Navigation (Quick Scientific Reference) -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Gym Floor Quick Navigation">
   <button class="mob-nav-item active" id="mobNavMuscles" onclick="switchMode('muscles');">
     <span class="mob-nav-icon">⚡</span>
@@ -179,16 +126,8 @@
     <span class="mob-nav-label" id="mobEquipLabel">Machines</span>
   </button>
   <button class="mob-nav-item" id="mobNavBodyMap" onclick="if (!bodyMapVisible) toggleBodyMap(); const bm = document.getElementById('bodyMapWrapper'); if (bm) bm.scrollIntoView({ behavior: 'smooth', block: 'start' });">
-    <span class="mob-nav-icon">👤</span>
-    <span class="mob-nav-label" id="mobBodyLabel">Body Map</span>
-  </button>
-  <button class="mob-nav-item" id="mobNavTimer" onclick="expandTimer();">
-    <span class="mob-nav-icon">⏱️</span>
-    <span class="mob-nav-label" id="mobTimerLabel">Timer</span>
-  </button>
-  <button class="mob-nav-item" id="mobNavSession" onclick="toggleRoutineDrawer();">
-    <span class="mob-nav-icon">📋</span>
-    <span class="mob-nav-label" id="mobSessionLabel">Session (<span id="mobSessionCount">0</span>)</span>
+    <span class="mob-nav-icon">🔬</span>
+    <span class="mob-nav-label" id="mobBodyLabel">Anatomy Atlas</span>
   </button>
 </nav>
 
