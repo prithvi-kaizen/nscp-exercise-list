@@ -947,7 +947,7 @@ let bodyMapVisible = false;
 // ─── LOCALIZATION (ENGLISH ↔ MARATHI) ─────────────────────────────────────────
 const translations = {
   en: {
-    headerSubhead: "Exercise & Biomechanics Reference — Pandharpur",
+    headerSubhead: "Pandharpur · 90 11 44 5000",
     tabMuscles: "Muscle Groups",
     tabEquipment: "Equipment & Machines",
     searchPlaceholder: "Search exercises, machines, muscles...",
@@ -971,7 +971,7 @@ const translations = {
     bodyTabMob: "Anatomy"
   },
   mr: {
-    headerSubhead: "व्यायाम व बायोमेकॅनिक्स संदर्भ — पंढरपूर",
+    headerSubhead: "पंढरपूर · 90 11 44 5000",
     tabMuscles: "स्नायू गट",
     tabEquipment: "जिम मशिन्स व साहित्य",
     searchPlaceholder: "व्यायाम, मशीन, स्नायू शोधा...",
@@ -1087,7 +1087,7 @@ function applyLanguage() {
 }
 
 // ─── THEME SWITCHER (DARK / LIGHT MODE WITH SVG ICONS) ────────────────────────
-let currentTheme = localStorage.getItem('nsc_theme') || 'light';
+let currentTheme = localStorage.getItem('nsc_theme') || 'dark';
 
 function applyTheme(theme) {
   currentTheme = theme;

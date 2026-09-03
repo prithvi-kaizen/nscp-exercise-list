@@ -2,54 +2,58 @@
   --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* LIGHT THEME TOKENS */
-  --bg: #f8fafc;
+  /* LIGHT THEME TOKENS (HIGH-CONTRAST PEARL & ATHLETIC OLIVE-VOLT) */
+  --bg: #f5f7f2;
   --bg2: #ffffff;
-  --bg3: #f1f5f9;
+  --bg3: #ebf0e6;
   --bg-card: #ffffff;
-  --ink: #0f172a;
-  --text-body: #334155;
-  --muted: #64748b;
-  --terra: #e64a19;
-  --terra-dim: rgba(230, 74, 25, 0.09);
-  --terra-border: rgba(230, 74, 25, 0.25);
-  --terra-hover: #d84315;
-  --card-border: #e2e8f0;
-  --border-subtle: #cbd5e1;
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
-  --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.10), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+  --ink: #0f130d;
+  --text-body: #2d3529;
+  --muted: #5e6b57;
+  --terra: #577805;                /* High-contrast readable volt for light backgrounds */
+  --terra-bright: #688f06;
+  --terra-dim: rgba(87, 120, 5, 0.08);
+  --terra-border: rgba(87, 120, 5, 0.22);
+  --terra-hover: #476303;
+  --btn-ink: #ffffff;
+  --card-border: #dfe5d8;
+  --border-subtle: #c7d1be;
+  --shadow-sm: 0 1px 3px rgba(15, 19, 13, 0.04), 0 1px 2px rgba(15, 19, 13, 0.02);
+  --shadow-md: 0 4px 16px -2px rgba(15, 19, 13, 0.06), 0 2px 6px -1px rgba(15, 19, 13, 0.04);
+  --shadow-lg: 0 12px 28px -4px rgba(15, 19, 13, 0.10), 0 4px 10px -2px rgba(15, 19, 13, 0.05);
   --radius-sm: 8px;
   --radius: 14px;
   --radius-lg: 18px;
   --plate-bg: #ffffff;
-  --plate-border: #e2e8f0;
+  --plate-border: #dfe5d8;
   --tooltip-bg: rgba(255, 255, 255, 0.98);
-  --tooltip-border: #e2e8f0;
+  --tooltip-border: #dfe5d8;
 }
 
 [data-theme="dark"] {
-  /* DARK THEME TOKENS */
-  --bg: #090b10;
-  --bg2: #121622;
-  --bg3: #1a2130;
-  --bg-card: #121622;
-  --ink: #f8fafc;
-  --text-body: #cbd5e1;
-  --muted: #94a3b8;
-  --terra: #ff7043;
-  --terra-dim: rgba(255, 112, 67, 0.15);
-  --terra-border: rgba(255, 112, 67, 0.35);
-  --terra-hover: #ff8a65;
-  --card-border: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.14);
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 16px 40px -4px rgba(0, 0, 0, 0.7);
-  --plate-bg: #0d1018;
-  --plate-border: rgba(255, 255, 255, 0.10);
-  --tooltip-bg: rgba(18, 22, 34, 0.98);
-  --tooltip-border: rgba(255, 255, 255, 0.14);
+  /* DARK THEME TOKENS (SIGNATURE NSC PITCH OBSIDIAN & ELECTRIC VOLT LIME) */
+  --bg: #0c0e0b;                   /* Pitch matte black matching official logo card */
+  --bg2: #141712;                  /* Elevated deep carbon card */
+  --bg3: #1c2018;                  /* Subtle well */
+  --bg-card: #141712;
+  --ink: #f5f7f2;                  /* Crisp light slate */
+  --text-body: #c4cbbd;            /* Clear sage-slate body */
+  --muted: #858e80;                /* Refined muted text */
+  --terra: #afcb1e;                /* EXACT OFFICIAL NSC VOLT LIME */
+  --terra-bright: #c4e325;
+  --terra-dim: rgba(175, 203, 30, 0.12);
+  --terra-border: rgba(175, 203, 30, 0.35);
+  --terra-hover: #c0df22;
+  --btn-ink: #0c0e0b;              /* Dark text on volt green buttons for 12.8:1 contrast */
+  --card-border: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 40px -4px rgba(0, 0, 0, 0.8);
+  --plate-bg: #0e110d;
+  --plate-border: rgba(175, 203, 30, 0.18);
+  --tooltip-bg: rgba(18, 22, 16, 0.98);
+  --tooltip-border: rgba(175, 203, 30, 0.28);
 }
 
 *, *::before, *::after {
@@ -100,8 +104,20 @@ header {
   flex-shrink: 0;
 }
 
-.logo-svg {
+.brand-logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1.5px solid var(--terra-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   display: block;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.brand-logo-img:hover {
+  transform: scale(1.05);
+  border-color: var(--terra);
 }
 
 .header-text h1 {
@@ -117,10 +133,10 @@ header {
   font-family: var(--font-body);
   font-size: 12px;
   color: var(--terra);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .header-actions {
@@ -167,11 +183,11 @@ header {
 
 .pill-badge {
   background: var(--terra);
-  color: #fff;
+  color: var(--btn-ink);
   padding: 2px 7px;
   border-radius: 6px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* ─── CONTAINER & TOP CONTROLS ────────────────────────────────────────────── */
@@ -234,13 +250,14 @@ header {
 
 .tab-btn.active {
   background: var(--terra);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(230, 74, 25, 0.25);
+  color: var(--btn-ink);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(175, 203, 30, 0.28);
 }
 
 .tab-btn.active .tab-badge-num {
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--btn-ink);
 }
 
 /* SEARCH BOX */
@@ -352,7 +369,7 @@ header {
   background: var(--bg2);
   border-radius: var(--radius-lg);
   border: 1px solid var(--card-border);
-  border-top: 3px solid var(--terra);
+  border-top: 3.5px solid var(--terra);
   padding: 28px 32px;
   margin-bottom: 36px;
   box-shadow: var(--shadow-md);
@@ -396,11 +413,12 @@ header {
   width: 100%;
   max-width: 420px;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .medical-plate-card:hover {
   box-shadow: var(--shadow-md);
+  border-color: var(--terra-border);
 }
 
 .medical-plate-title {
@@ -428,7 +446,7 @@ header {
 }
 
 [data-theme="dark"] .medical-image-wrapper {
-  background: #0b0d13;
+  background: #090b08;
   border-color: rgba(255, 255, 255, 0.06);
 }
 
@@ -442,7 +460,7 @@ header {
 }
 
 [data-theme="dark"] .medical-plate-img {
-  filter: contrast(1.04) brightness(0.94);
+  filter: contrast(1.05) brightness(0.93);
 }
 
 /* ANATOMICAL HOTSPOT PINS */
@@ -465,7 +483,7 @@ header {
   border-radius: 50%;
   background: var(--terra);
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   transition: all 0.18s ease;
   position: relative;
   flex-shrink: 0;
@@ -492,15 +510,16 @@ header {
 .anatomy-hotspot.active .hotspot-dot {
   background: #ffffff;
   border-color: var(--terra);
-  box-shadow: 0 0 0 3px var(--terra);
+  box-shadow: 0 0 0 3px var(--terra), 0 2px 10px rgba(175, 203, 30, 0.4);
   transform: scale(1.2);
 }
 
 .anatomy-hotspot:hover .hotspot-label,
 .anatomy-hotspot.active .hotspot-label {
   background: var(--terra);
-  color: #ffffff;
+  color: var(--btn-ink);
   border-color: var(--terra);
+  box-shadow: 0 2px 8px rgba(175, 203, 30, 0.3);
 }
 
 /* HOTSPOT CALLOUT TOOLTIP */
@@ -534,7 +553,7 @@ header {
   color: var(--terra);
   margin-top: 2px;
   margin-bottom: 5px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.3;
 }
 
@@ -604,9 +623,10 @@ header {
 
 .muscle-btn.active {
   background: var(--terra);
-  color: #ffffff;
+  color: var(--btn-ink);
+  font-weight: 700;
   border-color: var(--terra);
-  box-shadow: 0 4px 14px rgba(230, 74, 25, 0.25);
+  box-shadow: 0 4px 14px rgba(175, 203, 30, 0.28);
 }
 
 .muscle-btn:active {
@@ -680,9 +700,9 @@ header {
 
 .reset-filter-btn:hover {
   background: var(--terra);
-  color: #ffffff;
+  color: var(--btn-ink);
   border-color: var(--terra);
-  box-shadow: 0 4px 10px rgba(230, 74, 25, 0.25);
+  box-shadow: 0 4px 10px rgba(175, 203, 30, 0.25);
 }
 
 /* ─── EQUIPMENT DIRECTORY ─────────────────────────────────────────────────── */
@@ -727,9 +747,10 @@ header {
 
 .eq-cat-btn.active {
   background: var(--terra);
-  color: #ffffff;
+  color: var(--btn-ink);
+  font-weight: 700;
   border-color: var(--terra);
-  box-shadow: 0 4px 12px rgba(230, 74, 25, 0.25);
+  box-shadow: 0 4px 12px rgba(175, 203, 30, 0.25);
 }
 
 .equipment-grid {
@@ -786,6 +807,7 @@ header {
 .eq-badge.category {
   background: var(--terra-dim);
   color: var(--terra);
+  font-weight: 700;
 }
 
 .eq-count {
@@ -862,14 +884,14 @@ header {
   padding: 6px 12px;
   border-radius: 6px;
   background: var(--terra);
-  color: #ffffff;
+  color: var(--btn-ink);
   transition: all 0.15s ease;
   pointer-events: none;
 }
 
 .equipment-card:hover .eq-action-btn {
-  background: var(--terra-hover);
-  box-shadow: 0 4px 10px rgba(230, 74, 25, 0.25);
+  background: var(--terra-bright);
+  box-shadow: 0 4px 10px rgba(175, 203, 30, 0.3);
 }
 
 /* ─── EXERCISE CATALOG & CARDS ────────────────────────────────────────────── */
@@ -1004,7 +1026,7 @@ header {
 }
 
 .diff-indicator[title*="Intermediate"] .diff-bar.active {
-  background: #f59e0b;
+  background: var(--terra);
 }
 
 .diff-indicator[title*="Advanced"] .diff-bar.active {
