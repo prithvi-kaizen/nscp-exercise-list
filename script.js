@@ -950,45 +950,45 @@ const translations = {
     headerSubhead: "Exercise & Biomechanics Reference — Pandharpur",
     tabMuscles: "Muscle Groups",
     tabEquipment: "Equipment & Machines",
-    searchPlaceholder: "Search exercises, machines, muscles, anatomy...",
-    showBodyMap: "Show Scientific Anatomy Atlas",
-    hideBodyMap: "Hide Scientific Anatomy Atlas",
-    bodyMapLabel: "Medical Muscular System Atlas — Tap Any Hotspot to Filter",
-    bodyViewHint: "Authentic Medical Anatomical Plates (Anterior & Posterior) with Biomechanical Hotspots",
+    searchPlaceholder: "Search exercises, machines, muscles...",
+    showBodyMap: "Anatomy Guide",
+    hideBodyMap: "Hide Anatomy Guide",
+    bodyMapLabel: "Musculoskeletal Anatomy Guide",
+    bodyViewHint: "Select any anatomical region to isolate target exercises",
     muscleSectionLabel: "Filter by Muscle Group",
     equipmentSectionLabel: "NSC Gym Equipment & Machine Directory",
     equipmentSubhead: "Select any machine or station to inspect matching exercises",
     activeFilterPrefix: "Active Filter:",
-    clearFilterBtn: "✕ Clear Filter & Show All",
-    watchTutorial: "Watch Tutorial",
-    commonCues: "Common Cues & Biomechanical Errors:",
+    clearFilterBtn: "Reset Filter",
+    watchTutorial: "Watch Video",
+    commonCues: "Form Cues & Key Mechanics:",
     secondaryMuscles: "Secondary Synergists:",
-    gymFloorMode: "Gym Floor",
-    daylightMode: "Daylight",
+    darkMode: "Dark",
+    lightMode: "Light",
     allExercises: "All Exercises",
     musclesTabMob: "Muscles",
     equipTabMob: "Machines",
-    bodyTabMob: "Anatomy Atlas"
+    bodyTabMob: "Anatomy"
   },
   mr: {
     headerSubhead: "व्यायाम व बायोमेकॅनिक्स संदर्भ — पंढरपूर",
     tabMuscles: "स्नायू गट",
     tabEquipment: "जिम मशिन्स व साहित्य",
-    searchPlaceholder: "व्यायाम, मशीन, स्नायू, अॅनाटॉमी शोधा...",
-    showBodyMap: "सायंटिफिक अॅनाटॉमी अॅटलस पहा",
-    hideBodyMap: "अॅनाटॉमी अॅटलस लपवा",
-    bodyMapLabel: "मेडिकल मस्क्युलर सिस्टीम अॅटलस — फिल्टर करण्यासाठी स्नायूवर टॅप करा",
-    bodyViewHint: "अस्सल वैद्यकीय शरीरशास्त्र चित्रे (पुढील व मागील बाजू) आणि स्नायू माहिती",
+    searchPlaceholder: "व्यायाम, मशीन, स्नायू शोधा...",
+    showBodyMap: "अॅनाटॉमी मार्गदर्शक",
+    hideBodyMap: "मार्गदर्शक लपवा",
+    bodyMapLabel: "स्नायू व शरीरशास्त्र मार्गदर्शक",
+    bodyViewHint: "त्या भागातील व्यायाम पाहण्यासाठी स्नायू निवडा",
     muscleSectionLabel: "स्नायू गटानुसार व्यायाम",
     equipmentSectionLabel: "नेताजी स्पोर्ट्स क्लब जिम मशिन्स व साहित्य",
     equipmentSubhead: "त्या मशीनवरील व्यायाम पाहण्यासाठी मशीन निवडा",
     activeFilterPrefix: "सध्याचे फिल्टर:",
-    clearFilterBtn: "✕ फिल्टर काढा आणि सर्व दाखवा",
-    watchTutorial: "व्हिडिओ ट्युटोरियल पहा",
+    clearFilterBtn: "फिल्टर काढा",
+    watchTutorial: "व्हिडिओ पहा",
     commonCues: "महत्त्वाच्या सूचना व सामान्य चुका:",
     secondaryMuscles: "दुय्यम स्नायू (Synergists):",
-    gymFloorMode: "जिम फ्लोअर",
-    daylightMode: "डेलाइट",
+    darkMode: "डार्क",
+    lightMode: "लाइट",
     allExercises: "सर्व व्यायाम",
     musclesTabMob: "स्नायू",
     equipTabMob: "मशिन्स",
@@ -1066,7 +1066,12 @@ function applyLanguage() {
   if (filterPfx) filterPfx.textContent = t.activeFilterPrefix;
 
   const rstBtn = document.getElementById('resetFilterBtn');
-  if (rstBtn) rstBtn.textContent = t.clearFilterBtn;
+  if (rstBtn) {
+    rstBtn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      <span>${t.clearFilterBtn}</span>
+    `;
+  }
 
   const mobM = document.getElementById('mobMusclesLabel');
   if (mobM) mobM.textContent = t.musclesTabMob;
@@ -1074,9 +1079,14 @@ function applyLanguage() {
   if (mobE) mobE.textContent = t.equipTabMob;
   const mobB = document.getElementById('mobBodyLabel');
   if (mobB) mobB.textContent = t.bodyTabMob;
+
+  const themeLabel = document.getElementById('themeLabel');
+  if (themeLabel) {
+    themeLabel.textContent = currentTheme === 'dark' ? t.lightMode : t.darkMode;
+  }
 }
 
-// ─── THEME SWITCHER (DAYLIGHT ↔ GYM FLOOR DARK MODE) ──────────────────────────
+// ─── THEME SWITCHER (DARK / LIGHT MODE WITH SVG ICONS) ────────────────────────
 let currentTheme = localStorage.getItem('nsc_theme') || 'light';
 
 function applyTheme(theme) {
@@ -1086,8 +1096,13 @@ function applyTheme(theme) {
   const icon = document.getElementById('themeIcon');
   const label = document.getElementById('themeLabel');
   const t = translations[currentLang];
-  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
-  if (label) label.textContent = theme === 'dark' ? t.daylightMode : t.gymFloorMode;
+  
+  if (icon) {
+    icon.innerHTML = theme === 'dark' 
+      ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`
+      : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+  }
+  if (label) label.textContent = theme === 'dark' ? t.lightMode : t.darkMode;
 }
 
 function toggleTheme() {
@@ -1301,7 +1316,7 @@ function toggleBodyMap() {
 
   if (wrapper) wrapper.style.display = bodyMapVisible ? 'block' : 'none';
   if (toggleBtn) toggleBtn.setAttribute('aria-expanded', bodyMapVisible);
-  if (arrow) arrow.textContent = bodyMapVisible ? '▲' : '▼';
+  if (arrow) arrow.style.transform = bodyMapVisible ? 'rotate(180deg)' : 'rotate(0deg)';
   if (text) text.textContent = bodyMapVisible ? t.hideBodyMap : t.showBodyMap;
 
   if (bodyMapVisible) {
@@ -1322,13 +1337,11 @@ function renderHotspotElements(hotspots) {
               data-group="${spot.group}"
               onclick="setGroup('${spot.group.replace(/'/g, "\\'")}')"
               aria-label="Filter by ${spot.label}">
-        <span class="hotspot-dot">
-          <span class="hotspot-pulse"></span>
-        </span>
+        <span class="hotspot-dot"></span>
         <span class="hotspot-label">${spot.label}</span>
         
         <div class="hotspot-tooltip" role="tooltip">
-          <div style="font-weight:700; font-family:'Space Mono', monospace; font-size:10.5px; color:var(--ink);">${spot.label}</div>
+          <div style="font-weight:700; font-size:12px; color:var(--ink);">${spot.label}</div>
           <div class="tooltip-latin">${spot.latin}</div>
           <div class="tooltip-action">${actionText}</div>
           <div class="tooltip-count">${matchingCount} exercises at NSC</div>
@@ -1557,20 +1570,18 @@ function toggleCard(id) {
   }
 }
 
-const learningData = {
-  "Chest": { desc: "The chest muscles are used for pushing things away and bringing your arms together in front of you.", video: "https://www.youtube.com/watch?v=JtFM_fF1UOY" },
-  "Back": { desc: "The back includes the lats (outer back), mid-back, and lower back, which are essential for pulling things and keeping a straight posture.", video: "https://www.youtube.com/watch?v=SUPLFfyA1Zg" },
-  "Shoulders": { desc: "The shoulders consist of three parts (front, side, and rear) that help you lift your arms in all directions.", video: "https://www.youtube.com/watch?v=wyc2rCJl4qE" },
-  "Biceps": { desc: "The biceps are on the front of your arm and are responsible for bending your elbow and turning your palms up.", video: "https://www.youtube.com/watch?v=lqDSKvxSYE4" },
-  "Triceps": { desc: "The triceps make up about two-thirds of your upper arm and are used to completely straighten your arm.", video: "https://www.youtube.com/watch?v=pOb1ENhYoYg" },
-  "Legs (Quads)": { desc: "The quads are the large muscles on the front of your thigh, used for straightening your knee and pushing up from a squat.", video: "https://www.youtube.com/watch?v=8b-7mJmWHmA" },
-  "Legs (Hamstrings)": { desc: "The hamstrings run down the back of your thigh and help you bend your knee and push your hips forward.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
-  "Legs (Calves)": { desc: "The calves are located on the back of your lower leg and help you point your toes and push off the ground.", video: "https://www.youtube.com/watch?v=DHd-5TpPWq4" },
-  "Glutes": { desc: "The glutes (your buttocks) are the largest and most powerful muscles in your body, essential for standing up and walking.", video: "https://www.youtube.com/watch?v=_xD9FHZj618" },
-  "Core": { desc: "The core includes your abs and deeper midsection muscles, keeping you balanced and protecting your spine.", video: "https://www.youtube.com/watch?v=iqRzWHSpAJo" },
-  "Cardio": { desc: "Cardio workouts strengthen your heart and lungs, building your stamina so you don't get out of breath easily.", video: "https://www.youtube.com/watch?v=VI4gTm5lvjo" },
-  "Mobility": { desc: "Mobility training improves joint health, reduces pain, and drastically enhances your performance in the gym. Explore Squat University's highly-regarded mobility blogs here.", video: "https://squatuniversity.com/featured-links/blog/" }
-};
+function difficultyPips(diff) {
+  const d = diff.toLowerCase();
+  const count = d === 'beginner' ? 1 : d === 'intermediate' ? 2 : 3;
+  return `
+    <div class="diff-indicator" title="Difficulty: ${diff}">
+      <span class="diff-bar ${count >= 1 ? 'active' : ''}"></span>
+      <span class="diff-bar ${count >= 2 ? 'active' : ''}"></span>
+      <span class="diff-bar ${count >= 3 ? 'active' : ''}"></span>
+      <span class="diff-text">${diff}</span>
+    </div>
+  `;
+}
 
 function renderExercises() {
   const grid = document.getElementById('exerciseGrid');
@@ -1636,58 +1647,56 @@ function renderExercises() {
       <div class="no-results">
         No exercises found for current selection.
         <br><br>
-        <button class="reset-filter-btn" onclick="clearActiveFilter()" style="display:inline-block;">Show All Exercises</button>
+        <button class="reset-filter-btn" onclick="clearActiveFilter()" style="display:inline-flex;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Show All Exercises</span>
+        </button>
       </div>
     `;
     return;
   }
 
-  let html = '';
-
-  // Show Learning Banner only when in muscle group mode (and not searched / equipment filtered)
-  if (!searchQuery && !activeEquipmentId && activeGroup !== "All" && learningData[activeGroup]) {
-    const data = learningData[activeGroup];
-    html += `
-      <div class="learning-banner">
-        <div class="banner-content">
-          <h3>${activeGroup} Anatomy</h3>
-          <p>${data.desc}</p>
-        </div>
-        <a class="yt-btn banner-btn" href="${data.video}" target="_blank" rel="noopener">
-          ${activeGroup === 'Mobility' ? '📖 Read Blogs' : ytIcon() + ' Study Muscle'}
-        </a>
-      </div>
-    `;
-  }
-
-  html += filtered.map((ex, i) => `
-    <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.03}s" onclick="toggleCard('card-${i}')">
+  grid.innerHTML = filtered.map((ex, i) => `
+    <div class="exercise-card" id="card-${i}" onclick="toggleCard('card-${i}')">
       <div class="card-header">
-        <div class="ex-name">${ex.name}</div>
-        <div class="expand-icon">▼</div>
+        <div class="card-header-left">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-meta-line">
+            <span class="ex-meta-target">${ex.primary}</span>
+            <span class="ex-meta-sep">/</span>
+            <span class="ex-meta-group">${ex.group}</span>
+          </div>
+        </div>
+        <div class="card-header-right">
+          ${difficultyPips(ex.difficulty)}
+          <span class="expand-icon" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </div>
       </div>
-      <div class="ex-tags">
-        <span class="tag primary">${ex.primary}</span>
-        <span class="tag">${ex.group}</span>
-        <span class="tag ${ex.difficulty.toLowerCase()}">${ex.difficulty}</span>
+      
+      <div class="ex-equipment">
+        <span class="station-label">Station:</span> ${formatEquipmentText(ex.equipment)}
       </div>
-      <div class="ex-equipment"><strong>Equipment:</strong> ${formatEquipmentText(ex.equipment)}</div>
+      
       <div class="ex-form">${ex.form}</div>
       
       <div class="ex-details" onclick="event.stopPropagation()">
-        <div><strong>${t.secondaryMuscles}</strong> ${ex.secondary}</div>
+        <div class="ex-synergists">
+          <strong>${t.secondaryMuscles}</strong> <span>${ex.secondary}</span>
+        </div>
         <div class="ex-cues">
-          <strong>${t.commonCues}</strong><br/>
-          ${ex.cues.replace(/\n/g, '<br/>')}
+          <strong>${t.commonCues}</strong>
+          <div class="cues-content">${ex.cues.replace(/\n/g, '<br/>')}</div>
         </div>
         <a class="yt-btn" href="${ex.video ? ex.video : ytUrl(ex.name)}" target="_blank" rel="noopener">
-          ${ytIcon()} ${t.watchTutorial}
+          <svg class="yt-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          <span>${t.watchTutorial}</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         </a>
       </div>
     </div>
   `).join('');
-
-  grid.innerHTML = html;
 }
 
 function setGroup(g) {

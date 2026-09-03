@@ -14,7 +14,13 @@
 
 <header>
   <div class="header-main">
-    <div class="logo-mark" aria-hidden="true"><span>NSC</span></div>
+    <div class="logo-mark" aria-label="Netaji Sports Club">
+      <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="10" fill="var(--terra)" />
+        <path d="M20 7L31 12.5V21.5C31 27.5 26.5 32 20 33.5C13.5 32 9 27.5 9 21.5V12.5L20 7Z" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" fill="none" />
+        <path d="M15 20.5H25M20 15V26M13.5 18V23M26.5 18V23" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </div>
     <div class="header-text">
       <h1>Netaji Sports Club</h1>
       <p id="headerSubhead">Exercise Reference — Pandharpur</p>
@@ -22,9 +28,12 @@
   </div>
 
   <div class="header-actions">
-    <!-- Theme Toggle: Daylight / Gym Floor Dark Mode -->
-    <button class="action-pill-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Mode">
-      <span id="themeIcon">🌙</span> <span id="themeLabel" class="pill-text">Gym Floor</span>
+    <!-- Theme Toggle: Dark / Light Mode -->
+    <button class="action-pill-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark / Light Mode" aria-label="Toggle Dark / Light Mode">
+      <span id="themeIcon" class="btn-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </span>
+      <span id="themeLabel" class="pill-text">Dark</span>
     </button>
     
     <!-- Language Toggle: English / Marathi -->
@@ -49,27 +58,35 @@
     </div>
 
     <div class="search-box" role="search">
-      <span class="search-icon" aria-hidden="true">🔍</span>
+      <span class="search-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </span>
       <input type="text" id="exerciseSearch" placeholder="Search exercises, machines, muscles..." oninput="handleSearch(this.value)" autocomplete="off" aria-label="Search exercises and equipment">
-      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear search" aria-label="Clear search">✕</button>
+      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear search" aria-label="Clear search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     </div>
   </div>
 
   <!-- Scientific Anatomy Atlas Toggle Bar -->
   <div class="body-map-controls">
     <button class="body-map-toggle-btn" id="bodyMapToggleBtn" onclick="toggleBodyMap()" aria-expanded="false">
-      <span class="body-map-icon">🔬</span>
-      <span id="bodyMapToggleText">Show Scientific Anatomy Atlas</span>
-      <span class="toggle-arrow" id="bodyMapArrow">▼</span>
+      <span class="body-map-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+      </span>
+      <span id="bodyMapToggleText">Anatomy Guide</span>
+      <span class="toggle-arrow" id="bodyMapArrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </span>
     </button>
   </div>
 
   <!-- Scientific Medical Anatomy Atlas (Collapsible) -->
-  <section class="body-map-wrapper" id="bodyMapWrapper" style="display: none;" aria-label="Scientific Anatomy Atlas">
+  <section class="body-map-wrapper" id="bodyMapWrapper" style="display: none;" aria-label="Musculoskeletal Anatomy Guide">
     <div class="body-map-header">
       <div>
-        <div class="section-label" id="bodyMapLabel">Medical Muscular System Atlas — Tap Any Hotspot to Filter</div>
-        <div class="body-view-hint" id="bodyViewHint">Authentic Medical Anatomical Plates (Anterior & Posterior) with Biomechanical Hotspots</div>
+        <div class="section-label" id="bodyMapLabel">Musculoskeletal Anatomy Guide</div>
+        <div class="body-view-hint" id="bodyViewHint">Select any anatomical region to isolate target exercises</div>
       </div>
     </div>
     <div class="medical-atlas-duo" id="bodyMapDuo">
@@ -103,7 +120,8 @@
       <span class="filter-match-count" id="activeFilterCount">6 exercises</span>
     </div>
     <button class="reset-filter-btn" id="resetFilterBtn" onclick="clearActiveFilter()">
-      ✕ Clear Filter & Show All
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      <span>Reset Filter</span>
     </button>
   </div>
 
@@ -115,19 +133,25 @@
   <div class="exercise-grid" id="exerciseGrid"></div>
 </div>
 
-<!-- Mobile Sticky Bottom Navigation (Quick Scientific Reference) -->
+<!-- Mobile Sticky Bottom Navigation (Clean Vector Line Art) -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Gym Floor Quick Navigation">
   <button class="mob-nav-item active" id="mobNavMuscles" onclick="switchMode('muscles');">
-    <span class="mob-nav-icon">⚡</span>
+    <span class="mob-nav-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+    </span>
     <span class="mob-nav-label" id="mobMusclesLabel">Muscles</span>
   </button>
   <button class="mob-nav-item" id="mobNavEquip" onclick="switchMode('equipment');">
-    <span class="mob-nav-icon">🏋️</span>
+    <span class="mob-nav-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"></line><line x1="18" y1="5" x2="18" y2="19"></line><line x1="2" y1="12" x2="22" y2="12"></line><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="12" r="3"></circle></svg>
+    </span>
     <span class="mob-nav-label" id="mobEquipLabel">Machines</span>
   </button>
   <button class="mob-nav-item" id="mobNavBodyMap" onclick="if (!bodyMapVisible) toggleBodyMap(); const bm = document.getElementById('bodyMapWrapper'); if (bm) bm.scrollIntoView({ behavior: 'smooth', block: 'start' });">
-    <span class="mob-nav-icon">🔬</span>
-    <span class="mob-nav-label" id="mobBodyLabel">Anatomy Atlas</span>
+    <span class="mob-nav-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+    </span>
+    <span class="mob-nav-label" id="mobBodyLabel">Anatomy</span>
   </button>
 </nav>
 
