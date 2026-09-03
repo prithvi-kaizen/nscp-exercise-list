@@ -936,12 +936,590 @@ const equipments = [
 
 const equipmentCategories = ["All", "Strength Machines", "Free Weights & Benches", "Cardio Stations", "Functional & Mobility"];
 
+// ─── STATE MANAGEMENT ────────────────────────────────────────────────────────
 let activeMode = "muscles";
 let activeGroup = "All";
 let activeEquipmentId = null;
 let activeEquipmentCategory = "All";
 let searchQuery = "";
+let bodyMapVisible = false;
 
+// ─── LOCALIZATION (ENGLISH ↔ MARATHI) ─────────────────────────────────────────
+const translations = {
+  en: {
+    headerSubhead: "Exercise Reference — Pandharpur",
+    tabMuscles: "Muscle Groups",
+    tabEquipment: "Equipment & Machines",
+    searchPlaceholder: "Search exercises, machines, muscles...",
+    showBodyMap: "Show Interactive Anatomy Map",
+    hideBodyMap: "Hide Interactive Anatomy Map",
+    bodyMapLabel: "Interactive Anatomy Map — Tap Any Muscle to Filter",
+    bodyViewHint: "Anterior (Front) & Posterior (Back) Views",
+    muscleSectionLabel: "Filter by Muscle Group",
+    equipmentSectionLabel: "NSC Gym Equipment & Machine Directory",
+    equipmentSubhead: "Select any machine or station to inspect matching exercises",
+    activeFilterPrefix: "Active Filter:",
+    clearFilterBtn: "✕ Clear Filter & Show All",
+    routineTitle: "📋 Today's Session",
+    routineSubtitle: "exercises added",
+    clearSession: "Clear Session",
+    openTimer: "Open Rest Timer",
+    emptyRoutine: "No exercises added yet.<br>Click <strong>+ Session</strong> on any exercise card to build today's workout!",
+    watchTutorial: "Watch Tutorial",
+    commonCues: "Common Cues & Mistakes:",
+    secondaryMuscles: "Secondary Muscles:",
+    gymFloorMode: "Gym Floor",
+    daylightMode: "Daylight",
+    allExercises: "All Exercises",
+    sessionBtn: "Session",
+    musclesTabMob: "Muscles",
+    equipTabMob: "Machines",
+    bodyTabMob: "Body Map",
+    timerTabMob: "Timer"
+  },
+  mr: {
+    headerSubhead: "व्यायाम संदर्भ — पंढरपूर",
+    tabMuscles: "स्नायू गट",
+    tabEquipment: "जिम मशिन्स व साहित्य",
+    searchPlaceholder: "व्यायाम, मशीन, स्नायू शोधा...",
+    showBodyMap: "अॅनाटॉमी बॉडी मॅप पहा",
+    hideBodyMap: "बॉडी मॅप लपवा",
+    bodyMapLabel: "इंटरअॅक्टिव्ह अॅनाटॉमी मॅप — फिल्टर करण्यासाठी स्नायूवर टॅप करा",
+    bodyViewHint: "पुढील (Front) आणि मागील (Back) बाजू",
+    muscleSectionLabel: "स्नायू गटानुसार व्यायाम",
+    equipmentSectionLabel: "नेताजी स्पोर्ट्स क्लब जिम मशिन्स व साहित्य",
+    equipmentSubhead: "त्या मशीनवरील व्यायाम पाहण्यासाठी मशीन निवडा",
+    activeFilterPrefix: "सध्याचे फिल्टर:",
+    clearFilterBtn: "✕ फिल्टर काढा आणि सर्व दाखवा",
+    routineTitle: "📋 आजचे वर्कआउट सेशन",
+    routineSubtitle: "व्यायाम जोडले",
+    clearSession: "सेशन रिकामे करा",
+    openTimer: "विश्रांती टायमर उघडा",
+    emptyRoutine: "अजून कोणताही व्यायाम जोडलेला नाही.<br>कोणत्याही कार्डवरील <strong>+ Session</strong> वर क्लिक करून आजचा वर्कआउट प्लॅन तयार करा!",
+    watchTutorial: "व्हिडिओ ट्युटोरियल पहा",
+    commonCues: "महत्त्वाच्या सूचना व चुका:",
+    secondaryMuscles: "दुय्यम स्नायू:",
+    gymFloorMode: "जिम फ्लोअर",
+    daylightMode: "डेलाइट",
+    allExercises: "सर्व व्यायाम",
+    sessionBtn: "सेशन",
+    musclesTabMob: "स्नायू",
+    equipTabMob: "मशिन्स",
+    bodyTabMob: "बॉडी मॅप",
+    timerTabMob: "टायमर"
+  }
+};
+
+const muscleTranslations = {
+  "All": { en: "All", mr: "सर्व (All)" },
+  "Chest": { en: "Chest", mr: "छाती (Chest)" },
+  "Back": { en: "Back", mr: "पाठ (Back)" },
+  "Shoulders": { en: "Shoulders", mr: "खांदे (Shoulders)" },
+  "Biceps": { en: "Biceps", mr: "बायसेप्स (Biceps)" },
+  "Triceps": { en: "Triceps", mr: "ट्रायसेप्स (Triceps)" },
+  "Legs (Quads)": { en: "Legs (Quads)", mr: "क्वाड्स (Quads)" },
+  "Legs (Hamstrings)": { en: "Legs (Hamstrings)", mr: "हॅमस्ट्रिंग्स (Hamstrings)" },
+  "Legs (Calves)": { en: "Legs (Calves)", mr: "पोटऱ्या (Calves)" },
+  "Glutes": { en: "Glutes", mr: "ग्लूट्स (Glutes)" },
+  "Core": { en: "Core", mr: "पोट/कंबर (Core)" },
+  "Cardio": { en: "Cardio", mr: "कार्डिओ (Cardio)" },
+  "Mobility": { en: "Mobility", mr: "मोबिलिटी (Mobility)" }
+};
+
+let currentLang = localStorage.getItem('nsc_lang') || 'en';
+
+function toggleLanguage() {
+  currentLang = currentLang === 'en' ? 'mr' : 'en';
+  localStorage.setItem('nsc_lang', currentLang);
+  applyLanguage();
+  renderMuscleGrid();
+  renderEquipmentCatTabs();
+  renderEquipmentGrid();
+  renderExercises();
+  renderRoutineDrawer();
+}
+
+function applyLanguage() {
+  const t = translations[currentLang];
+  const langBadge = document.getElementById('langBadge');
+  const langLabel = document.getElementById('langLabel');
+  if (langBadge) langBadge.textContent = currentLang === 'en' ? 'मराठी' : 'English';
+  if (langLabel) langLabel.textContent = currentLang === 'en' ? 'English' : 'मराठी';
+
+  const subhead = document.getElementById('headerSubhead');
+  if (subhead) subhead.textContent = t.headerSubhead;
+
+  const tabMuscles = document.getElementById('tabMusclesText');
+  if (tabMuscles) tabMuscles.textContent = t.tabMuscles;
+
+  const tabEquip = document.getElementById('tabEquipmentText');
+  if (tabEquip) tabEquip.textContent = t.tabEquipment;
+
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+  const bodyMapToggle = document.getElementById('bodyMapToggleText');
+  if (bodyMapToggle) bodyMapToggle.textContent = bodyMapVisible ? t.hideBodyMap : t.showBodyMap;
+
+  const bodyMapLbl = document.getElementById('bodyMapLabel');
+  if (bodyMapLbl) bodyMapLbl.textContent = t.bodyMapLabel;
+
+  const bodyViewHnt = document.getElementById('bodyViewHint');
+  if (bodyViewHnt) bodyViewHnt.textContent = t.bodyViewHint;
+
+  const muscleSecLbl = document.getElementById('muscleSectionLabel');
+  if (muscleSecLbl) muscleSecLbl.textContent = t.muscleSectionLabel;
+
+  const equipSecLbl = document.getElementById('equipmentSectionLabel');
+  if (equipSecLbl) equipSecLbl.textContent = t.equipmentSectionLabel;
+
+  const equipSub = document.getElementById('equipmentSubhead');
+  if (equipSub) equipSub.textContent = t.equipmentSubhead;
+
+  const filterPfx = document.getElementById('activeFilterPrefix');
+  if (filterPfx) filterPfx.textContent = t.activeFilterPrefix;
+
+  const rstBtn = document.getElementById('resetFilterBtn');
+  if (rstBtn) rstBtn.textContent = t.clearFilterBtn;
+
+  const routTitle = document.getElementById('routineTitle');
+  if (routTitle) routTitle.textContent = t.routineTitle;
+
+  const clrRoutBtn = document.getElementById('clearRoutineBtn');
+  if (clrRoutBtn) clrRoutBtn.textContent = t.clearSession;
+
+  const opnTimerBtn = document.getElementById('openTimerBtn');
+  if (opnTimerBtn) opnTimerBtn.textContent = t.openTimer;
+
+  const sessionLbl = document.getElementById('sessionLabel');
+  if (sessionLbl) sessionLbl.textContent = t.sessionBtn;
+
+  const mobM = document.getElementById('mobMusclesLabel');
+  if (mobM) mobM.textContent = t.musclesTabMob;
+  const mobE = document.getElementById('mobEquipLabel');
+  if (mobE) mobE.textContent = t.equipTabMob;
+  const mobB = document.getElementById('mobBodyLabel');
+  if (mobB) mobB.textContent = t.bodyTabMob;
+  const mobT = document.getElementById('mobTimerLabel');
+  if (mobT) mobT.textContent = t.timerTabMob;
+}
+
+// ─── THEME SWITCHER (DAYLIGHT ↔ GYM FLOOR DARK MODE) ──────────────────────────
+let currentTheme = localStorage.getItem('nsc_theme') || 'light';
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('nsc_theme', theme);
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  const t = translations[currentLang];
+  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+  if (label) label.textContent = theme === 'dark' ? t.daylightMode : t.gymFloorMode;
+}
+
+function toggleTheme() {
+  const next = currentTheme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+}
+
+// ─── INTERACTIVE ANATOMY BODY MAP ─────────────────────────────────────────────
+function toggleBodyMap() {
+  bodyMapVisible = !bodyMapVisible;
+  const wrapper = document.getElementById('bodyMapWrapper');
+  const toggleBtn = document.getElementById('bodyMapToggleBtn');
+  const arrow = document.getElementById('bodyMapArrow');
+  const text = document.getElementById('bodyMapToggleText');
+  const t = translations[currentLang];
+
+  if (wrapper) wrapper.style.display = bodyMapVisible ? 'block' : 'none';
+  if (toggleBtn) toggleBtn.setAttribute('aria-expanded', bodyMapVisible);
+  if (arrow) arrow.textContent = bodyMapVisible ? '▲' : '▼';
+  if (text) text.textContent = bodyMapVisible ? t.hideBodyMap : t.showBodyMap;
+
+  if (bodyMapVisible) {
+    renderBodyMap();
+    updateBodyMapHighlights();
+  }
+}
+
+function renderBodyMap() {
+  const duo = document.getElementById('bodyMapDuo');
+  if (!duo) return;
+
+  duo.innerHTML = `
+    <!-- ANTERIOR (FRONT) VIEW -->
+    <div class="body-view-card">
+      <div class="body-view-title">Anterior (Front)</div>
+      <svg class="body-svg" viewBox="0 0 200 360" role="img" aria-label="Human body front view">
+        <!-- Head & Neck -->
+        <circle cx="100" cy="24" r="16" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <rect x="94" y="40" width="12" height="12" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Shoulders / Front Delts -->
+        <path d="M72,52 Q84,48 94,52 L90,74 Q74,74 72,52 Z" class="muscle-path" data-muscle="Shoulders" onclick="setGroup('Shoulders')" title="Shoulders (Front Delts)"/>
+        <path d="M128,52 Q116,48 106,52 L110,74 Q126,74 128,52 Z" class="muscle-path" data-muscle="Shoulders" onclick="setGroup('Shoulders')" title="Shoulders (Front Delts)"/>
+
+        <!-- Chest -->
+        <path d="M78,56 L100,58 L122,56 L120,86 Q100,98 80,86 Z" class="muscle-path" data-muscle="Chest" onclick="setGroup('Chest')" title="Chest (Pectorals)"/>
+
+        <!-- Biceps -->
+        <path d="M68,76 L82,78 L78,116 L64,112 Z" class="muscle-path" data-muscle="Biceps" onclick="setGroup('Biceps')" title="Biceps"/>
+        <path d="M132,76 L118,78 L122,116 L136,112 Z" class="muscle-path" data-muscle="Biceps" onclick="setGroup('Biceps')" title="Biceps"/>
+
+        <!-- Forearms -->
+        <path d="M63,116 L77,118 L70,160 L58,156 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <path d="M137,116 L123,118 L130,160 L142,156 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Core / Abs -->
+        <path d="M84,90 L116,90 L113,142 L87,142 Z" class="muscle-path" data-muscle="Core" onclick="setGroup('Core')" title="Core (Abs)"/>
+
+        <!-- Hips / Pelvis -->
+        <path d="M82,142 L118,142 L123,168 L77,168 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Quads -->
+        <path d="M78,170 L98,170 L94,248 L74,246 Z" class="muscle-path" data-muscle="Legs (Quads)" onclick="setGroup('Legs (Quads)')" title="Legs (Quads)"/>
+        <path d="M102,170 L122,170 L126,246 L106,248 Z" class="muscle-path" data-muscle="Legs (Quads)" onclick="setGroup('Legs (Quads)')" title="Legs (Quads)"/>
+
+        <!-- Knees -->
+        <circle cx="84" cy="256" r="7" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <circle cx="116" cy="256" r="7" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Calves / Shins -->
+        <path d="M76,266 L92,266 L88,336 L74,333 Z" class="muscle-path" data-muscle="Legs (Calves)" onclick="setGroup('Legs (Calves)')" title="Legs (Calves)"/>
+        <path d="M108,266 L124,266 L126,333 L112,336 Z" class="muscle-path" data-muscle="Legs (Calves)" onclick="setGroup('Legs (Calves)')" title="Legs (Calves)"/>
+
+        <!-- Feet -->
+        <path d="M70,336 L90,336 L92,348 L68,348 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <path d="M110,336 L130,336 L132,348 L108,348 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- POSTERIOR (BACK) VIEW -->
+    <div class="body-view-card">
+      <div class="body-view-title">Posterior (Back)</div>
+      <svg class="body-svg" viewBox="0 0 200 360" role="img" aria-label="Human body back view">
+        <!-- Head & Neck -->
+        <circle cx="100" cy="24" r="16" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <rect x="94" y="40" width="12" height="12" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Traps & Upper / Mid Back -->
+        <path d="M72,52 Q100,44 128,52 L124,106 Q100,118 76,106 Z" class="muscle-path" data-muscle="Back" onclick="setGroup('Back')" title="Back (Lats & Traps)"/>
+
+        <!-- Rear Shoulders -->
+        <path d="M70,54 L88,54 L84,76 L66,72 Z" class="muscle-path" data-muscle="Shoulders" onclick="setGroup('Shoulders')" title="Shoulders (Rear Delts)"/>
+        <path d="M130,54 L112,54 L116,76 L134,72 Z" class="muscle-path" data-muscle="Shoulders" onclick="setGroup('Shoulders')" title="Shoulders (Rear Delts)"/>
+
+        <!-- Triceps -->
+        <path d="M64,76 L80,78 L76,116 L60,112 Z" class="muscle-path" data-muscle="Triceps" onclick="setGroup('Triceps')" title="Triceps"/>
+        <path d="M136,76 L120,78 L124,116 L140,112 Z" class="muscle-path" data-muscle="Triceps" onclick="setGroup('Triceps')" title="Triceps"/>
+
+        <!-- Forearms -->
+        <path d="M63,116 L77,118 L70,160 L58,156 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <path d="M137,116 L123,118 L130,160 L142,156 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Lower Back -->
+        <path d="M82,108 L118,108 L114,138 L86,138 Z" class="muscle-path" data-muscle="Back" onclick="setGroup('Back')" title="Lower Back"/>
+
+        <!-- Glutes -->
+        <path d="M78,140 L99,140 L98,178 L74,175 Z" class="muscle-path" data-muscle="Glutes" onclick="setGroup('Glutes')" title="Glutes (Buttocks)"/>
+        <path d="M101,140 L122,140 L126,175 L102,178 Z" class="muscle-path" data-muscle="Glutes" onclick="setGroup('Glutes')" title="Glutes (Buttocks)"/>
+
+        <!-- Hamstrings -->
+        <path d="M75,180 L97,180 L93,248 L73,246 Z" class="muscle-path" data-muscle="Legs (Hamstrings)" onclick="setGroup('Legs (Hamstrings)')" title="Legs (Hamstrings)"/>
+        <path d="M103,180 L125,180 L127,246 L107,248 Z" class="muscle-path" data-muscle="Legs (Hamstrings)" onclick="setGroup('Legs (Hamstrings)')" title="Legs (Hamstrings)"/>
+
+        <!-- Back of Knees -->
+        <circle cx="84" cy="256" r="7" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <circle cx="116" cy="256" r="7" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+
+        <!-- Calves -->
+        <path d="M74,266 L93,266 L89,336 L72,333 Z" class="muscle-path" data-muscle="Legs (Calves)" onclick="setGroup('Legs (Calves)')" title="Legs (Calves)"/>
+        <path d="M107,266 L126,266 L128,336 L111,336 Z" class="muscle-path" data-muscle="Legs (Calves)" onclick="setGroup('Legs (Calves)')" title="Legs (Calves)"/>
+
+        <!-- Feet -->
+        <path d="M70,336 L90,336 L92,348 L68,348 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+        <path d="M110,336 L130,336 L132,348 L108,348 Z" fill="var(--silhouette-fill)" stroke="var(--silhouette-stroke)" stroke-width="1.5"/>
+      </svg>
+    </div>
+  `;
+}
+
+function updateBodyMapHighlights() {
+  const paths = document.querySelectorAll('.muscle-path');
+  paths.forEach(p => {
+    if (activeGroup !== 'All' && p.getAttribute('data-muscle') === activeGroup) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+}
+
+// ─── MY ROUTINE / TODAY'S SESSION (LOCALSTORAGE) ──────────────────────────────
+let routine = [];
+try {
+  routine = JSON.parse(localStorage.getItem('nsc_routine') || '[]');
+} catch (e) {
+  routine = [];
+}
+
+function saveRoutineToStorage() {
+  try {
+    localStorage.setItem('nsc_routine', JSON.stringify(routine));
+  } catch (e) {}
+}
+
+function isExerciseSaved(name) {
+  return routine.some(item => item.name === name);
+}
+
+function toggleSaveExercise(name) {
+  const idx = routine.findIndex(item => item.name === name);
+  if (idx >= 0) {
+    routine.splice(idx, 1);
+  } else {
+    routine.push({ name: name, sets: [false, false, false, false] });
+  }
+  saveRoutineToStorage();
+  updateRoutineBadges();
+  renderRoutineDrawer();
+  renderExercises();
+}
+
+function toggleSetDone(name, setIdx) {
+  const item = routine.find(i => i.name === name);
+  if (item && item.sets) {
+    item.sets[setIdx] = !item.sets[setIdx];
+    saveRoutineToStorage();
+    renderRoutineDrawer();
+  }
+}
+
+function removeRoutineItem(name) {
+  routine = routine.filter(i => i.name !== name);
+  saveRoutineToStorage();
+  updateRoutineBadges();
+  renderRoutineDrawer();
+  renderExercises();
+}
+
+function clearRoutine() {
+  if (routine.length === 0) return;
+  const msg = currentLang === 'mr' ? 'आजचे सेशन रिकामे करायचे आहे का?' : 'Clear all exercises from today\'s session?';
+  if (confirm(msg)) {
+    routine = [];
+    saveRoutineToStorage();
+    updateRoutineBadges();
+    renderRoutineDrawer();
+    renderExercises();
+  }
+}
+
+function toggleRoutineDrawer() {
+  const drawer = document.getElementById('routineDrawer');
+  const backdrop = document.getElementById('routineBackdrop');
+  if (!drawer || !backdrop) return;
+  const isOpen = drawer.style.display !== 'none';
+  if (isOpen) {
+    drawer.style.display = 'none';
+    backdrop.style.display = 'none';
+  } else {
+    drawer.style.display = 'flex';
+    backdrop.style.display = 'block';
+    renderRoutineDrawer();
+  }
+}
+
+function updateRoutineBadges() {
+  const count = routine.length;
+  const badge = document.getElementById('sessionCount');
+  const mobBadge = document.getElementById('mobSessionCount');
+  if (badge) badge.textContent = count;
+  if (mobBadge) mobBadge.textContent = count;
+}
+
+function renderRoutineDrawer() {
+  const list = document.getElementById('routineList');
+  const subtitle = document.getElementById('routineSubtitle');
+  const t = translations[currentLang];
+  if (!list) return;
+
+  if (subtitle) {
+    subtitle.textContent = `${routine.length} ${t.routineSubtitle}`;
+  }
+
+  if (routine.length === 0) {
+    list.innerHTML = `<div class="routine-empty-state">${t.emptyRoutine}</div>`;
+    return;
+  }
+
+  list.innerHTML = routine.map(item => {
+    const ex = exercises.find(e => e.name === item.name);
+    const groupName = ex ? ex.group : '';
+    const allSetsDone = item.sets.every(Boolean);
+
+    return `
+      <div class="routine-item ${allSetsDone ? 'completed' : ''}">
+        <div class="routine-item-top">
+          <div>
+            <div class="routine-item-name">${item.name}</div>
+            <div style="font-size: 10px; color: var(--terra); font-family: 'Space Mono', monospace;">${groupName}</div>
+          </div>
+          <button class="routine-item-del" onclick="removeRoutineItem('${item.name.replace(/'/g, "\\'")}')" title="Remove exercise">✕</button>
+        </div>
+        <div class="routine-sets-tracker">
+          <span class="sets-label">Sets:</span>
+          ${item.sets.map((done, idx) => `
+            <button class="set-check-btn ${done ? 'done' : ''}" onclick="toggleSetDone('${item.name.replace(/'/g, "\\'")}', ${idx})" title="Toggle Set ${idx + 1}">
+              ${done ? '✓' : idx + 1}
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── GYM REST TIMER WITH AUDIO CHIME & VIBRATION ──────────────────────────────
+let timerSeconds = 60;
+let timerTotal = 60;
+let timerRunning = false;
+let timerInterval = null;
+let soundEnabled = true;
+let audioCtx = null;
+
+function playChime() {
+  if (!soundEnabled) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+    // Tone 1
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(880, now); // A5
+    gain1.gain.setValueAtTime(0.2, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.25);
+
+    // Tone 2
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(1760, now + 0.15); // A6
+    gain2.gain.setValueAtTime(0.25, now + 0.15);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.15);
+    osc2.stop(now + 0.55);
+  } catch (err) {
+    console.log("Web audio error", err);
+  }
+
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200]);
+  }
+}
+
+function formatTimer(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2, '0');
+  const s = (sec % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function updateTimerDisplay() {
+  const timeStr = formatTimer(timerSeconds);
+  const miniDigits = document.getElementById('timerMiniDigits');
+  const bigDigits = document.getElementById('timerBigDigits');
+  const bar = document.getElementById('timerBarFill');
+  const dot = document.getElementById('timerStatusDot');
+  const playBtn = document.getElementById('timerPlayBtn');
+
+  if (miniDigits) miniDigits.textContent = timeStr;
+  if (bigDigits) bigDigits.textContent = timeStr;
+  if (bar) {
+    const pct = (timerSeconds / timerTotal) * 100;
+    bar.style.width = `${Math.max(0, pct)}%`;
+  }
+  if (dot) {
+    if (timerRunning) dot.classList.add('running');
+    else dot.classList.remove('running');
+  }
+  if (playBtn) {
+    playBtn.textContent = timerRunning ? '❚❚ Pause' : '▶ Start';
+  }
+}
+
+function toggleTimerPlay() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+  } else {
+    if (timerSeconds <= 0) timerSeconds = timerTotal;
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerSeconds = 0;
+        playChime();
+      }
+      updateTimerDisplay();
+    }, 1000);
+  }
+  updateTimerDisplay();
+}
+
+function resetRestTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = timerTotal;
+  updateTimerDisplay();
+}
+
+function setTimerPreset(sec) {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerTotal = sec;
+  timerSeconds = sec;
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    if (btn.textContent.trim() === `${sec}s`) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+  updateTimerDisplay();
+}
+
+function expandTimer() {
+  const min = document.getElementById('timerMinimized');
+  const exp = document.getElementById('timerExpanded');
+  if (min) min.style.display = 'none';
+  if (exp) exp.style.display = 'flex';
+}
+
+function minimizeTimer() {
+  const min = document.getElementById('timerMinimized');
+  const exp = document.getElementById('timerExpanded');
+  if (min) min.style.display = 'flex';
+  if (exp) exp.style.display = 'none';
+}
+
+function toggleTimerSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('soundToggleBtn');
+  if (btn) btn.textContent = soundEnabled ? '🔊' : '🔇';
+}
+
+// ─── VIEW MODE & ROUTING ──────────────────────────────────────────────────────
 function ytUrl(name) {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(name + ' tutorial proper form')}`;
 }
@@ -956,23 +1534,23 @@ function switchMode(mode) {
   const tabEquipment = document.getElementById('tabEquipment');
   const muscleSection = document.getElementById('muscleSection');
   const equipmentSection = document.getElementById('equipmentSection');
+  const mobM = document.getElementById('mobNavMuscles');
+  const mobE = document.getElementById('mobNavEquip');
 
   if (mode === 'muscles') {
-    tabMuscles.classList.add('active');
-    tabMuscles.setAttribute('aria-selected', 'true');
-    tabEquipment.classList.remove('active');
-    tabEquipment.setAttribute('aria-selected', 'false');
-
-    muscleSection.style.display = 'block';
-    equipmentSection.style.display = 'none';
+    if (tabMuscles) { tabMuscles.classList.add('active'); tabMuscles.setAttribute('aria-selected', 'true'); }
+    if (tabEquipment) { tabEquipment.classList.remove('active'); tabEquipment.setAttribute('aria-selected', 'false'); }
+    if (muscleSection) muscleSection.style.display = 'block';
+    if (equipmentSection) equipmentSection.style.display = 'none';
+    if (mobM) mobM.classList.add('active');
+    if (mobE) mobE.classList.remove('active');
   } else {
-    tabEquipment.classList.add('active');
-    tabEquipment.setAttribute('aria-selected', 'true');
-    tabMuscles.classList.remove('active');
-    tabMuscles.setAttribute('aria-selected', 'false');
-
-    muscleSection.style.display = 'none';
-    equipmentSection.style.display = 'block';
+    if (tabEquipment) { tabEquipment.classList.add('active'); tabEquipment.setAttribute('aria-selected', 'true'); }
+    if (tabMuscles) { tabMuscles.classList.remove('active'); tabMuscles.setAttribute('aria-selected', 'false'); }
+    if (muscleSection) muscleSection.style.display = 'none';
+    if (equipmentSection) equipmentSection.style.display = 'block';
+    if (mobE) mobE.classList.add('active');
+    if (mobM) mobM.classList.remove('active');
     renderEquipmentCatTabs();
     renderEquipmentGrid();
   }
@@ -980,11 +1558,16 @@ function switchMode(mode) {
 
 function renderMuscleGrid() {
   const grid = document.getElementById('muscleGrid');
-  grid.innerHTML = groups.map(g => `
-    <button class="muscle-btn ${g === activeGroup && !activeEquipmentId && !searchQuery ? 'active' : ''}" onclick="setGroup('${g.replace(/'/g, "\\'")}')">
-      <span>${g}</span>
-    </button>
-  `).join('');
+  if (!grid) return;
+  grid.innerHTML = groups.map(g => {
+    const isTrans = muscleTranslations[g] && muscleTranslations[g][currentLang];
+    const displayName = isTrans ? muscleTranslations[g][currentLang] : g;
+    return `
+      <button class="muscle-btn ${g === activeGroup && !activeEquipmentId && !searchQuery ? 'active' : ''}" onclick="setGroup('${g.replace(/'/g, "\\'")}')">
+        <span>${displayName}</span>
+      </button>
+    `;
+  }).join('');
 }
 
 function renderEquipmentCatTabs() {
@@ -1051,6 +1634,7 @@ function filterByEquipment(id) {
   renderMuscleGrid();
   renderEquipmentGrid();
   renderExercises();
+  updateBodyMapHighlights();
 
   const target = document.getElementById('activeFilterBar') || document.getElementById('exercisesHeader');
   if (target) {
@@ -1070,6 +1654,7 @@ function clearActiveFilter() {
   renderMuscleGrid();
   renderEquipmentGrid();
   renderExercises();
+  updateBodyMapHighlights();
 }
 
 function handleSearch(val) {
@@ -1083,6 +1668,7 @@ function handleSearch(val) {
     activeGroup = "All";
     renderMuscleGrid();
     renderEquipmentGrid();
+    updateBodyMapHighlights();
   }
   renderExercises();
 }
@@ -1134,6 +1720,7 @@ function renderExercises() {
   const filterBar = document.getElementById('activeFilterBar');
   const filterName = document.getElementById('activeFilterName');
   const filterCount = document.getElementById('activeFilterCount');
+  const t = translations[currentLang];
 
   let filtered = exercises;
   let activeFilterTitle = '';
@@ -1155,7 +1742,7 @@ function renderExercises() {
     }
   } else if (activeGroup !== "All") {
     filtered = exercises.filter(e => e.group === activeGroup);
-    activeFilterTitle = activeGroup;
+    activeFilterTitle = muscleTranslations[activeGroup] ? muscleTranslations[activeGroup][currentLang] : activeGroup;
   }
 
   // Update Header Label
@@ -1165,7 +1752,7 @@ function renderExercises() {
   } else if (searchQuery) {
     label.innerHTML = `Results for <span>"${searchQuery}"</span>`;
   } else {
-    const groupWord = activeGroup === "All" ? "All Exercises" : activeGroup;
+    const groupWord = activeGroup === "All" ? t.allExercises : (muscleTranslations[activeGroup] ? muscleTranslations[activeGroup][currentLang] : activeGroup);
     const parts = groupWord.split(' ');
     const first = parts.slice(0, -1).join(' ');
     const last = parts[parts.length - 1];
@@ -1214,32 +1801,38 @@ function renderExercises() {
     `;
   }
 
-  html += filtered.map((ex, i) => `
-    <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.03}s" onclick="toggleCard('card-${i}')">
-      <div class="card-header">
-        <div class="ex-name">${ex.name}</div>
-        <div class="expand-icon">▼</div>
-      </div>
-      <div class="ex-tags">
-        <span class="tag primary">${ex.primary}</span>
-        <span class="tag">${ex.group}</span>
-        <span class="tag ${ex.difficulty.toLowerCase()}">${ex.difficulty}</span>
-      </div>
-      <div class="ex-equipment"><strong>Equipment:</strong> ${formatEquipmentText(ex.equipment)}</div>
-      <div class="ex-form">${ex.form}</div>
-      
-      <div class="ex-details" onclick="event.stopPropagation()">
-        <div><strong>Secondary Muscles:</strong> ${ex.secondary}</div>
-        <div class="ex-cues">
-          <strong>Common Cues & Mistakes:</strong><br/>
-          ${ex.cues.replace(/\n/g, '<br/>')}
+  html += filtered.map((ex, i) => {
+    const isSaved = isExerciseSaved(ex.name);
+    return `
+      <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.03}s" onclick="toggleCard('card-${i}')">
+        <div class="card-header">
+          <div class="ex-name">${ex.name}</div>
+          <button class="card-save-btn ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveExercise('${ex.name.replace(/'/g, "\\'")}')" title="Add to session">
+            ${isSaved ? '✓ Saved' : '+ Session'}
+          </button>
+          <div class="expand-icon">▼</div>
         </div>
-        <a class="yt-btn" href="${ex.video ? ex.video : ytUrl(ex.name)}" target="_blank" rel="noopener">
-          ${ytIcon()} Watch Tutorial
-        </a>
+        <div class="ex-tags">
+          <span class="tag primary">${ex.primary}</span>
+          <span class="tag">${ex.group}</span>
+          <span class="tag ${ex.difficulty.toLowerCase()}">${ex.difficulty}</span>
+        </div>
+        <div class="ex-equipment"><strong>Equipment:</strong> ${formatEquipmentText(ex.equipment)}</div>
+        <div class="ex-form">${ex.form}</div>
+        
+        <div class="ex-details" onclick="event.stopPropagation()">
+          <div><strong>${t.secondaryMuscles}</strong> ${ex.secondary}</div>
+          <div class="ex-cues">
+            <strong>${t.commonCues}</strong><br/>
+            ${ex.cues.replace(/\n/g, '<br/>')}
+          </div>
+          <a class="yt-btn" href="${ex.video ? ex.video : ytUrl(ex.name)}" target="_blank" rel="noopener">
+            ${ytIcon()} ${t.watchTutorial}
+          </a>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   grid.innerHTML = html;
 }
@@ -1256,9 +1849,58 @@ function setGroup(g) {
   renderMuscleGrid();
   renderEquipmentGrid();
   renderExercises();
+  updateBodyMapHighlights();
+
+  const target = document.getElementById('exercisesHeader');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
+// ─── URL QUERY DEEP-LINKING (QR CODES) ─────────────────────────────────────────
+function handleUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  
+  if (params.has('theme')) {
+    applyTheme(params.get('theme'));
+  }
+  if (params.has('lang')) {
+    currentLang = params.get('lang') === 'mr' ? 'mr' : 'en';
+    localStorage.setItem('nsc_lang', currentLang);
+    applyLanguage();
+  }
+  if (params.has('machine')) {
+    const machineId = params.get('machine');
+    const eq = equipments.find(e => e.id === machineId);
+    if (eq) {
+      switchMode('equipment');
+      filterByEquipment(machineId);
+      return;
+    }
+  }
+  if (params.has('muscle')) {
+    const muscle = params.get('muscle');
+    const grp = groups.find(g => g.toLowerCase() === muscle.toLowerCase());
+    if (grp) {
+      setGroup(grp);
+      return;
+    }
+  }
+  if (params.has('search')) {
+    const q = params.get('search');
+    const input = document.getElementById('exerciseSearch');
+    if (input) input.value = q;
+    handleSearch(q);
+  }
+}
+
+// ─── INITIALIZATION ───────────────────────────────────────────────────────────
+applyTheme(currentTheme);
+applyLanguage();
 renderMuscleGrid();
 renderEquipmentCatTabs();
 renderEquipmentGrid();
+updateRoutineBadges();
+updateTimerDisplay();
 renderExercises();
+handleUrlParams();

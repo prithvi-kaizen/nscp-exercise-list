@@ -1,19 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netaji Sports Club — Exercise Reference</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Netaji Sports Club — Exercise & Equipment Reference</title>
+<meta name="description" content="Comprehensive exercise, gym machine reference, and workout companion for Netaji Sports Club, Pandharpur.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <div class="logo-mark"><span>NSC</span></div>
-  <div class="header-text">
-    <h1>Netaji Sports Club</h1>
-    <p>Exercise Reference — Pandharpur</p>
+  <div class="header-main">
+    <div class="logo-mark" aria-hidden="true"><span>NSC</span></div>
+    <div class="header-text">
+      <h1>Netaji Sports Club</h1>
+      <p id="headerSubhead">Exercise Reference — Pandharpur</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <!-- Theme Toggle: Daylight / Gym Floor Dark Mode -->
+    <button class="action-pill-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Dark/Light Mode">
+      <span id="themeIcon">🌙</span> <span id="themeLabel" class="pill-text">Gym Floor</span>
+    </button>
+    
+    <!-- Language Toggle: English / Marathi -->
+    <button class="action-pill-btn" id="langToggleBtn" onclick="toggleLanguage()" title="Switch to Marathi / English" aria-label="Switch Language">
+      <span class="pill-badge" id="langBadge">मराठी</span> <span id="langLabel" class="pill-text">English</span>
+    </button>
+
+    <!-- Workout Session Drawer Opener -->
+    <button class="action-pill-btn session-btn" id="sessionToggleBtn" onclick="toggleRoutineDrawer()" title="View Today's Routine" aria-label="View Today's Routine">
+      <span>📋</span> <span id="sessionLabel" class="pill-text">Session</span>
+      <span class="session-badge-count" id="sessionCount">0</span>
+    </button>
   </div>
 </header>
 
@@ -23,24 +46,44 @@
     <div class="view-switch-tabs" role="tablist">
       <button class="tab-btn active" id="tabMuscles" role="tab" aria-selected="true" onclick="switchMode('muscles')">
         <span class="tab-badge-num">12</span>
-        <span>Muscle Groups</span>
+        <span id="tabMusclesText">Muscle Groups</span>
       </button>
       <button class="tab-btn" id="tabEquipment" role="tab" aria-selected="false" onclick="switchMode('equipment')">
         <span class="tab-badge-num">25</span>
-        <span>Equipment & Machines</span>
+        <span id="tabEquipmentText">Equipment & Machines</span>
       </button>
     </div>
 
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="exerciseSearch" placeholder="Search exercises, machines, equipment..." oninput="handleSearch(this.value)" autocomplete="off">
-      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear search">✕</button>
+    <div class="search-box" role="search">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="text" id="exerciseSearch" placeholder="Search exercises, machines, muscles..." oninput="handleSearch(this.value)" autocomplete="off" aria-label="Search exercises and equipment">
+      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear search" aria-label="Clear search">✕</button>
+    </div>
+  </div>
+
+  <!-- Body Map Toggle Bar -->
+  <div class="body-map-controls">
+    <button class="body-map-toggle-btn" id="bodyMapToggleBtn" onclick="toggleBodyMap()" aria-expanded="false">
+      <span class="body-map-icon">👤</span>
+      <span id="bodyMapToggleText">Show Interactive Anatomy Map</span>
+      <span class="toggle-arrow" id="bodyMapArrow">▼</span>
+    </button>
+  </div>
+
+  <!-- Interactive Visual Body Map (Collapsible) -->
+  <div class="body-map-wrapper" id="bodyMapWrapper" style="display: none;">
+    <div class="body-map-header">
+      <div class="section-label" id="bodyMapLabel">Interactive Anatomy Map — Tap Any Muscle to Filter</div>
+      <div class="body-view-hint" id="bodyViewHint">Anterior (Front) & Posterior (Back) Views</div>
+    </div>
+    <div class="body-map-duo" id="bodyMapDuo">
+      <!-- Injected by script.js -->
     </div>
   </div>
 
   <!-- Section 1: Muscle Groups Filter -->
   <div class="filter-section" id="muscleSection">
-    <div class="section-label">Filter by Muscle Group</div>
+    <div class="section-label" id="muscleSectionLabel">Filter by Muscle Group</div>
     <div class="muscle-grid" id="muscleGrid"></div>
   </div>
 
@@ -48,8 +91,8 @@
   <div class="filter-section" id="equipmentSection" style="display: none;">
     <div class="equipment-top-bar">
       <div>
-        <div class="section-label">NSC Gym Equipment & Machine Directory</div>
-        <div class="equipment-subhead">Select any machine or station to inspect matching exercises</div>
+        <div class="section-label" id="equipmentSectionLabel">NSC Gym Equipment & Machine Directory</div>
+        <div class="equipment-subhead" id="equipmentSubhead">Select any machine or station to inspect matching exercises</div>
       </div>
       <div class="equipment-cat-tabs" id="equipmentCatTabs"></div>
     </div>
@@ -59,11 +102,11 @@
   <!-- Active Filter Notification Bar -->
   <div class="active-filter-bar" id="activeFilterBar" style="display: none;">
     <div class="active-filter-info">
-      <span class="filter-tag-label">Active Filter:</span>
+      <span class="filter-tag-label" id="activeFilterPrefix">Active Filter:</span>
       <span class="active-filter-name" id="activeFilterName">Smith Machine</span>
       <span class="filter-match-count" id="activeFilterCount">6 exercises</span>
     </div>
-    <button class="reset-filter-btn" onclick="clearActiveFilter()">
+    <button class="reset-filter-btn" id="resetFilterBtn" onclick="clearActiveFilter()">
       ✕ Clear Filter & Show All
     </button>
   </div>
@@ -75,6 +118,79 @@
   </div>
   <div class="exercise-grid" id="exerciseGrid"></div>
 </div>
+
+<!-- Floating Rest Timer Widget -->
+<aside class="floating-timer" id="floatingTimer" aria-label="Gym Rest Timer">
+  <div class="timer-minimized" id="timerMinimized" onclick="expandTimer()">
+    <span class="timer-icon">⏱️</span>
+    <span class="timer-digits" id="timerMiniDigits">01:00</span>
+    <span class="timer-status-dot" id="timerStatusDot"></span>
+  </div>
+  <div class="timer-expanded" id="timerExpanded" style="display: none;">
+    <div class="timer-card-top">
+      <span class="timer-title" id="timerCardTitle">⏱️ Rest Timer</span>
+      <button class="timer-close-btn" onclick="minimizeTimer()" title="Minimize timer" aria-label="Minimize timer">✕</button>
+    </div>
+    <div class="timer-display-wrap">
+      <div class="timer-big-digits" id="timerBigDigits">01:00</div>
+      <div class="timer-bar"><div class="timer-bar-fill" id="timerBarFill" style="width: 100%;"></div></div>
+    </div>
+    <div class="timer-presets">
+      <button class="preset-btn" onclick="setTimerPreset(45)">45s</button>
+      <button class="preset-btn active" onclick="setTimerPreset(60)">60s</button>
+      <button class="preset-btn" onclick="setTimerPreset(90)">90s</button>
+      <button class="preset-btn" onclick="setTimerPreset(120)">120s</button>
+    </div>
+    <div class="timer-actions">
+      <button class="timer-ctrl-btn primary" id="timerPlayBtn" onclick="toggleTimerPlay()">▶ Start</button>
+      <button class="timer-ctrl-btn" onclick="resetRestTimer()">↺ Reset</button>
+      <button class="timer-ctrl-btn sound-btn" id="soundToggleBtn" onclick="toggleTimerSound()" title="Toggle Sound / Beep" aria-label="Toggle Sound">🔊</button>
+    </div>
+  </div>
+</aside>
+
+<!-- My Routine / Today's Session Drawer -->
+<div class="routine-drawer-backdrop" id="routineBackdrop" onclick="toggleRoutineDrawer()" style="display: none;"></div>
+<aside class="routine-drawer" id="routineDrawer" style="display: none;" aria-label="Today's Workout Session">
+  <div class="routine-drawer-header">
+    <div class="routine-header-left">
+      <h3 id="routineTitle">📋 Today's Session</h3>
+      <span class="routine-subtitle" id="routineSubtitle">0 exercises added</span>
+    </div>
+    <button class="drawer-close-btn" onclick="toggleRoutineDrawer()" title="Close session drawer" aria-label="Close session drawer">✕</button>
+  </div>
+  <div class="routine-list" id="routineList">
+    <!-- Injected dynamically -->
+  </div>
+  <div class="routine-footer">
+    <button class="routine-action-btn clear-btn" id="clearRoutineBtn" onclick="clearRoutine()">Clear Session</button>
+    <button class="routine-action-btn timer-btn" id="openTimerBtn" onclick="expandTimer(); toggleRoutineDrawer();">Open Rest Timer</button>
+  </div>
+</aside>
+
+<!-- Mobile Sticky Bottom Navigation -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Gym Floor Quick Navigation">
+  <button class="mob-nav-item active" id="mobNavMuscles" onclick="switchMode('muscles');">
+    <span class="mob-nav-icon">⚡</span>
+    <span class="mob-nav-label" id="mobMusclesLabel">Muscles</span>
+  </button>
+  <button class="mob-nav-item" id="mobNavEquip" onclick="switchMode('equipment');">
+    <span class="mob-nav-icon">🏋️</span>
+    <span class="mob-nav-label" id="mobEquipLabel">Machines</span>
+  </button>
+  <button class="mob-nav-item" id="mobNavBodyMap" onclick="if (!bodyMapVisible) toggleBodyMap(); const bm = document.getElementById('bodyMapWrapper'); if (bm) bm.scrollIntoView({ behavior: 'smooth', block: 'start' });">
+    <span class="mob-nav-icon">👤</span>
+    <span class="mob-nav-label" id="mobBodyLabel">Body Map</span>
+  </button>
+  <button class="mob-nav-item" id="mobNavTimer" onclick="expandTimer();">
+    <span class="mob-nav-icon">⏱️</span>
+    <span class="mob-nav-label" id="mobTimerLabel">Timer</span>
+  </button>
+  <button class="mob-nav-item" id="mobNavSession" onclick="toggleRoutineDrawer();">
+    <span class="mob-nav-icon">📋</span>
+    <span class="mob-nav-label" id="mobSessionLabel">Session (<span id="mobSessionCount">0</span>)</span>
+  </button>
+</nav>
 
 <script src="script.js"></script>
 </body>
