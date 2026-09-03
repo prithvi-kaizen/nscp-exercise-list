@@ -18,10 +18,58 @@
 </header>
 
 <div class="container">
-  <div class="section-label">Filter by Muscle Group</div>
-  <div class="muscle-grid" id="muscleGrid"></div>
+  <!-- Mode Switcher & Search Bar -->
+  <div class="top-nav-bar">
+    <div class="view-switch-tabs" role="tablist">
+      <button class="tab-btn active" id="tabMuscles" role="tab" aria-selected="true" onclick="switchMode('muscles')">
+        <span class="tab-badge-num">12</span>
+        <span>Muscle Groups</span>
+      </button>
+      <button class="tab-btn" id="tabEquipment" role="tab" aria-selected="false" onclick="switchMode('equipment')">
+        <span class="tab-badge-num">25</span>
+        <span>Equipment & Machines</span>
+      </button>
+    </div>
 
-  <div class="exercises-header">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="exerciseSearch" placeholder="Search exercises, machines, equipment..." oninput="handleSearch(this.value)" autocomplete="off">
+      <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear search">✕</button>
+    </div>
+  </div>
+
+  <!-- Section 1: Muscle Groups Filter -->
+  <div class="filter-section" id="muscleSection">
+    <div class="section-label">Filter by Muscle Group</div>
+    <div class="muscle-grid" id="muscleGrid"></div>
+  </div>
+
+  <!-- Section 2: Equipment & Machines Directory -->
+  <div class="filter-section" id="equipmentSection" style="display: none;">
+    <div class="equipment-top-bar">
+      <div>
+        <div class="section-label">NSC Gym Equipment & Machine Directory</div>
+        <div class="equipment-subhead">Select any machine or station to inspect matching exercises</div>
+      </div>
+      <div class="equipment-cat-tabs" id="equipmentCatTabs"></div>
+    </div>
+    <div class="equipment-grid" id="equipmentGrid"></div>
+  </div>
+
+  <!-- Active Filter Notification Bar -->
+  <div class="active-filter-bar" id="activeFilterBar" style="display: none;">
+    <div class="active-filter-info">
+      <span class="filter-tag-label">Active Filter:</span>
+      <span class="active-filter-name" id="activeFilterName">Smith Machine</span>
+      <span class="filter-match-count" id="activeFilterCount">6 exercises</span>
+    </div>
+    <button class="reset-filter-btn" onclick="clearActiveFilter()">
+      ✕ Clear Filter & Show All
+    </button>
+  </div>
+
+  <!-- Exercises Catalog -->
+  <div class="exercises-header" id="exercisesHeader">
     <div class="active-group-label" id="groupLabel">All <span>Exercises</span></div>
     <div class="count-badge" id="countBadge">0 exercises</div>
   </div>

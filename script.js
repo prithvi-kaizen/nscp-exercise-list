@@ -612,6 +612,7 @@ const exercises = [
   },
   {
     group: "Cardio",
+    name: "Heavy Bag Boxing Conditioning",
     equipment: "Boxing Bag (40kg)",
     primary: "Cardiovascular System / Upper Body Power",
     secondary: "Shoulders, Core, Calves",
@@ -680,7 +681,266 @@ const exercises = [
 
 const groups = ["All", "Chest", "Back", "Shoulders", "Biceps", "Triceps", "Legs (Quads)", "Legs (Hamstrings)", "Legs (Calves)", "Glutes", "Core", "Cardio", "Mobility"];
 
+const equipments = [
+  {
+    id: "dual-cable",
+    name: "Dual Adjustable Pulley / Cable Station",
+    category: "Strength Machines",
+    tag: "Selectorized / Cable",
+    station: "Functional Trainer",
+    desc: "Dual independent weight stacks with multi-position pulleys for versatile isolated and multi-planar movements.",
+    muscles: ["Chest", "Back", "Shoulders", "Biceps", "Triceps", "Core"],
+    match: e => e.equipment.includes("Dual Adjustable Pulley")
+  },
+  {
+    id: "smith-machine",
+    name: "Smith Machine",
+    category: "Strength Machines",
+    tag: "Guided Barbell Track",
+    station: "Compound & Isolation",
+    desc: "Fixed vertical barbell track providing stability and integrated safety catches for squats, presses, and thrusts.",
+    muscles: ["Chest", "Shoulders", "Quads", "Hamstrings", "Glutes", "Calves"],
+    match: e => e.equipment.includes("Smith Machine")
+  },
+  {
+    id: "leg-press",
+    name: "45° Leg Press Machine",
+    category: "Strength Machines",
+    tag: "Plate-Loaded Sled",
+    station: "Lower Body Heavy Station",
+    desc: "Heavy 45-degree angled sled for massive quad, hamstring, glute, and calf overload with complete back support.",
+    muscles: ["Quads", "Glutes", "Hamstrings", "Calves"],
+    match: e => e.equipment.includes("45 Degree Leg Press")
+  },
+  {
+    id: "hack-squat",
+    name: "Hack Squat Machine",
+    category: "Strength Machines",
+    tag: "Plate-Loaded",
+    station: "Quad Specialist",
+    desc: "Angled back pad and shoulder supports designed to place direct, deep tension on the quadriceps.",
+    muscles: ["Quads", "Glutes"],
+    match: e => e.equipment.includes("Hack Squat")
+  },
+  {
+    id: "chest-fly-rear-delt",
+    name: "Chest Fly / Rear Delt Machine",
+    category: "Strength Machines",
+    tag: "Dual-Arm Selectorized",
+    station: "Pec & Delt Deck",
+    desc: "Adjustable dual-arm machine for isolated chest flyes and reverse horizontal flyes for the rear deltoids.",
+    muscles: ["Chest", "Shoulders (Rear Delt)"],
+    match: e => e.equipment.includes("Chest Fly / Rear Delt")
+  },
+  {
+    id: "lat-pulldown",
+    name: "Lat Pulldown Machine",
+    category: "Strength Machines",
+    tag: "Cable Overhead",
+    station: "Upper Back Station",
+    desc: "High cable pulley station with adjustable thigh pads to build lat width and upper back thickness.",
+    muscles: ["Back (Lats)", "Biceps"],
+    match: e => e.equipment.includes("Lat Pulldown")
+  },
+  {
+    id: "seated-row",
+    name: "Seated Cable Row Machine",
+    category: "Strength Machines",
+    tag: "Horizontal Cable",
+    station: "Mid-Back Station",
+    desc: "Low-pulley horizontal cable row with textured footplates for lats, rhomboids, and mid-back density.",
+    muscles: ["Back (Mid-Back)", "Lats", "Biceps"],
+    match: e => e.equipment.includes("Seated Row")
+  },
+  {
+    id: "leg-extension",
+    name: "Seated Leg Extension Machine",
+    category: "Strength Machines",
+    tag: "Pin-Selected",
+    station: "Quad Isolation",
+    desc: "Pin-selected knee extension lever station for direct quadriceps tear-drop (vastus medialis) overload.",
+    muscles: ["Legs (Quads)"],
+    match: e => e.equipment.includes("Seated Leg Extension")
+  },
+  {
+    id: "leg-curl",
+    name: "Seated Leg Curl Machine",
+    category: "Strength Machines",
+    tag: "Pin-Selected",
+    station: "Hamstring Isolation",
+    desc: "Ergonomic thigh clamp and lever roller to isolate knee flexion and strengthen the hamstring group.",
+    muscles: ["Legs (Hamstrings)"],
+    match: e => e.equipment.includes("Seated Leg Curl")
+  },
+  {
+    id: "seated-calf-raise",
+    name: "Seated Calf Raise Machine",
+    category: "Strength Machines",
+    tag: "Plate-Loaded",
+    station: "Soleus Specialist",
+    desc: "Seated knee-clamp station isolating the deeper soleus calf muscle with 90-degree bent knees.",
+    muscles: ["Legs (Calves)"],
+    match: e => e.equipment.includes("Seated Calf Raise Machine")
+  },
+  {
+    id: "assisted-chin-dip",
+    name: "Assisted Dip & Chin-Up Machine",
+    category: "Strength Machines",
+    tag: "Counter-Weighted",
+    station: "Calisthenics Support",
+    desc: "Counterbalanced weight knee pad providing assist load for strict pull-ups and tricep bar dips.",
+    muscles: ["Back", "Triceps", "Chest", "Biceps"],
+    match: e => e.equipment.includes("Assisted Dip")
+  },
+  {
+    id: "abs-trainer",
+    name: "Abs Trainer Machine",
+    category: "Strength Machines",
+    tag: "Selectorized",
+    station: "Core Isolation",
+    desc: "Seated crunch station with upper torso harness for controlled, progressive-load abdominal flexion.",
+    muscles: ["Core (Abs)"],
+    match: e => e.equipment.includes("Abs Trainer")
+  },
+  {
+    id: "olympic-flat-bench",
+    name: "Flat Olympic Bench Press Station",
+    category: "Free Weights & Benches",
+    tag: "Olympic Free Weight",
+    station: "Chest Benchmark",
+    desc: "Competition-width flat bench with solid upright upright barbell catches for standard bench presses.",
+    muscles: ["Chest", "Triceps", "Shoulders"],
+    match: e => e.equipment.includes("Flat Olympic Press station")
+  },
+  {
+    id: "olympic-incline-bench",
+    name: "Incline Bench Press Station",
+    category: "Free Weights & Benches",
+    tag: "Olympic Free Weight",
+    station: "Upper Chest",
+    desc: "Fixed incline bench press station for targeting the clavicular head of the chest and front delts.",
+    muscles: ["Upper Chest", "Shoulders", "Triceps"],
+    match: e => e.equipment.includes("Incline Bench Press station")
+  },
+  {
+    id: "olympic-platform-barbells",
+    name: "Olympic Barbells & Lifting Platform",
+    category: "Free Weights & Benches",
+    tag: "Free Weight / Olympic",
+    station: "Compound Platform",
+    desc: "7ft Olympic barbells, grip weight plates, and lifting platform for heavy compound pulls and lunges.",
+    muscles: ["Back", "Hamstrings", "Quads", "Glutes", "Core"],
+    match: e => e.equipment.includes("7ft Olympic Barbell") || e.equipment.includes("Weight Lifting Platform") || e.equipment.includes("7ft Barbell") || e.equipment.includes("Short Barbell")
+  },
+  {
+    id: "preacher-ez-bar",
+    name: "Preacher Station & EZ Curl Bar",
+    category: "Free Weights & Benches",
+    tag: "Arm Isolation",
+    station: "Bicep / Tricep Bench",
+    desc: "Dedicated preacher curl bench and ergonomic cambered EZ curl bars for bicep peaks and skull crushers.",
+    muscles: ["Biceps", "Triceps"],
+    match: e => e.equipment.includes("Preacher") || e.equipment.includes("EZ Curl Bar")
+  },
+  {
+    id: "dumbbells-benches",
+    name: "Dumbbells & Utility/Flat Benches",
+    category: "Free Weights & Benches",
+    tag: "Free Weights",
+    station: "Dumbbell Rack & Benches",
+    desc: "Full rack of dumbbells paired with flat and multi-angle adjustable utility incline benches.",
+    muscles: ["Chest", "Back", "Shoulders", "Biceps", "Triceps", "Hamstrings", "Glutes", "Calves"],
+    match: e => /dumbbell/i.test(e.equipment) || e.equipment.includes("Utility Bench") || e.equipment.includes("Flat Bench") || e.equipment.includes("Adjustable Bench")
+  },
+  {
+    id: "adjustable-ab-bench",
+    name: "Adjustable Ab Bench",
+    category: "Free Weights & Benches",
+    tag: "Decline Bench",
+    station: "Core Station",
+    desc: "Decline abdominal bench with padded ankle leg locks for bodyweight and weighted decline sit-ups.",
+    muscles: ["Core (Abs)"],
+    match: e => e.equipment.includes("Adjustable Ab Bench")
+  },
+  {
+    id: "commercial-treadmill",
+    name: "Commercial Treadmill (CS-XG-V12E)",
+    category: "Cardio Stations",
+    tag: "Motorized Cardio",
+    station: "Cardio Deck",
+    desc: "Commercial motor treadmill featuring programmable speed and automated incline for aerobic conditioning.",
+    muscles: ["Cardiovascular System", "Legs"],
+    match: e => e.equipment.includes("CS-XG-V12E")
+  },
+  {
+    id: "curved-treadmill",
+    name: "Curved Treadmill (CS-XZ8003C)",
+    category: "Cardio Stations",
+    tag: "Self-Powered",
+    station: "Sprint & HIIT",
+    desc: "Motor-free curved slat treadmill powered entirely by user stride for explosive sprints and maximum calorie burn.",
+    muscles: ["Cardiovascular System", "Posterior Chain"],
+    match: e => e.equipment.includes("CS-XZ8003C")
+  },
+  {
+    id: "elliptical",
+    name: "Elliptical Trainer (CS-E17)",
+    category: "Cardio Stations",
+    tag: "Low-Impact Cardio",
+    station: "Cardio Deck",
+    desc: "Dual-action elliptical with inclination controls providing low-impact joint-friendly cardiovascular training.",
+    muscles: ["Cardiovascular System", "Full Body"],
+    match: e => e.equipment.includes("CS-E17")
+  },
+  {
+    id: "spin-bike",
+    name: "Spin Bike (CS-K8938-3)",
+    category: "Cardio Stations",
+    tag: "Flywheel Cycle",
+    station: "Cycling Studio",
+    desc: "Heavy flywheel fixed-gear spin bike with adjustable resistance dial for high-intensity Tabata and endurance.",
+    muscles: ["Cardiovascular System", "Quads", "Glutes"],
+    match: e => e.equipment.includes("CS-K8938-3")
+  },
+  {
+    id: "battling-ropes",
+    name: "Battling Ropes",
+    category: "Cardio Stations",
+    tag: "HIIT Conditioning",
+    station: "Functional Turf",
+    desc: "Heavy 50ft conditioning ropes for upper body power endurance, shoulder stability, and anaerobic capacity.",
+    muscles: ["Cardiovascular System", "Shoulders", "Core"],
+    match: e => e.equipment.includes("Battling Ropes")
+  },
+  {
+    id: "boxing-bag",
+    name: "Heavy Boxing Bag (40kg)",
+    category: "Cardio Stations",
+    tag: "Striking Conditioning",
+    station: "Boxing Zone",
+    desc: "40kg hanging leather punching bag for boxing conditioning, punching combinations, and rotational power.",
+    muscles: ["Cardiovascular System", "Upper Body Power", "Core"],
+    match: e => e.equipment.includes("Boxing Bag")
+  },
+  {
+    id: "functional-mobility",
+    name: "Mobility & Functional Accessories",
+    category: "Functional & Mobility",
+    tag: "Rehab & Recovery",
+    station: "Mobility Area",
+    desc: "Gym balls (75cm), medicine balls (4-6 lbs), resistance bands, steps, and mats for joint health and rehab.",
+    muscles: ["Joint Mobility", "Ankles", "Hips", "Knees", "Spine"],
+    match: e => e.group === "Mobility" || e.equipment.includes("Gym Ball") || e.equipment.includes("Medicine Ball")
+  }
+];
+
+const equipmentCategories = ["All", "Strength Machines", "Free Weights & Benches", "Cardio Stations", "Functional & Mobility"];
+
+let activeMode = "muscles";
 let activeGroup = "All";
+let activeEquipmentId = null;
+let activeEquipmentCategory = "All";
+let searchQuery = "";
 
 function ytUrl(name) {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(name + ' tutorial proper form')}`;
@@ -690,13 +950,159 @@ function ytIcon() {
   return `<svg class="yt-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3.01 3.01 0 0 0 2.12 2.13C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.57A3.01 3.01 0 0 0 23.5 17.8C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>`;
 }
 
+function switchMode(mode) {
+  activeMode = mode;
+  const tabMuscles = document.getElementById('tabMuscles');
+  const tabEquipment = document.getElementById('tabEquipment');
+  const muscleSection = document.getElementById('muscleSection');
+  const equipmentSection = document.getElementById('equipmentSection');
+
+  if (mode === 'muscles') {
+    tabMuscles.classList.add('active');
+    tabMuscles.setAttribute('aria-selected', 'true');
+    tabEquipment.classList.remove('active');
+    tabEquipment.setAttribute('aria-selected', 'false');
+
+    muscleSection.style.display = 'block';
+    equipmentSection.style.display = 'none';
+  } else {
+    tabEquipment.classList.add('active');
+    tabEquipment.setAttribute('aria-selected', 'true');
+    tabMuscles.classList.remove('active');
+    tabMuscles.setAttribute('aria-selected', 'false');
+
+    muscleSection.style.display = 'none';
+    equipmentSection.style.display = 'block';
+    renderEquipmentCatTabs();
+    renderEquipmentGrid();
+  }
+}
+
 function renderMuscleGrid() {
   const grid = document.getElementById('muscleGrid');
   grid.innerHTML = groups.map(g => `
-    <button class="muscle-btn ${g === activeGroup ? 'active' : ''}" onclick="setGroup('${g.replace(/'/g, "\\'")}')">
+    <button class="muscle-btn ${g === activeGroup && !activeEquipmentId && !searchQuery ? 'active' : ''}" onclick="setGroup('${g.replace(/'/g, "\\'")}')">
       <span>${g}</span>
     </button>
   `).join('');
+}
+
+function renderEquipmentCatTabs() {
+  const container = document.getElementById('equipmentCatTabs');
+  if (!container) return;
+  container.innerHTML = equipmentCategories.map(cat => `
+    <button class="eq-cat-btn ${cat === activeEquipmentCategory ? 'active' : ''}" onclick="setEquipmentCategory('${cat}')">
+      ${cat}
+    </button>
+  `).join('');
+}
+
+function setEquipmentCategory(cat) {
+  activeEquipmentCategory = cat;
+  renderEquipmentCatTabs();
+  renderEquipmentGrid();
+}
+
+function renderEquipmentGrid() {
+  const grid = document.getElementById('equipmentGrid');
+  if (!grid) return;
+
+  const filtered = activeEquipmentCategory === 'All' 
+    ? equipments 
+    : equipments.filter(eq => eq.category === activeEquipmentCategory);
+
+  grid.innerHTML = filtered.map(eq => {
+    const matchingExercises = exercises.filter(eq.match);
+    const count = matchingExercises.length;
+    const isSelected = activeEquipmentId === eq.id;
+
+    return `
+      <div class="equipment-card ${isSelected ? 'selected' : ''}" onclick="filterByEquipment('${eq.id}')">
+        <div class="eq-card-top">
+          <span class="eq-badge category">${eq.tag}</span>
+          <span class="eq-count">${count} exercise${count !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="eq-card-header">
+          <div class="eq-station">${eq.station}</div>
+          <div class="eq-title">${eq.name}</div>
+        </div>
+        <div class="eq-desc">${eq.desc}</div>
+        <div class="eq-muscles">
+          ${eq.muscles.map(m => `<span class="eq-muscle-tag">${m}</span>`).join('')}
+        </div>
+        <div class="eq-footer">
+          <span class="eq-badge">${eq.category}</span>
+          <span class="eq-action-btn">View Exercises →</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterByEquipment(id) {
+  activeEquipmentId = id;
+  activeGroup = "All";
+  searchQuery = "";
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+
+  renderMuscleGrid();
+  renderEquipmentGrid();
+  renderExercises();
+
+  const target = document.getElementById('activeFilterBar') || document.getElementById('exercisesHeader');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function clearActiveFilter() {
+  activeEquipmentId = null;
+  activeGroup = "All";
+  searchQuery = "";
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+
+  renderMuscleGrid();
+  renderEquipmentGrid();
+  renderExercises();
+}
+
+function handleSearch(val) {
+  searchQuery = val.trim().toLowerCase();
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) {
+    clearBtn.style.display = searchQuery ? 'block' : 'none';
+  }
+  if (searchQuery) {
+    activeEquipmentId = null;
+    activeGroup = "All";
+    renderMuscleGrid();
+    renderEquipmentGrid();
+  }
+  renderExercises();
+}
+
+function clearSearch() {
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.value = '';
+  handleSearch('');
+}
+
+function formatEquipmentText(equipStr) {
+  if (!equipStr) return '';
+  const parts = equipStr.split(',').map(s => s.trim());
+  return parts.map(p => {
+    const match = equipments.find(eq => eq.match({ equipment: p, group: '' }));
+    if (match) {
+      return `<span class="ex-equipment-clickable" onclick="event.stopPropagation(); filterByEquipment('${match.id}')" title="View exercises on ${match.name}">${p}</span>`;
+    }
+    return p;
+  }).join(', ');
 }
 
 function toggleCard(id) {
@@ -722,26 +1128,78 @@ const learningData = {
 };
 
 function renderExercises() {
-  const filtered = activeGroup === "All" ? exercises : exercises.filter(e => e.group === activeGroup);
   const grid = document.getElementById('exerciseGrid');
   const label = document.getElementById('groupLabel');
   const badge = document.getElementById('countBadge');
+  const filterBar = document.getElementById('activeFilterBar');
+  const filterName = document.getElementById('activeFilterName');
+  const filterCount = document.getElementById('activeFilterCount');
 
-  const groupWord = activeGroup === "All" ? "All" : activeGroup;
-  const parts = groupWord.split(' ');
-  const first = parts.slice(0, -1).join(' ');
-  const last = parts[parts.length - 1];
-  label.innerHTML = first ? `${first} <span>${last}</span>` : `<span>${last}</span>`;
+  let filtered = exercises;
+  let activeFilterTitle = '';
+
+  if (searchQuery) {
+    filtered = exercises.filter(e => 
+      e.name.toLowerCase().includes(searchQuery) ||
+      e.group.toLowerCase().includes(searchQuery) ||
+      e.equipment.toLowerCase().includes(searchQuery) ||
+      e.primary.toLowerCase().includes(searchQuery) ||
+      (e.secondary && e.secondary.toLowerCase().includes(searchQuery))
+    );
+    activeFilterTitle = `Search: "${searchQuery}"`;
+  } else if (activeEquipmentId) {
+    const eq = equipments.find(e => e.id === activeEquipmentId);
+    if (eq) {
+      filtered = exercises.filter(eq.match);
+      activeFilterTitle = `Equipment: ${eq.name}`;
+    }
+  } else if (activeGroup !== "All") {
+    filtered = exercises.filter(e => e.group === activeGroup);
+    activeFilterTitle = activeGroup;
+  }
+
+  // Update Header Label
+  if (activeEquipmentId) {
+    const eq = equipments.find(e => e.id === activeEquipmentId);
+    label.innerHTML = `Equipment: <span>${eq ? eq.name : ''}</span>`;
+  } else if (searchQuery) {
+    label.innerHTML = `Results for <span>"${searchQuery}"</span>`;
+  } else {
+    const groupWord = activeGroup === "All" ? "All Exercises" : activeGroup;
+    const parts = groupWord.split(' ');
+    const first = parts.slice(0, -1).join(' ');
+    const last = parts[parts.length - 1];
+    label.innerHTML = first ? `${first} <span>${last}</span>` : `<span>${last}</span>`;
+  }
+
   badge.textContent = `${filtered.length} exercise${filtered.length !== 1 ? 's' : ''}`;
 
+  // Update Active Filter Bar
+  if (filterBar) {
+    if (activeEquipmentId || searchQuery) {
+      filterBar.style.display = 'flex';
+      filterName.textContent = activeFilterTitle;
+      filterCount.textContent = `${filtered.length} exercise${filtered.length !== 1 ? 's' : ''}`;
+    } else {
+      filterBar.style.display = 'none';
+    }
+  }
+
   if (filtered.length === 0) {
-    grid.innerHTML = `<div class="no-results">No exercises found</div>`;
+    grid.innerHTML = `
+      <div class="no-results">
+        No exercises found for current selection.
+        <br><br>
+        <button class="reset-filter-btn" onclick="clearActiveFilter()" style="display:inline-block;">Show All Exercises</button>
+      </div>
+    `;
     return;
   }
 
   let html = '';
 
-  if (activeGroup !== "All" && learningData[activeGroup]) {
+  // Show Learning Banner only when in muscle group mode (and not searched / equipment filtered)
+  if (!searchQuery && !activeEquipmentId && activeGroup !== "All" && learningData[activeGroup]) {
     const data = learningData[activeGroup];
     html += `
       <div class="learning-banner">
@@ -757,7 +1215,7 @@ function renderExercises() {
   }
 
   html += filtered.map((ex, i) => `
-    <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.04}s" onclick="toggleCard('card-${i}')">
+    <div class="exercise-card" id="card-${i}" style="animation-delay:${i * 0.03}s" onclick="toggleCard('card-${i}')">
       <div class="card-header">
         <div class="ex-name">${ex.name}</div>
         <div class="expand-icon">▼</div>
@@ -767,7 +1225,7 @@ function renderExercises() {
         <span class="tag">${ex.group}</span>
         <span class="tag ${ex.difficulty.toLowerCase()}">${ex.difficulty}</span>
       </div>
-      <div class="ex-equipment"><strong>Equipment:</strong> ${ex.equipment}</div>
+      <div class="ex-equipment"><strong>Equipment:</strong> ${formatEquipmentText(ex.equipment)}</div>
       <div class="ex-form">${ex.form}</div>
       
       <div class="ex-details" onclick="event.stopPropagation()">
@@ -788,9 +1246,19 @@ function renderExercises() {
 
 function setGroup(g) {
   activeGroup = g;
+  activeEquipmentId = null;
+  searchQuery = "";
+  const searchInput = document.getElementById('exerciseSearch');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+
   renderMuscleGrid();
+  renderEquipmentGrid();
   renderExercises();
 }
 
 renderMuscleGrid();
+renderEquipmentCatTabs();
+renderEquipmentGrid();
 renderExercises();
