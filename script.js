@@ -223,7 +223,7 @@ const exercises = [
     primary: "Biceps",
     secondary: "Side Bicep, Forearm Flexors",
     difficulty: "Beginner",
-    form: "Set the cable low, grip the bar with a palms-up grip, and curl upward while keeping constant tension through the cable — do not swing at the top.",
+    form: "Set the cable low, grip the bar with a palms-up grip, and curl upward while keeping constant tension through the cable. Do not swing at the top.",
     cues: "- Use the cable's direct tension; don't rush the tempo.\n- Walk back one step to keep tension at the very bottom.\n- Maintain an upright posture."
   },
   {
@@ -233,7 +233,7 @@ const exercises = [
     primary: "Biceps (long head stretch)",
     secondary: "Side Bicep, Forearm Muscle",
     difficulty: "Intermediate",
-    form: "Set the bench to ~60° incline, let arms hang straight down, and curl the dumbbells with a palms-up grip — the stretched starting position maximises long-head tension.",
+    form: "Set the bench to ~60° incline, let arms hang straight down, and curl the dumbbells with a palms-up grip. The stretched starting position maximises long-head tension.",
     cues: "- Let your arms hang completely straight behind your torso.\n- Roll your wrists outward to maximize bicep peak contraction.\n- Don't let elbows drift forward during the curl."
   },
 
@@ -285,7 +285,7 @@ const exercises = [
     primary: "Triceps",
     secondary: "Chest, Front Shoulders",
     difficulty: "Advanced",
-    form: "Grip the bar at shoulder-width (no narrower), lower to the lower chest, and press up — the reduced grip width shifts emphasis from the chest to the triceps.",
+    form: "Grip the bar at shoulder-width (no narrower), lower to the lower chest, and press up. The reduced grip width shifts emphasis from the chest to the triceps.",
     cues: "- Tuck your elbows tightly to your sides.\n- Do not grip too close (hands touching) to save your wrists.\n- Lower to the bottom of the sternum."
   },
   {
@@ -295,7 +295,7 @@ const exercises = [
     primary: "Triceps (long head)",
     secondary: "Elbow Joint Muscle",
     difficulty: "Intermediate",
-    form: "Hold one dumbbell with both hands overhead, lower it behind your head by bending your elbows, then extend fully — keep your upper arms close to your ears.",
+    form: "Hold one dumbbell with both hands overhead, lower it behind your head by bending your elbows, then extend fully, keeping your upper arms close to your ears.",
     cues: "- Brace your core and avoid heavily arching the lower back.\n- Create a diamond/heart shape with your hands under the top plates.\n- Get a deep stretch behind the neck."
   },
 
@@ -327,7 +327,7 @@ const exercises = [
     primary: "Quadriceps (isolation)",
     secondary: "None",
     difficulty: "Beginner",
-    form: "Sit with the roller pad on your lower shins, extend your legs until straight, hold for a brief squeeze at the top, then return slowly — do not let the weight slam.",
+    form: "Sit with the roller pad on your lower shins, extend your legs until straight, hold for a brief squeeze at the top, then return slowly without letting the weight slam.",
     cues: "- Adjust pad to sit immediately above the top of your shoes.\n- Brace firmly into the seat handles.\n- Pull your toes backwards (pulling your toes up) for better contraction."
   },
   {
@@ -347,7 +347,7 @@ const exercises = [
     primary: "Quadriceps / Glutes",
     secondary: "Hamstrings, Core, Calves",
     difficulty: "Advanced",
-    form: "Rest the bar across your upper back, step forward into a long stride, lower your rear knee toward the floor, then push off the front foot to return — keep your torso upright.",
+    form: "Rest the bar across your upper back, step forward into a long stride, lower your rear knee toward the floor, then push off the front foot to return, keeping your torso upright.",
     cues: "- Keep torso perfectly vertical to load the quads.\n- Ensure the front knee tracks directly over the toes.\n- Push aggressively off the front heel to return."
   },
 
@@ -369,7 +369,7 @@ const exercises = [
     primary: "Hamstrings / Glutes",
     secondary: "Lower Back, Forearms, Traps",
     difficulty: "Advanced",
-    form: "Hold the bar at hip-width, hinge at the hips while keeping a slight knee bend and a neutral spine — feel the hamstring stretch at the bottom, then drive the hips forward to stand.",
+    form: "Hold the bar at hip-width, hinge at the hips while keeping a slight knee bend and a neutral spine. Feel the hamstring stretch at the bottom, then drive the hips forward to stand.",
     cues: "- Push your hips back until you feel a deep stretch in hamstrings.\n- Do NOT reach for the floor; stop when hips stop moving back.\n- Keep the barbell sliding right up and down your thighs/shins."
   },
   {
@@ -441,7 +441,7 @@ const exercises = [
     primary: "Upper Calf (one-sided)",
     secondary: "Lower Calf, Stabilizers",
     difficulty: "Intermediate",
-    form: "Hold a dumbbell in one hand, stand on one foot on a plate or step, and rise onto the ball of your foot — pause at the top, then lower fully to maximise the stretch.",
+    form: "Hold a dumbbell in one hand, stand on one foot on a plate or step, and rise onto the ball of your foot. Pause at the top, then lower fully to maximise the stretch.",
     cues: "- Hold a stationary object with the empty hand for balance.\n- Slow lowering phase to build maximum tension.\n- Complete full range of motion heavily loading the single calf."
   },
 
@@ -453,7 +453,7 @@ const exercises = [
     primary: "Glutes (Butt)",
     secondary: "Hamstrings, Core",
     difficulty: "Intermediate",
-    form: "Rest your upper back on the bench, feet flat on the floor under the bar, and thrust your hips upward until your thighs are parallel to the ground — squeeze hard at the top.",
+    form: "Rest your upper back on the bench, feet flat on the floor under the bar, and thrust your hips upward until your thighs are parallel to the ground, squeezing hard at the top.",
     cues: "- Check a 90-degree angle exists at your knee at the top.\n- Tuck the chin forward; ribs pinned down.\n- Squeeze the glutes aggressively at lockout."
   },
   {
@@ -463,7 +463,7 @@ const exercises = [
     primary: "Glutes (Butt)",
     secondary: "Hamstrings, Core Stabilizers",
     difficulty: "Beginner",
-    form: "Attach the cable low, face the machine, brace on the frame, and kick one leg back in a controlled arc — avoid rotating the hips and keep the movement at the hip joint.",
+    form: "Attach the cable low, face the machine, brace on the frame, and kick one leg back in a controlled arc, avoiding hip rotation to keep the movement at the hip joint.",
     cues: "- Don't overextend the lower back.\n- Point the toe slightly outward to involve upper glutes.\n- Move purely from the hip socket, keep upper body frozen."
   },
   {
@@ -473,7 +473,7 @@ const exercises = [
     primary: "Glutes / Hamstrings",
     secondary: "Quadriceps, Inner Thighs",
     difficulty: "Intermediate",
-    form: "Place your feet high on the sled and use a wide stance — this shifts load from the quads toward the glutes and hamstrings as you press through the full range.",
+    form: "Place your feet high on the sled and use a wide stance. This shifts load from the quads toward the glutes and hamstrings as you press through the full range.",
     cues: "- Push distinctly through the heels, not the toes.\n- Squeeze knees out slightly tracking toes.\n- Ensure glutes don't tuck under and lift off the pad."
   },
   {
@@ -493,7 +493,7 @@ const exercises = [
     primary: "Glutes / Quads",
     secondary: "Hamstrings, Core, Grip",
     difficulty: "Intermediate",
-    form: "Hold dumbbells at your sides, step one foot onto the bench, drive through that heel to stand fully on the bench, then step down with control — complete all reps on one side.",
+    form: "Hold dumbbells at your sides, step one foot onto the bench, drive through that heel to stand fully on the bench, then step down with control, completing all reps on one side.",
     cues: "- Push straight up with the front leg; don't jump off the back leg.\n- Resist placing the rear foot down quickly on the descent.\n- Lean slightly forward over the planted leg to stretch the glute."
   },
 
@@ -505,7 +505,7 @@ const exercises = [
     primary: "Abs",
     secondary: "Obliques",
     difficulty: "Beginner",
-    form: "Sit in the machine, grip the handles, and flex forward at the waist — focus on curling the ribcage toward the pelvis rather than pulling with your arms or hip flexors.",
+    form: "Sit in the machine, grip the handles, and flex forward at the waist. Focus on curling the ribcage toward the pelvis rather than pulling with your arms or hip flexors.",
     cues: "- Try not to push excessively with the legs.\n- Exhale forcefully as you crunch forward.\n- Round your back intentionally into a 'C' curve."
   },
   {
@@ -525,7 +525,7 @@ const exercises = [
     primary: "Abs",
     secondary: "Deep Core",
     difficulty: "Beginner",
-    form: "Lie with your lower back on the ball, feet flat on the floor, and crunch upward by contracting the abs — the ball provides a greater range of motion than a flat floor crunch.",
+    form: "Lie with your lower back on the ball, feet flat on the floor, and crunch upward by contracting the abs. The ball provides a greater range of motion than a flat floor crunch.",
     cues: "- Keep lower back moulded around the curvature of the ball.\n- Squeeze the core deliberately; do not strain the neck.\n- Get a full stretch over the ball at the bottom."
   },
   {
@@ -535,7 +535,7 @@ const exercises = [
     primary: "Abs / Hip Flexors",
     secondary: "Obliques",
     difficulty: "Intermediate",
-    form: "Hook your feet under the roller pads, set an angle that challenges you, and perform a controlled sit-up — lower all the way down to maximise the lowering phase.",
+    form: "Hook your feet under the roller pads, set an angle that challenges you, and perform a controlled sit-up, lowering all the way down to maximise the lowering phase.",
     cues: "- Try to reduce reliance on flinging momentum.\n- Breathe out deeply ascending.\n- Control the drop heavily; don't just fall backward."
   },
   {
@@ -555,7 +555,7 @@ const exercises = [
     primary: "Core / Full Body Power",
     secondary: "Lats, Shoulders, Glutes, Quads",
     difficulty: "Beginner",
-    form: "Hold the medicine ball overhead with arms extended, engage your core, and slam it to the floor as hard as possible — catch on the bounce or pick it up and repeat.",
+    form: "Hold the medicine ball overhead with arms extended, engage your core, and slam it to the floor as hard as possible. Catch on the bounce or pick it up and repeat.",
     cues: "- Squat down alongside the slam to generate power.\n- Throw the ball into the floor with intent.\n- Don't just perform a limp arm swing."
   },
 
@@ -567,7 +567,7 @@ const exercises = [
     primary: "Cardiovascular System",
     secondary: "Legs (Calves, Quads, Hamstrings)",
     difficulty: "Intermediate",
-    form: "Alternate between 60-second high-intensity sprints (16–20 km/h) and 90-second recovery jogs (8–10 km/h), using the incline feature for added resistance when appropriate.",
+    form: "Alternate between 60-second high-intensity sprints (16-20 km/h) and 90-second recovery jogs (8-10 km/h), using the incline feature for added resistance when appropriate.",
     cues: "- Strike securely in the middle of the belt.\n- Keep your chest high and gaze forward.\n- Step fully off the belt between extreme bouts if necessary."
   },
   {
@@ -577,7 +577,7 @@ const exercises = [
     primary: "Cardiovascular System",
     secondary: "Glutes, Hamstrings, Calves",
     difficulty: "Advanced",
-    form: "The curved belt is self-powered by your stride — lean slightly forward, drive with your posterior chain, and let the curve naturally increase resistance as you push harder.",
+    form: "The curved belt is self-powered by your stride. Lean slightly forward, drive with your posterior chain, and let the curve naturally increase resistance as you push harder.",
     cues: "- Striding further up the front curve increases speed.\n- Back pedal lower down to brake entirely.\n- Don't hold rails while sprinting heavily."
   },
   {
@@ -587,7 +587,7 @@ const exercises = [
     primary: "Cardiovascular System",
     secondary: "Forearms, Shoulders, Quads",
     difficulty: "Beginner",
-    form: "Set a moderate resistance and incline, maintain a steady conversational pace for 30–45 minutes — push and pull the handles to engage both upper and lower body simultaneously.",
+    form: "Set a moderate resistance and incline, maintain a steady conversational pace for 30-45 minutes, pushing and pulling the handles to engage both upper and lower body simultaneously.",
     cues: "- Maintain solid upright posture.\n- Actually push/pull handles rather than just resting hands on them.\n- Keep foot completely flat."
   },
   {
@@ -597,7 +597,7 @@ const exercises = [
     primary: "Cardiovascular System",
     secondary: "Quads, Glutes",
     difficulty: "Advanced",
-    form: "Perform 8 rounds of 20 seconds maximum-effort cycling followed by 10 seconds of rest — use the resistance dial to add load and increase your flywheel speed as fitness improves.",
+    form: "Perform 8 rounds of 20 seconds maximum-effort cycling followed by 10 seconds of rest. Use the resistance dial to add load and increase your flywheel speed as fitness improves.",
     cues: "- Do not attempt without proper clip-in or tightened foot cages.\n- Ensure dial has massive resistance before standing up into a sprint.\n- Focus on the 'pull' up on the pedal, not just the push down."
   },
   {
@@ -607,7 +607,7 @@ const exercises = [
     primary: "Cardiovascular System",
     secondary: "Shoulders, Core, Forearms",
     difficulty: "Intermediate",
-    form: "Anchor the rope at its midpoint, hold one end in each hand, and alternate or simultaneous wave patterns in 30-second bursts — keep your core tight and knees slightly bent throughout.",
+    form: "Anchor the rope at its midpoint, hold one end in each hand, and alternate or simultaneous wave patterns in 30-second bursts, keeping your core tight and knees slightly bent throughout.",
     cues: "- Try entirely fluid, snapping motions sending waves ALL the way to the anchor.\n- Keep chest up and slightly sit into a quarter squat.\n- Grip tightly but remain relaxed through the arms/shoulders."
   },
   {
@@ -617,7 +617,7 @@ const exercises = [
     primary: "Cardiovascular System / Upper Body Power",
     secondary: "Shoulders, Core, Calves",
     difficulty: "Intermediate",
-    form: "Work in 3-minute rounds using a combination of jabs, crosses, hooks, and body shots — maintain a fighting stance, keep your hands up, and move your feet between combinations.",
+    form: "Work in 3-minute rounds using a combination of jabs, crosses, hooks, and body shots. Maintain a fighting stance, keep your hands up, and move your feet between combinations.",
     cues: "- Wrap your hands internally or wear proper gloves always.\n- Snap the punches back immediately, do not merely 'push' the bag.\n- Twist hips powerfully on all crosses and hooks."
   },
 
@@ -974,7 +974,8 @@ const translations = {
     whatItDoes: "What it does:",
     keyMovements: "Key NSC movements:",
     muscleParts: "Anatomical regions:",
-    focusedViewBadge: "Focused Muscle View"
+    focusedViewBadge: "Focused Muscle View",
+    showExercises: "Show Exercises"
   },
   mr: {
     headerSubhead: "पंढरपूर · 90 11 44 5000",
@@ -1004,7 +1005,8 @@ const translations = {
     whatItDoes: "मुख्य कार्य:",
     keyMovements: "महत्त्वाचे व्यायाम प्रकार:",
     muscleParts: "स्नायूंचे भाग:",
-    focusedViewBadge: "स्नायू तपशील"
+    focusedViewBadge: "स्नायू तपशील",
+    showExercises: "व्यायाम पहा"
   }
 };
 
@@ -1695,8 +1697,14 @@ function renderEquipmentGrid() {
     const count = matchingExercises.length;
     const isSelected = activeEquipmentId === eq.id;
 
+    const t = translations[currentLang];
     return `
-      <div class="equipment-card ${isSelected ? 'selected' : ''}" onclick="filterByEquipment('${eq.id}')">
+      <div class="equipment-card ${isSelected ? 'selected' : ''}" 
+           role="button" 
+           tabindex="0" 
+           aria-pressed="${isSelected}"
+           onclick="filterByEquipment('${eq.id}')"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();filterByEquipment('${eq.id}');}">
         <div class="eq-card-top">
           <span class="eq-badge category">${eq.tag}</span>
           <span class="eq-count">${count} exercise${count !== 1 ? 's' : ''}</span>
@@ -1711,7 +1719,7 @@ function renderEquipmentGrid() {
         </div>
         <div class="eq-footer">
           <span class="eq-badge">${eq.category}</span>
-          <span class="eq-action-btn">View Exercises →</span>
+          <span class="eq-action-btn">${t.showExercises}</span>
         </div>
       </div>
     `;
@@ -1790,7 +1798,8 @@ function formatEquipmentText(equipStr) {
 function toggleCard(id) {
   const card = document.getElementById(id);
   if (card) {
-    card.classList.toggle('expanded');
+    const isExpanded = card.classList.toggle('expanded');
+    card.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
   }
 }
 
@@ -1868,12 +1877,12 @@ function renderExercises() {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-      <div class="no-results">
-        No exercises found for current selection.
-        <br><br>
-        <button class="reset-filter-btn" onclick="clearActiveFilter()" style="display:inline-flex;">
+      <div class="no-results" role="status">
+        <div class="no-results-title">${currentLang === 'mr' ? 'कोणतेही व्यायाम आढळले नाहीत' : 'No exercises found'}</div>
+        <p class="no-results-desc">${currentLang === 'mr' ? 'कृपया वेगळा स्नायू गट किंवा मशीन निवडा, किंवा फिल्टर काढा.' : 'No exercises match the current selection. Try searching for a different muscle group, machine station, or clear your filters.'}</p>
+        <button class="reset-filter-btn" onclick="clearActiveFilter()" style="display:inline-flex; margin-top: 14px;">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          <span>Show All Exercises</span>
+          <span>${t.allExercises}</span>
         </button>
       </div>
     `;
@@ -1881,7 +1890,13 @@ function renderExercises() {
   }
 
   grid.innerHTML = filtered.map((ex, i) => `
-    <div class="exercise-card" id="card-${i}" onclick="toggleCard('card-${i}')">
+    <div class="exercise-card" 
+         id="card-${i}" 
+         role="button" 
+         tabindex="0" 
+         aria-expanded="false" 
+         onclick="toggleCard('card-${i}')"
+         onkeydown="if(event.key==='Enter'||event.key===' '){if(event.target===this||!event.target.closest('a, button')){event.preventDefault();toggleCard('card-${i}');}}">
       <div class="card-header">
         <div class="card-header-left">
           <div class="ex-name">${ex.name}</div>
@@ -1987,6 +2002,19 @@ function handleUrlParams() {
     handleSearch(q);
   }
 }
+
+// ─── KEYBOARD ACCESSIBILITY (R-32: ESCAPE KEY DISMISSAL) ─────────────────────
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (zoomedMuscleGroup) {
+      resetBodyMapZoom();
+    } else if (searchQuery) {
+      clearSearch();
+    } else if (activeEquipmentId || activeGroup !== 'All') {
+      clearActiveFilter();
+    }
+  }
+});
 
 // ─── INITIALIZATION ───────────────────────────────────────────────────────────
 applyTheme(currentTheme);
