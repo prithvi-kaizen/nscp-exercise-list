@@ -936,11 +936,316 @@ const equipments = [
 
 const equipmentCategories = ["All", "Strength Machines", "Free Weights & Benches", "Cardio Stations", "Functional & Mobility"];
 
+// ─── PRE-WORKOUT WARMUP & JOINT MOBILITY PROTOCOLS ───────────────────────────
+const warmupProtocols = [
+  {
+    id: "press-prep",
+    category: "Upper Body",
+    tag: "Shoulders & Upper Torso",
+    title: {
+      en: "Upper Body Press Prep",
+      mr: "अप्पर बॉडी प्रेस वॉर्मअप (Chest & Shoulders)"
+    },
+    targetJoints: {
+      en: "Glenohumeral (Shoulders), Thoracic Spine, Scapulae",
+      mr: "खांदे, वरील पाठीचा कणा (Thoracic) व स्कॅपुला"
+    },
+    duration: "3-4 min",
+    idealBefore: {
+      en: "Bench Press, Incline Press, Shoulder Press, Dips",
+      mr: "बेंच प्रेस, इन्क्लाइन प्रेस, शोल्डर प्रेस, डिप्स"
+    },
+    linkedExercises: ["Barbell Bench Press", "Dumbbell Overhead Press", "Incline Barbell Press"],
+    steps: [
+      {
+        num: 1,
+        name: { en: "Band Pull-Aparts", mr: "बँड पुल-अपार्ट्स" },
+        dose: "2 sets x 15 reps",
+        cue: {
+          en: "Hold band shoulder-width with straight arms. Pull across chest, pinching shoulder blades without shrugging.",
+          mr: "हात सरळ ठेवून बँड ताणा. खांदे वर न उचलता पाठीचे ब्लेड्स एकत्र दाबा."
+        }
+      },
+      {
+        num: 2,
+        name: { en: "Rotator Cuff External Rotations", mr: "रोटेटर कफ एक्सटर्नल रोटेशन" },
+        dose: "2 sets x 12 reps / side",
+        cue: {
+          en: "Elbow pinned to ribcage at 90 degrees. Rotate forearm outward under light cable/band tension.",
+          mr: "कोपरा बरगडीला चिकटवून 90 अंशावर ठेवा आणि हलक्या वजनाने बाहेरच्या दिशेने फिरवा."
+        }
+      },
+      {
+        num: 3,
+        name: { en: "Bench Thoracic Extension", mr: "थोरासिक पाठीचा विस्तार" },
+        dose: "10 controlled reps",
+        cue: {
+          en: "Hands behind head, elbows high. Extend upper back over bench edge while keeping ribcage braced.",
+          mr: "हात डोक्यामागे ठेवून वरची पाठ हळूच मागे ताणा, कंबर स्थिर ठेवा."
+        }
+      },
+      {
+        num: 4,
+        name: { en: "Scapular Push-Ups (Floor / Incline)", mr: "स्कॅप्युलर पुश-अप्स" },
+        dose: "12 reps",
+        cue: {
+          en: "In plank position with arms straight, bring shoulder blades together then press floor away to spread them.",
+          mr: "हात पूर्ण सरळ ठेवून खांद्याची हाडे एकत्र आणा आणि नंतर जमीन दाबून दूर ढकला."
+        }
+      }
+    ]
+  },
+  {
+    id: "squat-prep",
+    category: "Lower Body",
+    tag: "Hips, Knees & Ankles",
+    title: {
+      en: "Squat & Knee Mobility Prep",
+      mr: "स्क्वॉट व गुडघे मोबिलिटी वॉर्मअप (Quads & Hips)"
+    },
+    targetJoints: {
+      en: "Acetabulofemoral (Hips), Patellofemoral (Knees), Talocrural (Ankles)",
+      mr: "कमरेचे जॉईंट्स (Hips), गुडघे (Knees) व घोटे (Ankles)"
+    },
+    duration: "3-4 min",
+    idealBefore: {
+      en: "Barbell Squats, Hack Squat, 45° Leg Press, Lunges",
+      mr: "बारबेल स्क्वॉट, हॅक स्क्वॉट, लेग प्रेस, लंजेस"
+    },
+    linkedExercises: ["Hack Squat", "45° Leg Press", "Smith Machine Squat"],
+    steps: [
+      {
+        num: 1,
+        name: { en: "Ankle Dorsiflexion Wall Rocks", mr: "घोट्याची डोर्सीफ्लेक्शन मोबिलिटी" },
+        dose: "15 reps / side",
+        cue: {
+          en: "Foot 4 inches from wall, heel flat on floor. Drive knee past toes over pinky toe to increase ankle travel.",
+          mr: "टाच जमिनीवर घट्ट ठेवा आणि गुडघा पुढच्या दिशेने भिंतीकडे झुकवून घोट्याची लवचिकता वाढवा."
+        }
+      },
+      {
+        num: 2,
+        name: { en: "90/90 Hip Mobility Switches", mr: "90/90 हिप मोबिलिटी स्विच" },
+        dose: "10 slow switches",
+        cue: {
+          en: "Sit on floor with both legs at 90-degree angles. Rotate knees side to side to lubricate hip capsules.",
+          mr: "जमिनीवर दोन्ही पाय 90 अंशात ठेवून दोन्ही बाजूंना गुडघे हळूहळू फिरवून हिप्स मोकळे करा."
+        }
+      },
+      {
+        num: 3,
+        name: { en: "Deep Goblet Squat with 3s Bottom Pause", mr: "डीप पॉझ स्क्वॉट (३ सेकंद)" },
+        dose: "8 reps",
+        cue: {
+          en: "Sink into deep squat, use elbows to pry knees outward, pause 3 seconds while breathing into belly.",
+          mr: "पूर्ण खाली बसून कोपरांनी गुडघे किंचित बाहेर ढकला आणि 3 सेकंद खोल श्वास घेऊन थांबा."
+        }
+      },
+      {
+        num: 4,
+        name: { en: "Walking Quad & Hip Flexor Stretch", mr: "क्वॉड व हिप फ्लेक्सर स्ट्रेच" },
+        dose: "10 reps / leg",
+        cue: {
+          en: "Grab ankle behind you, squeeze glute on that leg to stretch anterior thigh, step forward and alternate.",
+          mr: "पायाची घोट मागे पकडून मांडीचा पुढील भाग ताणा, ग्लूट घट्ट दाबून पुढे पाऊल टाका."
+        }
+      }
+    ]
+  },
+  {
+    id: "hinge-prep",
+    category: "Lower Body",
+    tag: "Posterior Chain & Spine",
+    title: {
+      en: "Hinge & Lower Back Prep",
+      mr: "हिंज व पाठीचा कणा वॉर्मअप (Hamstrings & Glutes)"
+    },
+    targetJoints: {
+      en: "Lumbar Spine, Sacroiliac (SI) Joint, Posterior Hip Capsule",
+      mr: "कंबर (Lumbar Spine), एसआय जॉईंट व हॅमस्ट्रिंग्स"
+    },
+    duration: "3-4 min",
+    idealBefore: {
+      en: "Romanian Deadlift, Barbell Sumo Deadlift, Barbell Rows",
+      mr: "रोमानियन डेडलिफ्ट, सुमो डेडलिफ्ट, बारबेल रो"
+    },
+    linkedExercises: ["Romanian Deadlift", "Barbell Sumo Deadlift", "Seated Leg Curl"],
+    steps: [
+      {
+        num: 1,
+        name: { en: "Bird-Dog Contralateral Holds", mr: "बर्ड-डॉग पोझिशन होल्ड" },
+        dose: "8 reps / side (2s hold)",
+        cue: {
+          en: "Hands and knees on mat. Extend opposite arm and leg straight out without arching lower back. Brace abs.",
+          mr: "हात व गुडघ्यांवर राहून विरुद्ध हात व पाय सरळ लांबवा, पाठ न वाकवता पोट घट्ट ठेवा."
+        }
+      },
+      {
+        num: 2,
+        name: { en: "Glute Bridges with 2s Peak Squeeze", mr: "ग्लूट ब्रिजेस (२ सेकंद होल्ड)" },
+        dose: "15 reps",
+        cue: {
+          en: "Lie on back, feet flat. Drive through heels to raise hips until torso aligns with knees. Do not arch lower back.",
+          mr: "पाठीवर झोपून टाचा दाबून कंबर वर उचला आणि ग्लूट्स घट्ट पिळून २ सेकंद थांबा."
+        }
+      },
+      {
+        num: 3,
+        name: { en: "Active Hamstring Sweeps", mr: "अॅक्टिव्ह हॅमस्ट्रिंग स्वीप्स" },
+        dose: "10 walking steps",
+        cue: {
+          en: "Heel forward with toes up. Hinge hips backward and sweep hands down toward floor to stretch posterior chain.",
+          mr: "टाच पुढे ठेवून कंबर मागे ढकला आणि हात जमिनीकडे नेऊन मांडीची मागील नस ताणा."
+        }
+      },
+      {
+        num: 4,
+        name: { en: "Standing Bodyweight Good Mornings", mr: "गुड मॉर्निंग हिंज मोव्हमेंट" },
+        dose: "10 reps",
+        cue: {
+          en: "Fingertips behind head, soft knees. Push hips straight back until hamstring tension is reached, then return.",
+          mr: "हात डोक्यामागे, गुडघे किंचित लवचिक ठेवून कंबर थेट मागे ढकलून हिंज पोझिशन साधा."
+        }
+      }
+    ]
+  },
+  {
+    id: "pull-prep",
+    category: "Upper Body",
+    tag: "Lats, Scapulae & Traps",
+    title: {
+      en: "Upper Back & Pull Prep",
+      mr: "अप्पर बॅक व पुलिंग वॉर्मअप (Lats & Traps)"
+    },
+    targetJoints: {
+      en: "Scapulothoracic Joint, Latissimus Dorsi Origin, Glenohumeral",
+      mr: "लॅट्स (Lats), स्कॅपुला व खांद्याची हालचाल"
+    },
+    duration: "3-4 min",
+    idealBefore: {
+      en: "Lat Pulldown, Seated Cable Row, Assisted Pull-Up, Barbell Row",
+      mr: "लॅट पुलडाउन, सीटेड केबल रो, पुल-अप्स, बारबेल रो"
+    },
+    linkedExercises: ["Lat Pulldown", "Seated Cable Row", "Assisted Pull-Up (Chin-Up Grip)"],
+    steps: [
+      {
+        num: 1,
+        name: { en: "Dead Hang with Scapular Pull-Downs", mr: "डेड हँग व स्कॅप्युलर पुल" },
+        dose: "20s hang + 8 depressions",
+        cue: {
+          en: "Hang from chin-up bar. Without bending elbows, pull shoulder blades down and back, then release.",
+          mr: "बारला लटकून हात न वाकवता खांद्याची हाडे खाली खेचा आणि वर सोडा."
+        }
+      },
+      {
+        num: 2,
+        name: { en: "Straight-Arm Lat Band Pulldowns", mr: "स्ट्रेट-आर्म लॅट बँड पुलडाउन" },
+        dose: "15 reps",
+        cue: {
+          en: "Anchor band high. Keeping elbows slightly bent, sweep hands down to hips by engaging outer lats.",
+          mr: "बँड वर बांधून हात किंचित लवचिक ठेवून थेट कमरेकडे ओढा, लॅट्स स्नायू आकुंचन पावतील."
+        }
+      },
+      {
+        num: 3,
+        name: { en: "Side-Lying Thoracic Open-Books", mr: "थोरासिक ओपन-बुक्स रोटेशन" },
+        dose: "8 reps / side",
+        cue: {
+          en: "Lie on side with knees stacked at 90 degrees. Rotate top arm open across body, following hand with eyes.",
+          mr: "एका कुशीवर झोपून गुडघे 90 अंशावर ठेवा आणि वरचा हात दुसऱ्या बाजूला फिरवून छाती उघडा."
+        }
+      },
+      {
+        num: 4,
+        name: { en: "Prone Y-T-W Scapular Raises", mr: "वाय-टी-डब्ल्यू (Y-T-W) रेजेस" },
+        dose: "6 reps per position",
+        cue: {
+          en: "Lie face down or on 30-degree incline. Raise arms with thumbs pointed up in Y, T, and W positions to activate lower traps.",
+          mr: "पोटावर झोपून अंगठा वर ठेवून हात Y, T व W आकारात उचलून पाठीचे छोटे स्नायू सक्रिय करा."
+        }
+      }
+    ]
+  }
+];
+
+const warmupCategories = ["All", "Upper Body", "Lower Body"];
+
+// ─── 1-TAP EXERCISE ALTERNATIVE SWAPS ─────────────────────────────────────────
+const exerciseAlternativesMap = {
+  "Barbell Bench Press": ["Dumbbell Flat Press", "Smith Machine Bench Press", "Chest Fly Machine"],
+  "Incline Barbell Press": ["Smith Machine Bench Press", "Dumbbell Flat Press"],
+  "Smith Machine Bench Press": ["Barbell Bench Press", "Dumbbell Flat Press"],
+  "Cable Chest Fly (High-to-Low)": ["Chest Fly Machine", "Dumbbell Flat Press"],
+  "Dumbbell Flat Press": ["Barbell Bench Press", "Smith Machine Bench Press"],
+  "Chest Fly Machine": ["Cable Chest Fly (High-to-Low)", "Dumbbell Flat Press"],
+  "Lat Pulldown": ["Assisted Pull-Up (Chin-Up Grip)", "Seated Cable Row", "Single-Arm Dumbbell Row"],
+  "Seated Cable Row": ["Barbell Bent-Over Row", "Single-Arm Dumbbell Row"],
+  "Barbell Bent-Over Row": ["Seated Cable Row", "Single-Arm Dumbbell Row"],
+  "Single-Arm Dumbbell Row": ["Seated Cable Row", "Barbell Bent-Over Row"],
+  "Cable Straight-Arm Pulldown": ["Lat Pulldown", "Assisted Pull-Up (Chin-Up Grip)"],
+  "Assisted Pull-Up (Chin-Up Grip)": ["Lat Pulldown", "Cable Straight-Arm Pulldown"],
+  "Dumbbell Overhead Press": ["Smith Machine Overhead Press", "Dumbbell Lateral Raise"],
+  "Dumbbell Lateral Raise": ["Cable Face Pull", "Dumbbell Overhead Press"],
+  "Cable Face Pull": ["Rear Delt Machine Fly", "Dumbbell Lateral Raise"],
+  "Rear Delt Machine Fly": ["Cable Face Pull", "Dumbbell Lateral Raise"],
+  "Smith Machine Overhead Press": ["Dumbbell Overhead Press", "Dumbbell Lateral Raise"],
+  "Dumbbell Front Raise": ["Dumbbell Overhead Press", "Incline Barbell Press"],
+  "EZ Bar Curl": ["Dumbbell Hammer Curl", "Cable Bicep Curl", "Incline Dumbbell Curl"],
+  "Preacher Curl (Barbell)": ["EZ Bar Curl", "Incline Dumbbell Curl", "Cable Bicep Curl"],
+  "Dumbbell Hammer Curl": ["Cable Bicep Curl", "EZ Bar Curl"],
+  "Cable Bicep Curl": ["EZ Bar Curl", "Dumbbell Hammer Curl"],
+  "Incline Dumbbell Curl": ["EZ Bar Curl", "Preacher Curl (Barbell)"],
+  "Skull Crusher": ["Cable Tricep Pushdown", "Close-Grip Bench Press"],
+  "Cable Tricep Pushdown": ["Dumbbell Overhead Tricep Extension", "Close-Grip Bench Press"],
+  "Overhead Cable Tricep Extension": ["Dumbbell Overhead Tricep Extension", "Cable Tricep Pushdown"],
+  "Assisted Tricep Dip": ["Close-Grip Bench Press", "Cable Tricep Pushdown"],
+  "Close-Grip Bench Press": ["Cable Tricep Pushdown", "Assisted Tricep Dip"],
+  "Dumbbell Overhead Tricep Extension": ["Overhead Cable Tricep Extension", "Cable Tricep Pushdown"],
+  "Hack Squat": ["45° Leg Press", "Smith Machine Squat", "Barbell Lunge"],
+  "45° Leg Press": ["Hack Squat", "Smith Machine Squat", "Barbell Lunge"],
+  "Seated Leg Extension": ["Smith Machine Squat", "Barbell Lunge"],
+  "Smith Machine Squat": ["Hack Squat", "45° Leg Press", "Barbell Lunge"],
+  "Barbell Lunge": ["Smith Machine Squat", "Hack Squat"],
+  "Seated Leg Curl": ["Romanian Deadlift", "Smith Machine Romanian Deadlift", "Cable Pull-Through"],
+  "Romanian Deadlift": ["Dumbbell Romanian Deadlift", "Smith Machine Romanian Deadlift"],
+  "Dumbbell Romanian Deadlift": ["Romanian Deadlift", "Smith Machine Romanian Deadlift"],
+  "Smith Machine Romanian Deadlift": ["Romanian Deadlift", "Dumbbell Romanian Deadlift"],
+  "Cable Pull-Through": ["Romanian Deadlift", "Seated Leg Curl"],
+  "Seated Calf Raise": ["Standing Calf Raise (Smith Machine)", "Leg Press Calf Raise"],
+  "Standing Calf Raise (Smith Machine)": ["Leg Press Calf Raise", "Dumbbell Single-Leg Calf Raise"],
+  "Leg Press Calf Raise": ["Standing Calf Raise (Smith Machine)", "Seated Calf Raise"],
+  "Dumbbell Single-Leg Calf Raise": ["Standing Calf Raise (Smith Machine)", "Leg Press Calf Raise"],
+  "Hip Thrust (Smith Machine)": ["Barbell Sumo Deadlift", "Cable Kickback", "45° Leg Press (High Foot Placement)"],
+  "Cable Kickback": ["Hip Thrust (Smith Machine)", "Barbell Sumo Deadlift"],
+  "45° Leg Press (High Foot Placement)": ["Hack Squat", "Hip Thrust (Smith Machine)"],
+  "Barbell Sumo Deadlift": ["Romanian Deadlift", "Hip Thrust (Smith Machine)"],
+  "Dumbbell Step-Up": ["Barbell Lunge", "Hack Squat"],
+  "Abs Machine Crunch": ["Cable Woodchop", "Hanging Leg Raise"],
+  "Cable Woodchop": ["Abs Machine Crunch", "Hanging Leg Raise"],
+  "Hanging Leg Raise": ["Abs Machine Crunch", "Cable Woodchop"]
+};
+
+function getExerciseAlternatives(ex) {
+  if (exerciseAlternativesMap[ex.name]) {
+    return exerciseAlternativesMap[ex.name];
+  }
+  // Fallback: 2 distinct exercises from the same primary muscle or group
+  const samePrimary = exercises
+    .filter(e => e.name !== ex.name && e.primary === ex.primary)
+    .map(e => e.name);
+  if (samePrimary.length >= 2) return samePrimary.slice(0, 2);
+  const sameGroup = exercises
+    .filter(e => e.name !== ex.name && e.group === ex.group)
+    .map(e => e.name);
+  return sameGroup.slice(0, 2);
+}
+
 // ─── STATE MANAGEMENT ────────────────────────────────────────────────────────
 let activeMode = "muscles";
 let activeGroup = "All";
 let activeEquipmentId = null;
 let activeEquipmentCategory = "All";
+let activeWarmupCategory = "All";
 let searchQuery = "";
 let bodyMapVisible = false;
 
@@ -950,6 +1255,7 @@ const translations = {
     headerSubhead: "Pandharpur · 90 11 44 5000",
     tabMuscles: "Muscle Groups",
     tabEquipment: "Equipment & Machines",
+    tabWarmup: "Warmup & Prep",
     searchPlaceholder: "Search exercises, machines, muscles...",
     showBodyMap: "Anatomy Guide",
     hideBodyMap: "Hide Anatomy Guide",
@@ -958,6 +1264,8 @@ const translations = {
     muscleSectionLabel: "Filter by Muscle Group",
     equipmentSectionLabel: "NSC Gym Equipment & Machine Directory",
     equipmentSubhead: "Select any machine or station to inspect matching exercises",
+    warmupSectionLabel: "Pre-Workout Activation & Joint Mobility",
+    warmupSubhead: "3-minute orthopedic prep routines to prime joints and reduce injury risk before lifting",
     activeFilterPrefix: "Active Filter:",
     clearFilterBtn: "Reset Filter",
     watchTutorial: "Watch Video",
@@ -968,6 +1276,7 @@ const translations = {
     allExercises: "All Exercises",
     musclesTabMob: "Muscles",
     equipTabMob: "Machines",
+    warmupTabMob: "Warmup",
     bodyTabMob: "Anatomy",
     zoomBackText: "Back to Full Body",
     viewExercisesText: "View Matching Exercises",
@@ -975,12 +1284,26 @@ const translations = {
     keyMovements: "Key NSC movements:",
     muscleParts: "Anatomical regions:",
     focusedViewBadge: "Focused Muscle View",
-    showExercises: "Show Exercises"
+    showExercises: "Show Exercises",
+    machineBusyTitle: "Station busy? 1-Tap alternative:",
+    printQrBtnLabel: "Print Floor QR Stickers",
+    qrModalTitle: "Gym Floor QR Code Stickers",
+    qrModalSubhead: "Printable high-contrast QR stickers for gym machines. Lifters scan with phone camera to open verified exercise cues.",
+    qrPrintNowLabel: "Print A4 Sticker Sheet",
+    qrCloseLabel: "Close",
+    targetJointsLabel: "Target Joints & Capsule:",
+    idealBeforeLabel: "Recommended Before:",
+    allProtocols: "All Protocols",
+    upperBodyPrep: "Upper Body",
+    lowerBodyPrep: "Lower Body",
+    startThisWorkout: "View Station Exercises",
+    qrScanHint: "Scan with phone camera for verified form cues"
   },
   mr: {
     headerSubhead: "पंढरपूर · 90 11 44 5000",
     tabMuscles: "स्नायू गट",
     tabEquipment: "जिम मशिन्स व साहित्य",
+    tabWarmup: "वॉर्मअप व मोबिलिटी",
     searchPlaceholder: "व्यायाम, मशीन, स्नायू शोधा...",
     showBodyMap: "अॅनाटॉमी मार्गदर्शक",
     hideBodyMap: "मार्गदर्शक लपवा",
@@ -989,6 +1312,8 @@ const translations = {
     muscleSectionLabel: "स्नायू गटानुसार व्यायाम",
     equipmentSectionLabel: "नेताजी स्पोर्ट्स क्लब जिम मशिन्स व साहित्य",
     equipmentSubhead: "त्या मशीनवरील व्यायाम पाहण्यासाठी मशीन निवडा",
+    warmupSectionLabel: "व्यायामापूर्वी वॉर्मअप व जॉईंट मोबिलिटी",
+    warmupSubhead: "जॉईंट्स व स्नायू सक्रिय करून दुखापती टाळण्यासाठी ३ मिनिटांचे खात्रीशीर व्यायाम",
     activeFilterPrefix: "सध्याचे फिल्टर:",
     clearFilterBtn: "फिल्टर काढा",
     watchTutorial: "व्हिडिओ पहा",
@@ -999,6 +1324,7 @@ const translations = {
     allExercises: "सर्व व्यायाम",
     musclesTabMob: "स्नायू",
     equipTabMob: "मशिन्स",
+    warmupTabMob: "वॉर्मअप",
     bodyTabMob: "अॅनाटॉमी",
     zoomBackText: "संपूर्ण शरीर दृश्य",
     viewExercisesText: "संबंधित व्यायाम पहा",
@@ -1006,7 +1332,20 @@ const translations = {
     keyMovements: "महत्त्वाचे व्यायाम प्रकार:",
     muscleParts: "स्नायूंचे भाग:",
     focusedViewBadge: "स्नायू तपशील",
-    showExercises: "व्यायाम पहा"
+    showExercises: "व्यायाम पहा",
+    machineBusyTitle: "मशीन रिकामी नाही? पर्यायी व्यायाम:",
+    printQrBtnLabel: "फ्लोअर QR स्टिकर्स प्रिंट करा",
+    qrModalTitle: "जिम फ्लोअर मशीन QR कोड स्टिकर्स",
+    qrModalSubhead: "मशीनवर लावण्यासाठी प्रिंट करण्यायोग्य QR स्टिकर्स. कॅमेऱ्याने स्कॅन करताच थेट योग्य फॉर्म व व्यायाम उघडतील.",
+    qrPrintNowLabel: "A4 स्टिकर शीट प्रिंट करा",
+    qrCloseLabel: "बंद करा",
+    targetJointsLabel: "लक्ष्य सांधे (Joints):",
+    idealBeforeLabel: "खालील व्यायामापूर्वी उपयुक्त:",
+    allProtocols: "सर्व वॉर्मअप",
+    upperBodyPrep: "अप्पर बॉडी",
+    lowerBodyPrep: "लोअर बॉडी",
+    startThisWorkout: "संबंधित व्यायाम पहा",
+    qrScanHint: "योग्य तंत्र व फॉर्म पाहण्यासाठी फोनने स्कॅन करा"
   }
 };
 
@@ -1035,6 +1374,7 @@ function toggleLanguage() {
   renderMuscleGrid();
   renderEquipmentCatTabs();
   renderEquipmentGrid();
+  renderWarmupSection();
   renderExercises();
   if (bodyMapVisible) {
     if (zoomedMuscleGroup) {
@@ -1061,6 +1401,9 @@ function applyLanguage() {
   const tabEquip = document.getElementById('tabEquipmentText');
   if (tabEquip) tabEquip.textContent = t.tabEquipment;
 
+  const tabWarmup = document.getElementById('tabWarmupText');
+  if (tabWarmup) tabWarmup.textContent = t.tabWarmup;
+
   const searchInput = document.getElementById('exerciseSearch');
   if (searchInput) searchInput.placeholder = t.searchPlaceholder;
 
@@ -1085,6 +1428,12 @@ function applyLanguage() {
   const equipSub = document.getElementById('equipmentSubhead');
   if (equipSub) equipSub.textContent = t.equipmentSubhead;
 
+  const warmupSecLbl = document.getElementById('warmupSectionLabel');
+  if (warmupSecLbl) warmupSecLbl.textContent = t.warmupSectionLabel;
+
+  const warmupSub = document.getElementById('warmupSubhead');
+  if (warmupSub) warmupSub.textContent = t.warmupSubhead;
+
   const filterPfx = document.getElementById('activeFilterPrefix');
   if (filterPfx) filterPfx.textContent = t.activeFilterPrefix;
 
@@ -1096,10 +1445,24 @@ function applyLanguage() {
     `;
   }
 
+  const printQrBtn = document.getElementById('printQrBtnLabel');
+  if (printQrBtn) printQrBtn.textContent = t.printQrBtnLabel;
+
+  const qrModalTitle = document.getElementById('qrModalTitle');
+  if (qrModalTitle) qrModalTitle.textContent = t.qrModalTitle;
+
+  const qrModalSubhead = document.getElementById('qrModalSubhead');
+  if (qrModalSubhead) qrModalSubhead.textContent = t.qrModalSubhead;
+
+  const qrPrintNowLabel = document.getElementById('qrPrintNowLabel');
+  if (qrPrintNowLabel) qrPrintNowLabel.textContent = t.qrPrintNowLabel;
+
   const mobM = document.getElementById('mobMusclesLabel');
   if (mobM) mobM.textContent = t.musclesTabMob;
   const mobE = document.getElementById('mobEquipLabel');
   if (mobE) mobE.textContent = t.equipTabMob;
+  const mobW = document.getElementById('mobWarmupLabel');
+  if (mobW) mobW.textContent = t.warmupTabMob;
   const mobB = document.getElementById('mobBodyLabel');
   if (mobB) mobB.textContent = t.bodyTabMob;
 
@@ -1630,27 +1993,64 @@ function switchMode(mode) {
   activeMode = mode;
   const tabMuscles = document.getElementById('tabMuscles');
   const tabEquipment = document.getElementById('tabEquipment');
+  const tabWarmup = document.getElementById('tabWarmup');
   const muscleSection = document.getElementById('muscleSection');
   const equipmentSection = document.getElementById('equipmentSection');
+  const warmupSection = document.getElementById('warmupSection');
+  const bodyMapControls = document.querySelector('.body-map-controls');
+  const bodyMapWrapper = document.getElementById('bodyMapWrapper');
+  const exercisesHeader = document.getElementById('exercisesHeader');
+  const exerciseGrid = document.getElementById('exerciseGrid');
+  const activeFilterBar = document.getElementById('activeFilterBar');
   const mobM = document.getElementById('mobNavMuscles');
   const mobE = document.getElementById('mobNavEquip');
+  const mobW = document.getElementById('mobNavWarmup');
+
+  // Reset tab active states
+  [tabMuscles, tabEquipment, tabWarmup].forEach(tab => {
+    if (tab) {
+      tab.classList.remove('active');
+      tab.setAttribute('aria-selected', 'false');
+    }
+  });
+  [mobM, mobE, mobW].forEach(nav => {
+    if (nav) nav.classList.remove('active');
+  });
 
   if (mode === 'muscles') {
     if (tabMuscles) { tabMuscles.classList.add('active'); tabMuscles.setAttribute('aria-selected', 'true'); }
-    if (tabEquipment) { tabEquipment.classList.remove('active'); tabEquipment.setAttribute('aria-selected', 'false'); }
+    if (mobM) mobM.classList.add('active');
     if (muscleSection) muscleSection.style.display = 'block';
     if (equipmentSection) equipmentSection.style.display = 'none';
-    if (mobM) mobM.classList.add('active');
-    if (mobE) mobE.classList.remove('active');
-  } else {
+    if (warmupSection) warmupSection.style.display = 'none';
+    if (bodyMapControls) bodyMapControls.style.display = 'flex';
+    if (exercisesHeader) exercisesHeader.style.display = 'flex';
+    if (exerciseGrid) exerciseGrid.style.display = 'grid';
+    renderMuscleGrid();
+  } else if (mode === 'equipment') {
     if (tabEquipment) { tabEquipment.classList.add('active'); tabEquipment.setAttribute('aria-selected', 'true'); }
-    if (tabMuscles) { tabMuscles.classList.remove('active'); tabMuscles.setAttribute('aria-selected', 'false'); }
+    if (mobE) mobE.classList.add('active');
     if (muscleSection) muscleSection.style.display = 'none';
     if (equipmentSection) equipmentSection.style.display = 'block';
-    if (mobE) mobE.classList.add('active');
-    if (mobM) mobM.classList.remove('active');
+    if (warmupSection) warmupSection.style.display = 'none';
+    if (bodyMapControls) bodyMapControls.style.display = 'flex';
+    if (exercisesHeader) exercisesHeader.style.display = 'flex';
+    if (exerciseGrid) exerciseGrid.style.display = 'grid';
     renderEquipmentCatTabs();
     renderEquipmentGrid();
+  } else if (mode === 'warmup') {
+    if (tabWarmup) { tabWarmup.classList.add('active'); tabWarmup.setAttribute('aria-selected', 'true'); }
+    if (mobW) mobW.classList.add('active');
+    if (muscleSection) muscleSection.style.display = 'none';
+    if (equipmentSection) equipmentSection.style.display = 'none';
+    if (warmupSection) warmupSection.style.display = 'block';
+    if (bodyMapControls) bodyMapControls.style.display = 'none';
+    if (bodyMapWrapper) bodyMapWrapper.style.display = 'none';
+    bodyMapVisible = false;
+    if (exercisesHeader) exercisesHeader.style.display = 'none';
+    if (exerciseGrid) exerciseGrid.style.display = 'none';
+    if (activeFilterBar) activeFilterBar.style.display = 'none';
+    renderWarmupSection();
   }
 }
 
@@ -1718,8 +2118,116 @@ function renderEquipmentGrid() {
           ${eq.muscles.map(m => `<span class="eq-muscle-tag">${m}</span>`).join('')}
         </div>
         <div class="eq-footer">
-          <span class="eq-badge">${eq.category}</span>
+          <div class="eq-footer-left">
+            <span class="eq-badge">${eq.category}</span>
+            <button class="eq-qr-btn" type="button" onclick="event.stopPropagation(); openQrModal('${eq.id}')" title="Generate QR Sticker for this station" aria-label="QR Sticker">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>QR Sticker</span>
+            </button>
+          </div>
           <span class="eq-action-btn">${t.showExercises}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── WARMUP & JOINT MOBILITY SECTION RENDERER ────────────────────────────────
+function renderWarmupSection() {
+  const container = document.getElementById('warmupSection');
+  if (!container) return;
+  renderWarmupCatTabs();
+  renderWarmupGrid();
+}
+
+function renderWarmupCatTabs() {
+  const container = document.getElementById('warmupCatTabs');
+  if (!container) return;
+  const t = translations[currentLang];
+  const catNames = {
+    "All": t.allProtocols,
+    "Upper Body": t.upperBodyPrep,
+    "Lower Body": t.lowerBodyPrep
+  };
+  container.innerHTML = warmupCategories.map(cat => `
+    <button class="eq-cat-btn ${cat === activeWarmupCategory ? 'active' : ''}" onclick="setWarmupCategory('${cat}')">
+      ${catNames[cat] || cat}
+    </button>
+  `).join('');
+}
+
+function setWarmupCategory(cat) {
+  activeWarmupCategory = cat;
+  renderWarmupCatTabs();
+  renderWarmupGrid();
+}
+
+function renderWarmupGrid() {
+  const grid = document.getElementById('warmupGrid');
+  if (!grid) return;
+  const t = translations[currentLang];
+
+  const filtered = activeWarmupCategory === 'All'
+    ? warmupProtocols
+    : warmupProtocols.filter(p => p.category === activeWarmupCategory);
+
+  grid.innerHTML = filtered.map(p => {
+    const title = p.title[currentLang] || p.title.en;
+    const joints = p.targetJoints[currentLang] || p.targetJoints.en;
+    const ideal = p.idealBefore[currentLang] || p.idealBefore.en;
+
+    return `
+      <div class="warmup-card" id="warmup-${p.id}">
+        <div class="warmup-card-header">
+          <div class="warmup-card-title-row">
+            <div class="warmup-title-wrap">
+              <span class="warmup-badge category">${p.tag}</span>
+              <h3 class="warmup-title">${title}</h3>
+            </div>
+            <div class="warmup-duration-pill">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>${p.duration}</span>
+            </div>
+          </div>
+          <div class="warmup-meta">
+            <div class="warmup-meta-item">
+              <strong>${t.targetJointsLabel}</strong> <span>${joints}</span>
+            </div>
+            <div class="warmup-meta-item">
+              <strong>${t.idealBeforeLabel}</strong> <span>${ideal}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warmup-steps-list">
+          ${p.steps.map(s => {
+            const stepName = s.name[currentLang] || s.name.en;
+            const stepCue = s.cue[currentLang] || s.cue.en;
+            return `
+              <div class="warmup-step-item">
+                <div class="step-num">${s.num}</div>
+                <div class="step-content">
+                  <div class="step-head">
+                    <span class="step-name">${stepName}</span>
+                    <span class="step-dose">${s.dose}</span>
+                  </div>
+                  <p class="step-cue">${stepCue}</p>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="warmup-footer">
+          <div class="warmup-links-label">${t.startThisWorkout}:</div>
+          <div class="warmup-links-chips">
+            ${p.linkedExercises.map(exName => `
+              <button class="warmup-link-chip" type="button" onclick="jumpToExercise('${exName.replace(/'/g, "\\'")}')" title="Open ${exName}">
+                <span>${exName}</span>
+                <span class="link-arrow" aria-hidden="true">→</span>
+              </button>
+            `).join('')}
+          </div>
         </div>
       </div>
     `;
@@ -1921,6 +2429,24 @@ function renderExercises() {
       <div class="ex-form">${ex.form}</div>
       
       <div class="ex-details" onclick="event.stopPropagation()">
+        <!-- Machine Busy 1-Tap Alternatives -->
+        <div class="ex-alternatives">
+          <div class="alt-label-row">
+            <span class="alt-label-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+            </span>
+            <span class="alt-title">${t.machineBusyTitle}</span>
+          </div>
+          <div class="alt-chips-container">
+            ${getExerciseAlternatives(ex).map(alt => `
+              <button class="alt-chip" type="button" onclick="jumpToExercise('${alt.replace(/'/g, "\\'")}')" title="Swap to ${alt}">
+                <span class="alt-chip-name">${alt}</span>
+                <span class="alt-chip-arrow" aria-hidden="true">→</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
         <div class="ex-synergists">
           <strong>${t.secondaryMuscles}</strong> <span>${ex.secondary}</span>
         </div>
@@ -1936,6 +2462,50 @@ function renderExercises() {
       </div>
     </div>
   `).join('');
+}
+
+function jumpToExercise(targetName) {
+  const match = exercises.find(e => e.name.toLowerCase() === targetName.toLowerCase());
+  if (!match) return;
+
+  if (activeMode !== 'muscles') {
+    switchMode('muscles');
+  }
+
+  if (activeEquipmentId) {
+    activeEquipmentId = null;
+  }
+  if (activeGroup !== 'All' && match.group !== activeGroup) {
+    activeGroup = 'All';
+    renderMuscleGrid();
+    updateBodyMapHighlights();
+  }
+  if (searchQuery) {
+    clearSearch();
+  } else {
+    renderExercises();
+  }
+
+  setTimeout(() => {
+    const allCards = document.querySelectorAll('.exercise-card');
+    let targetCard = null;
+    allCards.forEach(card => {
+      const nameEl = card.querySelector('.ex-name');
+      if (nameEl && nameEl.textContent.trim().toLowerCase() === targetName.toLowerCase()) {
+        targetCard = card;
+      }
+    });
+
+    if (targetCard) {
+      targetCard.classList.add('expanded');
+      targetCard.setAttribute('aria-expanded', 'true');
+      targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      targetCard.classList.add('swap-highlight');
+      setTimeout(() => {
+        targetCard.classList.remove('swap-highlight');
+      }, 2500);
+    }
+  }, 100);
 }
 
 function setGroup(g) {
@@ -1966,6 +2536,94 @@ function setGroup(g) {
   }
 }
 
+// ─── GYM FLOOR QR CODE STICKERS MODAL ───────────────────────────────────────
+function openQrModal(targetId) {
+  const modal = document.getElementById('qrModal');
+  const body = document.getElementById('qrModalBody');
+  if (!modal || !body) return;
+
+  const t = translations[currentLang];
+  let itemsToRender = [];
+
+  if (!targetId || targetId === 'all') {
+    itemsToRender = equipments;
+  } else {
+    const eq = equipments.find(e => e.id === targetId);
+    if (eq) itemsToRender = [eq];
+  }
+
+  body.innerHTML = `
+    <div class="qr-filter-bar no-print">
+      <div class="qr-filter-left">
+        <label for="qrMachineSelect" class="qr-filter-label">Displaying Station:</label>
+        <select id="qrMachineSelect" class="qr-machine-select" onchange="openQrModal(this.value)">
+          <option value="all" ${targetId === 'all' || !targetId ? 'selected' : ''}>All 25 Stations (Printable A4 Sheet)</option>
+          ${equipments.map(eq => `<option value="${eq.id}" ${targetId === eq.id ? 'selected' : ''}>${eq.station}: ${eq.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="qr-filter-count">
+        ${itemsToRender.length} sticker${itemsToRender.length !== 1 ? 's' : ''} ready to print
+      </div>
+    </div>
+    <div class="qr-stickers-grid">
+      ${itemsToRender.map(eq => {
+        const url = `https://nscp-exercise-list.vercel.app/?machine=${eq.id}`;
+        const qrSvg = (typeof QRCode !== 'undefined' && QRCode.generateSVG) 
+          ? QRCode.generateSVG(url, 140, 1) 
+          : `<div class="qr-fallback">QR Code</div>`;
+        const musclesList = eq.muscles.join(' · ');
+
+        return `
+          <div class="qr-sticker-card" id="sticker-${eq.id}">
+            <div class="sticker-cut-border">
+              <div class="sticker-brand-header">
+                <div class="sticker-brand-mark">
+                  <img src="assets/nsc_logo_transparent.png" alt="Netaji Sports Club" class="sticker-brand-logo">
+                </div>
+                <div class="sticker-brand-text">
+                  <div class="sticker-gym-name">NETAJI SPORTS CLUB</div>
+                  <div class="sticker-gym-sub">Pandharpur · 90 11 44 5000</div>
+                </div>
+              </div>
+
+              <div class="sticker-qr-container">
+                <div class="sticker-qr-box">
+                  ${qrSvg}
+                </div>
+              </div>
+
+              <div class="sticker-station-info">
+                <div class="sticker-station-badge">${eq.station}</div>
+                <div class="sticker-station-name">${eq.name}</div>
+                <div class="sticker-muscles">Target: ${musclesList}</div>
+              </div>
+
+              <div class="sticker-footer-info">
+                <div class="sticker-instruction">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  <span>${t.qrScanHint}</span>
+                </div>
+                <div class="sticker-url-text">nscp-exercise-list.vercel.app/?machine=${eq.id}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQrModal() {
+  const modal = document.getElementById('qrModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
 // ─── URL QUERY DEEP-LINKING (QR CODES) ─────────────────────────────────────────
 function handleUrlParams() {
   const params = new URLSearchParams(window.location.search);
@@ -1978,14 +2636,29 @@ function handleUrlParams() {
     localStorage.setItem('nsc_lang', currentLang);
     applyLanguage();
   }
-  if (params.has('machine')) {
-    const machineId = params.get('machine');
+  if (params.has('machine') || params.has('equipment')) {
+    const machineId = params.get('machine') || params.get('equipment');
     const eq = equipments.find(e => e.id === machineId);
     if (eq) {
       switchMode('equipment');
       filterByEquipment(machineId);
       return;
     }
+  }
+  if (params.has('warmup')) {
+    switchMode('warmup');
+    const wpId = params.get('warmup');
+    if (wpId) {
+      setTimeout(() => {
+        const card = document.getElementById(`warmup-${wpId}`);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('swap-highlight');
+          setTimeout(() => card.classList.remove('swap-highlight'), 2500);
+        }
+      }, 150);
+    }
+    return;
   }
   if (params.has('muscle')) {
     const muscle = params.get('muscle');
@@ -2006,6 +2679,11 @@ function handleUrlParams() {
 // ─── KEYBOARD ACCESSIBILITY (R-32: ESCAPE KEY DISMISSAL) ─────────────────────
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    const qrModal = document.getElementById('qrModal');
+    if (qrModal && qrModal.style.display !== 'none') {
+      closeQrModal();
+      return;
+    }
     if (zoomedMuscleGroup) {
       resetBodyMapZoom();
     } else if (searchQuery) {
