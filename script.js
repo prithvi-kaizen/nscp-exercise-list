@@ -951,6 +951,7 @@ const warmupProtocols = [
       mr: "खांदे, वरील पाठीचा कणा (Thoracic) व स्कॅपुला"
     },
     duration: "3-4 min",
+    video: "https://www.youtube.com/results?search_query=upper+body+warmup+routine+rotator+cuff+band+pull+aparts",
     idealBefore: {
       en: "Bench Press, Incline Press, Shoulder Press, Dips",
       mr: "बेंच प्रेस, इन्क्लाइन प्रेस, शोल्डर प्रेस, डिप्स"
@@ -1008,6 +1009,7 @@ const warmupProtocols = [
       mr: "कमरेचे जॉईंट्स (Hips), गुडघे (Knees) व घोटे (Ankles)"
     },
     duration: "3-4 min",
+    video: "https://www.youtube.com/results?search_query=squat+mobility+routine+ankle+dorsiflexion+90+90",
     idealBefore: {
       en: "Barbell Squats, Hack Squat, 45° Leg Press, Lunges",
       mr: "बारबेल स्क्वॉट, हॅक स्क्वॉट, लेग प्रेस, लंजेस"
@@ -1065,6 +1067,7 @@ const warmupProtocols = [
       mr: "कंबर (Lumbar Spine), एसआय जॉईंट व हॅमस्ट्रिंग्स"
     },
     duration: "3-4 min",
+    video: "https://www.youtube.com/results?search_query=deadlift+warmup+routine+bird+dog+glute+bridges+hamstring",
     idealBefore: {
       en: "Romanian Deadlift, Barbell Sumo Deadlift, Barbell Rows",
       mr: "रोमानियन डेडलिफ्ट, सुमो डेडलिफ्ट, बारबेल रो"
@@ -1122,6 +1125,7 @@ const warmupProtocols = [
       mr: "लॅट्स (Lats), स्कॅपुला व खांद्याची हालचाल"
     },
     duration: "3-4 min",
+    video: "https://www.youtube.com/results?search_query=pull+day+warmup+routine+dead+hang+scapular+lat+activation",
     idealBefore: {
       en: "Lat Pulldown, Seated Cable Row, Assisted Pull-Up, Barbell Row",
       mr: "लॅट पुलडाउन, सीटेड केबल रो, पुल-अप्स, बारबेल रो"
@@ -1286,18 +1290,13 @@ const translations = {
     focusedViewBadge: "Focused Muscle View",
     showExercises: "Show Exercises",
     machineBusyTitle: "Station busy? 1-Tap alternative:",
-    printQrBtnLabel: "Print Floor QR Stickers",
-    qrModalTitle: "Gym Floor QR Code Stickers",
-    qrModalSubhead: "Printable high-contrast QR stickers for gym machines. Lifters scan with phone camera to open verified exercise cues.",
-    qrPrintNowLabel: "Print A4 Sticker Sheet",
-    qrCloseLabel: "Close",
     targetJointsLabel: "Target Joints & Capsule:",
     idealBeforeLabel: "Recommended Before:",
     allProtocols: "All Protocols",
     upperBodyPrep: "Upper Body",
     lowerBodyPrep: "Lower Body",
     startThisWorkout: "View Station Exercises",
-    qrScanHint: "Scan with phone camera for verified form cues"
+    watchWarmupVideo: "Watch Routine Video"
   },
   mr: {
     headerSubhead: "पंढरपूर · 90 11 44 5000",
@@ -1334,18 +1333,13 @@ const translations = {
     focusedViewBadge: "स्नायू तपशील",
     showExercises: "व्यायाम पहा",
     machineBusyTitle: "मशीन रिकामी नाही? पर्यायी व्यायाम:",
-    printQrBtnLabel: "फ्लोअर QR स्टिकर्स प्रिंट करा",
-    qrModalTitle: "जिम फ्लोअर मशीन QR कोड स्टिकर्स",
-    qrModalSubhead: "मशीनवर लावण्यासाठी प्रिंट करण्यायोग्य QR स्टिकर्स. कॅमेऱ्याने स्कॅन करताच थेट योग्य फॉर्म व व्यायाम उघडतील.",
-    qrPrintNowLabel: "A4 स्टिकर शीट प्रिंट करा",
-    qrCloseLabel: "बंद करा",
     targetJointsLabel: "लक्ष्य सांधे (Joints):",
     idealBeforeLabel: "खालील व्यायामापूर्वी उपयुक्त:",
     allProtocols: "सर्व वॉर्मअप",
     upperBodyPrep: "अप्पर बॉडी",
     lowerBodyPrep: "लोअर बॉडी",
     startThisWorkout: "संबंधित व्यायाम पहा",
-    qrScanHint: "योग्य तंत्र व फॉर्म पाहण्यासाठी फोनने स्कॅन करा"
+    watchWarmupVideo: "वॉर्मअप व्हिडिओ पहा"
   }
 };
 
@@ -1444,18 +1438,6 @@ function applyLanguage() {
       <span>${t.clearFilterBtn}</span>
     `;
   }
-
-  const printQrBtn = document.getElementById('printQrBtnLabel');
-  if (printQrBtn) printQrBtn.textContent = t.printQrBtnLabel;
-
-  const qrModalTitle = document.getElementById('qrModalTitle');
-  if (qrModalTitle) qrModalTitle.textContent = t.qrModalTitle;
-
-  const qrModalSubhead = document.getElementById('qrModalSubhead');
-  if (qrModalSubhead) qrModalSubhead.textContent = t.qrModalSubhead;
-
-  const qrPrintNowLabel = document.getElementById('qrPrintNowLabel');
-  if (qrPrintNowLabel) qrPrintNowLabel.textContent = t.qrPrintNowLabel;
 
   const mobM = document.getElementById('mobMusclesLabel');
   if (mobM) mobM.textContent = t.musclesTabMob;
@@ -2118,13 +2100,7 @@ function renderEquipmentGrid() {
           ${eq.muscles.map(m => `<span class="eq-muscle-tag">${m}</span>`).join('')}
         </div>
         <div class="eq-footer">
-          <div class="eq-footer-left">
-            <span class="eq-badge">${eq.category}</span>
-            <button class="eq-qr-btn" type="button" onclick="event.stopPropagation(); openQrModal('${eq.id}')" title="Generate QR Sticker for this station" aria-label="QR Sticker">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-              <span>QR Sticker</span>
-            </button>
-          </div>
+          <span class="eq-badge">${eq.category}</span>
           <span class="eq-action-btn">${t.showExercises}</span>
         </div>
       </div>
@@ -2216,6 +2192,12 @@ function renderWarmupGrid() {
               </div>
             `;
           }).join('')}
+        <div class="warmup-video-row">
+          <a class="yt-btn warmup-yt-btn" href="${p.video || ytUrl(title)}" target="_blank" rel="noopener">
+            <svg class="yt-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>${t.watchWarmupVideo || t.watchTutorial}</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          </a>
         </div>
 
         <div class="warmup-footer">
@@ -2536,95 +2518,7 @@ function setGroup(g) {
   }
 }
 
-// ─── GYM FLOOR QR CODE STICKERS MODAL ───────────────────────────────────────
-function openQrModal(targetId) {
-  const modal = document.getElementById('qrModal');
-  const body = document.getElementById('qrModalBody');
-  if (!modal || !body) return;
-
-  const t = translations[currentLang];
-  let itemsToRender = [];
-
-  if (!targetId || targetId === 'all') {
-    itemsToRender = equipments;
-  } else {
-    const eq = equipments.find(e => e.id === targetId);
-    if (eq) itemsToRender = [eq];
-  }
-
-  body.innerHTML = `
-    <div class="qr-filter-bar no-print">
-      <div class="qr-filter-left">
-        <label for="qrMachineSelect" class="qr-filter-label">Displaying Station:</label>
-        <select id="qrMachineSelect" class="qr-machine-select" onchange="openQrModal(this.value)">
-          <option value="all" ${targetId === 'all' || !targetId ? 'selected' : ''}>All 25 Stations (Printable A4 Sheet)</option>
-          ${equipments.map(eq => `<option value="${eq.id}" ${targetId === eq.id ? 'selected' : ''}>${eq.station}: ${eq.name}</option>`).join('')}
-        </select>
-      </div>
-      <div class="qr-filter-count">
-        ${itemsToRender.length} sticker${itemsToRender.length !== 1 ? 's' : ''} ready to print
-      </div>
-    </div>
-    <div class="qr-stickers-grid">
-      ${itemsToRender.map(eq => {
-        const url = `https://nscp-exercise-list.vercel.app/?machine=${eq.id}`;
-        const qrSvg = (typeof QRCode !== 'undefined' && QRCode.generateSVG) 
-          ? QRCode.generateSVG(url, 140, 1) 
-          : `<div class="qr-fallback">QR Code</div>`;
-        const musclesList = eq.muscles.join(' · ');
-
-        return `
-          <div class="qr-sticker-card" id="sticker-${eq.id}">
-            <div class="sticker-cut-border">
-              <div class="sticker-brand-header">
-                <div class="sticker-brand-mark">
-                  <img src="assets/nsc_logo_transparent.png" alt="Netaji Sports Club" class="sticker-brand-logo">
-                </div>
-                <div class="sticker-brand-text">
-                  <div class="sticker-gym-name">NETAJI SPORTS CLUB</div>
-                  <div class="sticker-gym-sub">Pandharpur · 90 11 44 5000</div>
-                </div>
-              </div>
-
-              <div class="sticker-qr-container">
-                <div class="sticker-qr-box">
-                  ${qrSvg}
-                </div>
-              </div>
-
-              <div class="sticker-station-info">
-                <div class="sticker-station-badge">${eq.station}</div>
-                <div class="sticker-station-name">${eq.name}</div>
-                <div class="sticker-muscles">Target: ${musclesList}</div>
-              </div>
-
-              <div class="sticker-footer-info">
-                <div class="sticker-instruction">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                  <span>${t.qrScanHint}</span>
-                </div>
-                <div class="sticker-url-text">nscp-exercise-list.vercel.app/?machine=${eq.id}</div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
-  `;
-
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeQrModal() {
-  const modal = document.getElementById('qrModal');
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-}
-
-// ─── URL QUERY DEEP-LINKING (QR CODES) ─────────────────────────────────────────
+// ─── URL QUERY DEEP-LINKING ──────────────────────────────────────────────────
 function handleUrlParams() {
   const params = new URLSearchParams(window.location.search);
   
@@ -2679,11 +2573,6 @@ function handleUrlParams() {
 // ─── KEYBOARD ACCESSIBILITY (R-32: ESCAPE KEY DISMISSAL) ─────────────────────
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    const qrModal = document.getElementById('qrModal');
-    if (qrModal && qrModal.style.display !== 'none') {
-      closeQrModal();
-      return;
-    }
     if (zoomedMuscleGroup) {
       resetBodyMapZoom();
     } else if (searchQuery) {

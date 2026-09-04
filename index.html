@@ -118,13 +118,7 @@
         <div class="section-label" id="equipmentSectionLabel">NSC Gym Equipment & Machine Directory</div>
         <div class="equipment-subhead" id="equipmentSubhead">Select any machine or station to inspect matching exercises</div>
       </div>
-      <div class="equipment-actions-bar">
-        <button class="action-secondary-btn" id="printAllQrBtn" onclick="openQrModal('all')" title="Print Floor QR Stickers for all 25 machines" aria-label="Print Floor QR Stickers">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          <span id="printQrBtnLabel">Print Floor QR Stickers</span>
-        </button>
-        <div class="equipment-cat-tabs" id="equipmentCatTabs"></div>
-      </div>
+      <div class="equipment-cat-tabs" id="equipmentCatTabs"></div>
     </div>
     <div class="equipment-grid" id="equipmentGrid"></div>
   </div>
@@ -162,30 +156,6 @@
   <div class="exercise-grid" id="exerciseGrid" aria-live="polite"></div>
 </main>
 
-<!-- Gym Floor QR Code Stickers Modal -->
-<div class="qr-modal-backdrop" id="qrModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
-  <div class="qr-modal-container">
-    <div class="qr-modal-header">
-      <div class="qr-modal-header-info">
-        <h3 id="qrModalTitle">Gym Floor QR Code Stickers</h3>
-        <p id="qrModalSubhead">Printable high-contrast QR stickers for gym machines. Lifters scan with phone camera to open verified exercise cues.</p>
-      </div>
-      <div class="qr-modal-header-actions">
-        <button class="action-primary-btn" onclick="window.print()" title="Print A4 sticker sheet" aria-label="Print A4 sticker sheet">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          <span id="qrPrintNowLabel">Print A4 Sticker Sheet</span>
-        </button>
-        <button class="qr-close-btn" onclick="closeQrModal()" aria-label="Close modal" title="Close">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-      </div>
-    </div>
-    <div class="qr-modal-body" id="qrModalBody">
-      <!-- Injected dynamically by script.js -->
-    </div>
-  </div>
-</div>
-
 <!-- Mobile Sticky Bottom Navigation (Clean Vector Line Art) -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Gym Floor Quick Navigation">
   <button class="mob-nav-item active" id="mobNavMuscles" onclick="switchMode('muscles');">
@@ -214,7 +184,6 @@
   </button>
 </nav>
 
-<script src="qrcode.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
