@@ -1,15 +1,15 @@
-// ─── NETAJI SPORTS CLUB: MEMBER ACCESS & ROSTER SYSTEM ───────────────────────
-// Provides phone + 4-digit PIN authentication, persistent device sessions,
+// Netaji Sports Club: Member Access & Roster Management System
+// Phone + 4-digit PIN authentication, persistent device sessions,
 // automatic membership expiry checks, and administrative roster management.
 
 const NSC_DEFAULT_MEMBERS = [
   {
     phone: "9011445000",
-    name: "Club Desk (Staff)",
+    name: "Prithviraj Patil (Club Admin)",
     pin: "5000",
     startDate: "2026-01-01",
-    expiryDate: "2027-12-31",
-    durationMonths: 24,
+    expiryDate: "2028-12-31",
+    durationMonths: 36,
     status: "active"
   },
   {
@@ -42,12 +42,41 @@ const NSCAuth = (function () {
   let selectedPlanMonths = 1;
   let rosterFilter = "all";
 
-  // ─── DATABASE HELPERS ──────────────────────────────────────────────────────
+  // Phone sanitizer handles: +91, leading 0, spaces, hyphens
+  function sanitizePhoneNumber(val) {
+    if (!val) return "";
+    let digits = String(val).trim().replace(/\D/g, "");
+    if (digits.length === 12 && digits.startsWith("91")) {
+      digits = digits.slice(2);
+    } else if (digits.length === 11 && digits.startsWith("0")) {
+      digits = digits.slice(1);
+    } else if (digits.length > 10) {
+      digits = digits.slice(-10);
+    }
+    return digits;
+  }
+
+  // Database helpers
   function getMembersDB() {
     try {
       const data = localStorage.getItem(STORAGE_KEY_MEMBERS);
       if (data) {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge default members if not present
+          let updated = false;
+          NSC_DEFAULT_MEMBERS.forEach(def => {
+            const exists = parsed.some(m => sanitizePhoneNumber(m.phone) === def.phone);
+            if (!exists) {
+              parsed.unshift(def);
+              updated = true;
+            }
+          });
+          if (updated) {
+            saveMembersDB(parsed);
+          }
+          return parsed;
+        }
       }
     } catch (e) {
       console.error("Failed to parse members DB", e);
@@ -89,7 +118,7 @@ const NSCAuth = (function () {
     }
   }
 
-  // ─── EXPIRY CALCULATOR ─────────────────────────────────────────────────────
+  // Expiry calculations
   function calculateExpiry(expiryDateStr) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -111,7 +140,7 @@ const NSCAuth = (function () {
     };
   }
 
-  // ─── UI & MODAL MANAGEMENT ─────────────────────────────────────────────────
+  // UI and modal management
   function init() {
     checkInitialAccess();
     setupAdminAutoTrigger();
@@ -126,8 +155,9 @@ const NSCAuth = (function () {
       return;
     }
 
-    // Check if member is still in database and fresh expiry status
-    const currentMember = members.find(m => m.phone === session.phone);
+    const currentMember = members.find(
+      m => sanitizePhoneNumber(m.phone) === sanitizePhoneNumber(session.phone)
+    );
     if (!currentMember) {
       clearMemberSession();
       showAuthModal(false);
@@ -193,24 +223,50 @@ const NSCAuth = (function () {
     const pinInput = document.getElementById("memberPinInput");
     if (!phoneInput || !pinInput) return;
 
-    const rawPhone = phoneInput.value.trim().replace(/\D/g, "");
-    const rawPin = pinInput.value.trim();
+    const rawPhone = sanitizePhoneNumber(phoneInput.value);
+    const rawPin = pinInput.value.trim().replace(/\D/g, "");
+    const lang = localStorage.getItem("nsc_lang") || "en";
 
-    if (rawPhone.length !== 10 || rawPin.length !== 4) {
-      showAuthAlert("Please enter valid 10-digit phone and 4-digit PIN.");
+    if (rawPhone.length !== 10) {
+      showAuthAlert(
+        lang === "mr"
+          ? "कृपया १० अंकी वैध मोबाईल नंबर टाका."
+          : "Please enter a valid 10-digit mobile number."
+      );
+      phoneInput.focus();
+      return;
+    }
+
+    if (rawPin.length !== 4) {
+      showAuthAlert(
+        lang === "mr"
+          ? "कृपया ४ अंकी पिन टाका (डिफ़ॉल्ट: नंबरचे शेवटचे ४ अंक)."
+          : "Please enter your 4-digit PIN (default: last 4 digits of phone)."
+      );
+      pinInput.focus();
       return;
     }
 
     const members = getMembersDB();
-    const member = members.find(m => m.phone === rawPhone);
+    const member = members.find(
+      m => sanitizePhoneNumber(m.phone) === rawPhone
+    );
 
     if (!member) {
-      showAuthAlert("Mobile number not found in register.");
+      showAuthAlert(
+        lang === "mr"
+          ? `मोबाईल नंबर +91 ${rawPhone} नोंदणीत सापडला नाही. ॲडमिन पोर्टलवरून नोंदणी करा.`
+          : `Mobile number +91 ${rawPhone} not found in register. Please register in Admin Portal or contact front desk.`
+      );
       return;
     }
 
     if (member.pin !== rawPin) {
-      showAuthAlert("Incorrect PIN.");
+      showAuthAlert(
+        lang === "mr"
+          ? "चुकीचा पिन. डिफ़ॉल्ट पिन: मोबाईल नंबरचे शेवटचे ४ अंक."
+          : "Incorrect PIN. Default PIN is the last 4 digits of your phone number."
+      );
       pinInput.focus();
       return;
     }
@@ -268,9 +324,9 @@ const NSCAuth = (function () {
     }
 
     if (badgeWrapper) badgeWrapper.style.display = "inline-flex";
-    if (pillName) pillName.textContent = member.name.split(" ")[0]; // First name for header
+    if (pillName) pillName.textContent = member.name.split(" ")[0];
     if (dropName) dropName.textContent = member.name;
-    if (dropPhone) dropPhone.textContent = `+91 ${member.phone}`;
+    if (dropPhone) dropPhone.textContent = `+91 ${sanitizePhoneNumber(member.phone)}`;
 
     const { formattedDate, daysRemaining } = calculateExpiry(member.expiryDate);
     if (dropExpiry) dropExpiry.textContent = `Valid until ${formattedDate}`;
@@ -286,7 +342,7 @@ const NSCAuth = (function () {
     if (btn) btn.setAttribute("aria-expanded", !isShown);
   }
 
-  // ─── ADMIN MANAGEMENT PORTAL ───────────────────────────────────────────────
+  // Admin portal
   function setupAdminAutoTrigger() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("admin") === "true") {
@@ -295,6 +351,9 @@ const NSCAuth = (function () {
   }
 
   function openAdminModal() {
+    const authModal = document.getElementById("memberAuthModal");
+    if (authModal) authModal.style.display = "none";
+
     const modal = document.getElementById("adminModal");
     const pinView = document.getElementById("adminPinView");
     const dashView = document.getElementById("adminDashboardView");
@@ -324,6 +383,10 @@ const NSCAuth = (function () {
     if (modal) {
       modal.style.display = "none";
       document.body.style.overflow = "";
+    }
+    const session = getMemberSession();
+    if (!session) {
+      showAuthModal(false);
     }
   }
 
@@ -385,9 +448,42 @@ const NSCAuth = (function () {
 
   function handlePhoneAutoPin(phoneValue) {
     const pinInput = document.getElementById("newMemberPin");
-    const clean = phoneValue.replace(/\D/g, "");
+    const clean = sanitizePhoneNumber(phoneValue);
     if (clean.length >= 4 && pinInput && !pinInput.dataset.userEdited) {
       pinInput.value = clean.slice(-4);
+    }
+  }
+
+  function showAdminAddAlert(msg, type = "info", memberRecord = null) {
+    const box = document.getElementById("adminAddAlert");
+    if (!box) return;
+    box.className = `admin-add-alert-box alert-${type}`;
+    if (memberRecord && type === "success") {
+      box.innerHTML = `
+        <div class="alert-msg-wrap">
+          <strong>${msg}</strong>
+        </div>
+        <button type="button" class="btn-instant-login" onclick="NSCAuth.loginAsMember('${memberRecord.phone}')">
+          Log In as ${memberRecord.name} Now
+        </button>
+      `;
+    } else {
+      box.textContent = msg;
+    }
+    box.style.display = "flex";
+  }
+
+  function loginAsMember(phone) {
+    const members = getMembersDB();
+    const cleanPhone = sanitizePhoneNumber(phone);
+    const member = members.find(
+      m => sanitizePhoneNumber(m.phone) === cleanPhone
+    );
+    if (member) {
+      saveMemberSession(member);
+      closeAdminModal();
+      hideAuthModal();
+      renderMemberStatusHeader(member);
     }
   }
 
@@ -398,11 +494,18 @@ const NSCAuth = (function () {
     if (!nameInput || !phoneInput || !pinInput) return;
 
     const name = nameInput.value.trim();
-    const phone = phoneInput.value.trim().replace(/\D/g, "");
-    let pin = pinInput.value.trim();
+    const phone = sanitizePhoneNumber(phoneInput.value);
+    let pin = pinInput.value.trim().replace(/\D/g, "");
 
-    if (!name || phone.length !== 10) {
-      alert("Please enter valid name and 10-digit phone.");
+    if (!name) {
+      showAdminAddAlert("Please enter member full name.", "error");
+      nameInput.focus();
+      return;
+    }
+
+    if (phone.length !== 10) {
+      showAdminAddAlert("Please enter a valid 10-digit mobile number.", "error");
+      phoneInput.focus();
       return;
     }
 
@@ -417,14 +520,14 @@ const NSCAuth = (function () {
     if (selectedPlanMonths === "custom") {
       const customDateInput = document.getElementById("newMemberCustomDate");
       if (!customDateInput || !customDateInput.value) {
-        alert("Please select a valid custom expiry date.");
+        showAdminAddAlert("Please select a valid custom expiry date.", "error");
         if (customDateInput) customDateInput.focus();
         return;
       }
       expiryDateStr = customDateInput.value;
       const chosen = new Date(expiryDateStr + "T23:59:59");
       if (isNaN(chosen.getTime())) {
-        alert("Invalid custom expiry date format.");
+        showAdminAddAlert("Invalid custom expiry date format.", "error");
         return;
       }
       const diffTime = chosen - startDate;
@@ -437,7 +540,9 @@ const NSCAuth = (function () {
     }
 
     const members = getMembersDB();
-    const existingIndex = members.findIndex(m => m.phone === phone);
+    const existingIndex = members.findIndex(
+      m => sanitizePhoneNumber(m.phone) === phone
+    );
 
     const newMemberRecord = {
       phone,
@@ -470,17 +575,26 @@ const NSCAuth = (function () {
 
     renderAdminDashboard();
 
-    // If current logged-in user is updated, update header badge
+    // Confirm registration with instant login button
+    showAdminAddAlert(
+      `Member ${name} (+91 ${phone}) registered successfully! PIN: ${pin}`,
+      "success",
+      newMemberRecord
+    );
+
     const session = getMemberSession();
-    if (session && session.phone === phone) {
+    if (session && sanitizePhoneNumber(session.phone) === phone) {
       saveMemberSession(newMemberRecord);
       renderMemberStatusHeader(newMemberRecord);
     }
   }
 
   function renewMember(phone, monthsToAdd) {
+    const cleanPhone = sanitizePhoneNumber(phone);
     const members = getMembersDB();
-    const member = members.find(m => m.phone === phone);
+    const member = members.find(
+      m => sanitizePhoneNumber(m.phone) === cleanPhone
+    );
     if (!member) return;
 
     const { isExpired } = calculateExpiry(member.expiryDate);
@@ -495,20 +609,23 @@ const NSCAuth = (function () {
     renderAdminDashboard();
 
     const session = getMemberSession();
-    if (session && session.phone === phone) {
+    if (session && sanitizePhoneNumber(session.phone) === cleanPhone) {
       saveMemberSession(member);
       renderMemberStatusHeader(member);
     }
   }
 
   function deleteMember(phone) {
-    if (!confirm(`Revoke membership and access for ${phone}?`)) return;
-    const members = getMembersDB().filter(m => m.phone !== phone);
+    const cleanPhone = sanitizePhoneNumber(phone);
+    if (!confirm(`Revoke membership and access for ${cleanPhone}?`)) return;
+    const members = getMembersDB().filter(
+      m => sanitizePhoneNumber(m.phone) !== cleanPhone
+    );
     saveMembersDB(members);
     renderAdminDashboard();
 
     const session = getMemberSession();
-    if (session && session.phone === phone) {
+    if (session && sanitizePhoneNumber(session.phone) === cleanPhone) {
       clearMemberSession();
       renderMemberStatusHeader(null);
       showAuthModal(false);
@@ -567,8 +684,9 @@ const NSCAuth = (function () {
     const members = getMembersDB();
 
     const filtered = members.filter(m => {
+      const cleanP = sanitizePhoneNumber(m.phone);
       const matchSearch =
-        m.name.toLowerCase().includes(query) || m.phone.includes(query);
+        m.name.toLowerCase().includes(query) || cleanP.includes(query);
       if (!matchSearch) return false;
 
       const { isExpired } = calculateExpiry(m.expiryDate);
@@ -604,23 +722,25 @@ const NSCAuth = (function () {
           badgeText = `${daysRemaining}d Left`;
         }
 
+        const cleanP = sanitizePhoneNumber(m.phone);
+
         return `
           <tr>
             <td class="cell-name"><strong>${m.name}</strong></td>
-            <td class="cell-phone font-mono">+91 ${m.phone}</td>
+            <td class="cell-phone font-mono">+91 ${cleanP}</td>
             <td class="cell-pin font-mono">${m.pin}</td>
             <td class="cell-expiry">${formattedDate}</td>
             <td class="cell-days">${isExpired ? "0" : daysRemaining}</td>
             <td><span class="status-badge ${badgeClass}">${badgeText}</span></td>
             <td class="cell-renew">
               <div class="renew-btn-group">
-                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${m.phone}', 1)" title="Add 1 Month">+1M</button>
-                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${m.phone}', 3)" title="Add 3 Months">+3M</button>
-                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${m.phone}', 6)" title="Add 6 Months">+6M</button>
+                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 1)" title="Add 1 Month">+1M</button>
+                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 3)" title="Add 3 Months">+3M</button>
+                <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 6)" title="Add 6 Months">+6M</button>
               </div>
             </td>
             <td class="cell-actions">
-              <button type="button" class="roster-delete-btn" onclick="NSCAuth.deleteMember('${m.phone}')" title="Revoke member access" aria-label="Delete ${m.name}">
+              <button type="button" class="roster-delete-btn" onclick="NSCAuth.deleteMember('${cleanP}')" title="Revoke member access" aria-label="Delete ${m.name}">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               </button>
             </td>
@@ -656,6 +776,7 @@ const NSCAuth = (function () {
     renewMember,
     deleteMember,
     setRosterFilter,
-    renderRosterTable
+    renderRosterTable,
+    loginAsMember
   };
 })();

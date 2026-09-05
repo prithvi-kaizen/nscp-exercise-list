@@ -2501,6 +2501,18 @@ input:focus-visible,
   background: rgba(34, 197, 94, 0.08);
 }
 
+.auth-desk-btn.admin-portal-btn {
+  color: var(--terra);
+  border-color: var(--terra-border);
+  background: var(--terra-dim);
+  cursor: pointer;
+}
+
+.auth-desk-btn.admin-portal-btn:hover {
+  background: var(--terra);
+  color: var(--btn-ink);
+}
+
 /* Expired Lockout Screen */
 .expired-lock-icon {
   width: 64px;
@@ -2782,6 +2794,54 @@ input:focus-visible,
   align-items: flex-end;
 }
 
+.admin-add-alert-box {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-add-alert-box.alert-success {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #22c55e;
+}
+
+.admin-add-alert-box.alert-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+}
+
+.btn-instant-login {
+  background: var(--terra);
+  color: var(--btn-ink);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-instant-login:hover {
+  background: var(--terra-hover);
+  transform: translateY(-1px);
+}
+
 /* Filter and Search Bar */
 .admin-filter-bar {
   display: flex;
@@ -2987,24 +3047,65 @@ input:focus-visible,
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
+  /* Prevent iOS Safari viewport auto-zoom by enforcing 16px font size */
+  input[type="tel"],
+  input[type="text"],
+  input[type="password"],
+  input[type="date"],
+  select {
+    font-size: 16px !important;
+  }
+
   .site-footer {
-    padding-bottom: 90px;
+    padding-bottom: 96px;
   }
   
   .auth-modal-container {
-    padding: 24px 20px;
+    width: 94%;
+    max-width: 440px;
+    padding: 24px 18px;
+    margin: auto;
   }
   
   .admin-modal-container {
-    max-height: 95vh;
+    width: 96%;
+    max-height: 94vh;
+    margin: auto;
   }
   
   .admin-dashboard-view {
-    padding: 16px;
+    padding: 16px 14px;
+    gap: 16px;
   }
   
   .admin-modal-header {
     padding: 14px 16px;
+  }
+
+  .admin-add-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .admin-stats-bar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .admin-table-container {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn-instant-login {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 6px;
+  }
+
+  .auth-submit-btn,
+  .auth-secondary-btn,
+  .auth-desk-btn {
+    min-height: 46px;
   }
 }
 
