@@ -5,30 +5,12 @@
 const NSC_DEFAULT_MEMBERS = [
   {
     phone: "9011445000",
-    name: "Prithviraj Patil (Club Admin)",
+    name: "Prithviraj Patil",
     pin: "5000",
     startDate: "2026-01-01",
     expiryDate: "2028-12-31",
     durationMonths: 36,
     status: "active"
-  },
-  {
-    phone: "9876543210",
-    name: "Rahul Patil",
-    pin: "3210",
-    startDate: "2026-08-01",
-    expiryDate: "2026-12-01",
-    durationMonths: 4,
-    status: "active"
-  },
-  {
-    phone: "9822001122",
-    name: "Amit Shinde",
-    pin: "1122",
-    startDate: "2026-05-01",
-    expiryDate: "2026-08-31",
-    durationMonths: 3,
-    status: "expired"
   }
 ];
 
@@ -63,9 +45,15 @@ const NSCAuth = (function () {
     try {
       const data = localStorage.getItem(STORAGE_KEY_MEMBERS);
       if (data) {
-        const parsed = JSON.parse(data);
+        let parsed = JSON.parse(data);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Merge default members if not present
+          // Clean out old dummy test accounts
+          parsed = parsed.filter(m => {
+            const p = sanitizePhoneNumber(m.phone);
+            return p !== "9876543210" && p !== "9822001122";
+          });
+
+          // Ensure default admin exists
           let updated = false;
           NSC_DEFAULT_MEMBERS.forEach(def => {
             const exists = parsed.some(m => sanitizePhoneNumber(m.phone) === def.phone);
@@ -74,9 +62,7 @@ const NSCAuth = (function () {
               updated = true;
             }
           });
-          if (updated) {
-            saveMembersDB(parsed);
-          }
+          saveMembersDB(parsed);
           return parsed;
         }
       }
@@ -182,7 +168,13 @@ const NSCAuth = (function () {
       snapshot => {
         const cloudMembers = [];
         snapshot.forEach(doc => {
-          cloudMembers.push(doc.data());
+          const data = doc.data();
+          const cleanP = sanitizePhoneNumber(data.phone || doc.id);
+          if (cleanP === "9876543210" || cleanP === "9822001122") {
+            firestoreDb.collection("members").doc(doc.id).delete().catch(() => {});
+          } else {
+            cloudMembers.push(data);
+          }
         });
 
         if (cloudMembers.length > 0) {
