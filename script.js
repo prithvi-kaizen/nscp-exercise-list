@@ -1296,7 +1296,22 @@ const translations = {
     upperBodyPrep: "Upper Body",
     lowerBodyPrep: "Lower Body",
     startThisWorkout: "View Station Exercises",
-    watchWarmupVideo: "Watch Routine Video"
+    watchWarmupVideo: "Watch Routine Video",
+    authModalTitle: "Member Access",
+    authModalSubhead: "Exclusive exercise and machine reference for registered members of Netaji Sports Club, Pandharpur.",
+    phoneInputLabel: "10-Digit Mobile Number",
+    pinInputLabel: "4-Digit Member PIN",
+    pinInputHint: "Default: Last 4 digits of phone",
+    authSubmitText: "Enter Gym Reference",
+    authHelpTitle: "Not registered or need renewal?",
+    authHelpText: "Please visit the Netaji Sports Club front desk or contact management to activate your digital access.",
+    dropLogoutLabel: "Log Out",
+    dropValidityLabel: "Membership Validity:",
+    expiredLockTitle: "Membership Expired",
+    expiredCallBtnText: "Call Front Desk: 90 11 44 5000",
+    expiredSwitchUserText: "Log In with Different Number",
+    adminModalTitle: "Netaji Sports Club: Member Roster",
+    addMemberTitle: "Register New Gym Member"
   },
   mr: {
     headerSubhead: "पंढरपूर · 90 11 44 5000",
@@ -1339,7 +1354,22 @@ const translations = {
     upperBodyPrep: "अप्पर बॉडी",
     lowerBodyPrep: "लोअर बॉडी",
     startThisWorkout: "संबंधित व्यायाम पहा",
-    watchWarmupVideo: "वॉर्मअप व्हिडिओ पहा"
+    watchWarmupVideo: "वॉर्मअप व्हिडिओ पहा",
+    authModalTitle: "सदस्य प्रवेश",
+    authModalSubhead: "नेताजी स्पोर्ट्स क्लब, पंढरपूरच्या नोंदणीकृत सदस्यांसाठी खास व्यायाम व मशीन मार्गदर्शक.",
+    phoneInputLabel: "१० अंकी मोबाईल नंबर",
+    pinInputLabel: "४ अंकी सदस्य पिन",
+    pinInputHint: "डिफ़ॉल्ट: नंबरचे शेवटचे ४ अंक",
+    authSubmitText: "जिम मार्गदर्शकात प्रवेश करा",
+    authHelpTitle: "नोंदणी केलेली नाही किंवा नूतनीकरण हवे आहे?",
+    authHelpText: "डिजिटल प्रवेश सुरू करण्यासाठी कृपया क्लबच्या काउंटेरवर संपर्क साधा.",
+    dropLogoutLabel: "बाहेर पडा",
+    dropValidityLabel: "सदस्यत्व वैधता:",
+    expiredLockTitle: "सदस्यत्व संपले आहे",
+    expiredCallBtnText: "काउंटेरवर कॉल करा: 90 11 44 5000",
+    expiredSwitchUserText: "दुसऱ्या नंबरने लॉगिन करा",
+    adminModalTitle: "नेताजी स्पोर्ट्स क्लब: सदस्य यादी",
+    addMemberTitle: "नवीन सदस्याची नोंदणी करा"
   }
 };
 
@@ -1452,6 +1482,38 @@ function applyLanguage() {
   if (themeLabel) {
     themeLabel.textContent = currentTheme === 'dark' ? t.lightMode : t.darkMode;
   }
+
+  // Member Auth & Admin Translations
+  const authTitle = document.getElementById('authModalTitle');
+  if (authTitle) authTitle.textContent = t.authModalTitle;
+  const authSub = document.getElementById('authModalSubhead');
+  if (authSub) authSub.textContent = t.authModalSubhead;
+  const phoneLbl = document.getElementById('phoneInputLabel');
+  if (phoneLbl) phoneLbl.textContent = t.phoneInputLabel;
+  const pinLbl = document.getElementById('pinInputLabel');
+  if (pinLbl) pinLbl.textContent = t.pinInputLabel;
+  const pinHint = document.getElementById('pinInputHint');
+  if (pinHint) pinHint.textContent = t.pinInputHint;
+  const authBtnText = document.getElementById('authSubmitText');
+  if (authBtnText) authBtnText.textContent = t.authSubmitText;
+  const authHelpT = document.getElementById('authHelpTitle');
+  if (authHelpT) authHelpT.textContent = t.authHelpTitle;
+  const authHelpM = document.getElementById('authHelpText');
+  if (authHelpM) authHelpM.textContent = t.authHelpText;
+  const dropLogout = document.getElementById('dropLogoutLabel');
+  if (dropLogout) dropLogout.textContent = t.dropLogoutLabel;
+  const dropValLbl = document.getElementById('dropValidityLabel');
+  if (dropValLbl) dropValLbl.textContent = t.dropValidityLabel;
+  const expLockT = document.getElementById('expiredLockTitle');
+  if (expLockT) expLockT.textContent = t.expiredLockTitle;
+  const expCallBtn = document.getElementById('expiredCallBtnText');
+  if (expCallBtn) expCallBtn.textContent = t.expiredCallBtnText;
+  const expSwitchBtn = document.getElementById('expiredSwitchUserText');
+  if (expSwitchBtn) expSwitchBtn.textContent = t.expiredSwitchUserText;
+  const admTitle = document.getElementById('adminModalTitle');
+  if (admTitle) admTitle.textContent = t.adminModalTitle;
+  const addMemTitle = document.getElementById('addMemberTitle');
+  if (addMemTitle) addMemTitle.textContent = t.addMemberTitle;
 }
 
 // ─── THEME SWITCHER (DARK / LIGHT MODE WITH SVG ICONS) ────────────────────────
@@ -2568,11 +2630,19 @@ function handleUrlParams() {
     if (input) input.value = q;
     handleSearch(q);
   }
+  if (params.has('admin') && typeof NSCAuth !== 'undefined') {
+    NSCAuth.openAdminModal();
+  }
 }
 
 // ─── KEYBOARD ACCESSIBILITY (R-32: ESCAPE KEY DISMISSAL) ─────────────────────
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    const adminModal = document.getElementById('adminModal');
+    if (adminModal && adminModal.style.display !== 'none') {
+      if (typeof NSCAuth !== 'undefined') NSCAuth.closeAdminModal();
+      return;
+    }
     if (zoomedMuscleGroup) {
       resetBodyMapZoom();
     } else if (searchQuery) {
@@ -2591,3 +2661,6 @@ renderEquipmentCatTabs();
 renderEquipmentGrid();
 renderExercises();
 handleUrlParams();
+if (typeof NSCAuth !== 'undefined') {
+  NSCAuth.init();
+}
