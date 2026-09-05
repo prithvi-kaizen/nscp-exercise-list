@@ -2227,10 +2227,10 @@ function renderWarmupGrid() {
           <h3 class="warmup-title">${title}</h3>
           <div class="warmup-meta">
             <div class="warmup-meta-item">
-              <strong>${t.targetJointsLabel}:</strong> <span>${joints}</span>
+              <strong>${t.targetJointsLabel}</strong> <span>${joints}</span>
             </div>
             <div class="warmup-meta-item">
-              <strong>${t.idealBeforeLabel}:</strong> <span>${ideal}</span>
+              <strong>${t.idealBeforeLabel}</strong> <span>${ideal}</span>
             </div>
           </div>
         </div>
