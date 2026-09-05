@@ -1,12 +1,12 @@
 // Netaji Sports Club: Firebase Cloud Firestore Configuration
-// When you create your free Firebase project on console.firebase.google.com,
-// paste your configuration object here or paste it directly in the Admin Portal UI.
+// Production Cloud Firestore configuration for cross-device synchronization
 
 window.NSC_FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyDtN-rLUvtnMfV8GYok42-0alY_j5yEVVU",
+  authDomain: "nscp-gym.firebaseapp.com",
+  projectId: "nscp-gym",
+  storageBucket: "nscp-gym.firebasestorage.app",
+  messagingSenderId: "935831865276",
+  appId: "1:935831865276:web:783584eec4a149cdbecdb9",
+  measurementId: "G-C75JG21F7T"
 };
