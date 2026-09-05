@@ -1,6 +1,6 @@
 // Netaji Sports Club: Member Access & Roster Management System
 // Phone + 4-digit PIN authentication, persistent device sessions,
-// automatic membership expiry checks, and administrative roster management.
+// automatic membership expiry checks, and Cloud Firestore synchronization.
 
 const NSC_DEFAULT_MEMBERS = [
   {
@@ -38,9 +38,12 @@ const NSCAuth = (function () {
   const STORAGE_KEY_MEMBERS = "nsc_members_db";
   const STORAGE_KEY_SESSION = "nsc_member_session";
   const STORAGE_KEY_ADMIN = "nsc_admin_unlocked";
+  const STORAGE_KEY_FIREBASE = "nsc_firebase_config_custom";
 
   let selectedPlanMonths = 1;
   let rosterFilter = "all";
+  let firestoreDb = null;
+  let isCloudSyncActive = false;
 
   // Phone sanitizer handles: +91, leading 0, spaces, hyphens
   function sanitizePhoneNumber(val) {
@@ -140,8 +143,163 @@ const NSCAuth = (function () {
     };
   }
 
-  // UI and modal management
+  // ─── CLOUD DATABASE SYNCHRONIZATION (FIREBASE FIRESTORE) ───────────────────
+  function initCloudDatabase() {
+    let config = window.NSC_FIREBASE_CONFIG || {};
+    try {
+      const savedConfig = localStorage.getItem(STORAGE_KEY_FIREBASE);
+      if (savedConfig) {
+        config = JSON.parse(savedConfig);
+      }
+    } catch (e) {
+      console.warn("Could not parse saved Firebase config", e);
+    }
+
+    if (!config || !config.apiKey || !config.projectId) {
+      updateSyncUI(false, "Local Mode (Not Connected)", "Saved in this browser only");
+      return;
+    }
+
+    try {
+      if (typeof firebase !== "undefined") {
+        if (!firebase.apps || !firebase.apps.length) {
+          firebase.initializeApp(config);
+        }
+        firestoreDb = firebase.firestore();
+
+        // Enable offline persistence for gym floor
+        firestoreDb.enablePersistence({ synchronizeTabs: true }).catch(err => {
+          if (err.code !== "failed-precondition" && err.code !== "unimplemented") {
+            console.warn("Firestore persistence warning:", err);
+          }
+        });
+
+        isCloudSyncActive = true;
+        updateSyncUI(true, "Cloud Connected", "Real-time sync active across all devices");
+        subscribeToCloudRoster();
+      } else {
+        updateSyncUI(false, "Firebase SDK Loading...", "Connecting...");
+      }
+    } catch (err) {
+      console.error("Firebase init failed:", err);
+      updateSyncUI(false, "Connection Error", err.message || "Failed to initialize");
+    }
+  }
+
+  function updateSyncUI(isConnected, titleText, subText) {
+    const badge = document.getElementById("cloudSyncBadge");
+    const dot = document.getElementById("cloudStatusDot");
+    const title = document.getElementById("cloudStatusTitle");
+    const sub = document.getElementById("cloudStatusSub");
+
+    if (badge) {
+      badge.textContent = isConnected ? "Cloud Synced" : "Local Mode";
+      badge.className = `cloud-sync-badge ${isConnected ? "sync-cloud" : "sync-local"}`;
+    }
+    if (dot) {
+      dot.className = `cloud-status-dot ${isConnected ? "dot-online" : "dot-offline"}`;
+    }
+    if (title) title.textContent = `Firebase Cloud Sync: ${titleText}`;
+    if (sub) sub.textContent = `(${subText})`;
+  }
+
+  function toggleSyncConfigBox() {
+    const box = document.getElementById("cloudConfigExpand");
+    const btn = document.getElementById("btnToggleSyncConfig");
+    const textarea = document.getElementById("firebaseConfigTextarea");
+    if (!box) return;
+    const isHidden = box.style.display === "none";
+    box.style.display = isHidden ? "block" : "none";
+    if (btn) btn.textContent = isHidden ? "Hide Config" : "Configure Cloud Sync";
+
+    if (isHidden && textarea && !textarea.value) {
+      const saved = localStorage.getItem(STORAGE_KEY_FIREBASE);
+      if (saved) {
+        textarea.value = saved;
+      } else if (window.NSC_FIREBASE_CONFIG && window.NSC_FIREBASE_CONFIG.apiKey) {
+        textarea.value = JSON.stringify(window.NSC_FIREBASE_CONFIG, null, 2);
+      }
+    }
+  }
+
+  function saveFirebaseConfigFromUI() {
+    const textarea = document.getElementById("firebaseConfigTextarea");
+    if (!textarea) return;
+    const raw = textarea.value.trim();
+    if (!raw) {
+      alert("Please paste your Firebase configuration object.");
+      return;
+    }
+
+    try {
+      let cleaned = raw;
+      if (cleaned.startsWith("const firebaseConfig =")) {
+        cleaned = cleaned.replace("const firebaseConfig =", "").replace(/;$/, "").trim();
+      }
+      const jsonStr = cleaned.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":').replace(/'/g, '"');
+      const parsed = JSON.parse(jsonStr);
+
+      if (!parsed.apiKey || !parsed.projectId) {
+        alert("Config must include at least apiKey and projectId.");
+        return;
+      }
+
+      localStorage.setItem(STORAGE_KEY_FIREBASE, JSON.stringify(parsed, null, 2));
+      alert("Firebase configuration saved! Connecting to cloud database now...");
+      initCloudDatabase();
+      toggleSyncConfigBox();
+    } catch (e) {
+      alert("Could not parse config. Please make sure it is a valid JSON or Javascript config object.");
+      console.error(e);
+    }
+  }
+
+  function subscribeToCloudRoster() {
+    if (!firestoreDb) return;
+
+    firestoreDb.collection("members").onSnapshot(
+      snapshot => {
+        const cloudMembers = [];
+        snapshot.forEach(doc => {
+          cloudMembers.push(doc.data());
+        });
+
+        if (cloudMembers.length > 0) {
+          saveMembersDB(cloudMembers);
+          renderAdminDashboard();
+
+          // Refresh current member status if logged in
+          const session = getMemberSession();
+          if (session) {
+            const fresh = cloudMembers.find(
+              m => sanitizePhoneNumber(m.phone) === sanitizePhoneNumber(session.phone)
+            );
+            if (fresh) {
+              saveMemberSession(fresh);
+              renderMemberStatusHeader(fresh);
+            }
+          }
+        } else {
+          // If collection is completely empty in a fresh project, seed default members
+          seedInitialCloudMembers();
+        }
+      },
+      err => {
+        console.warn("Firestore snapshot listener error:", err);
+      }
+    );
+  }
+
+  function seedInitialCloudMembers() {
+    if (!firestoreDb) return;
+    NSC_DEFAULT_MEMBERS.forEach(m => {
+      firestoreDb.collection("members").doc(sanitizePhoneNumber(m.phone)).set(m, { merge: true });
+    });
+  }
+
+  // ─── UI AND MODAL MANAGEMENT ───────────────────────────────────────────────
   function init() {
+    initCloudDatabase();
     checkInitialAccess();
     setupAdminAutoTrigger();
   }
@@ -253,6 +411,34 @@ const NSCAuth = (function () {
     );
 
     if (!member) {
+      // If not in local cache, check Cloud Firestore in real time!
+      if (firestoreDb && isCloudSyncActive) {
+        showAuthAlert("Checking cloud register...");
+        firestoreDb
+          .collection("members")
+          .doc(rawPhone)
+          .get()
+          .then(docSnap => {
+            if (docSnap.exists) {
+              const freshMember = docSnap.data();
+              const list = getMembersDB();
+              list.unshift(freshMember);
+              saveMembersDB(list);
+              proceedMemberLogin(freshMember, rawPin);
+            } else {
+              showAuthAlert(
+                lang === "mr"
+                  ? `मोबाईल नंबर +91 ${rawPhone} नोंदणीत सापडला नाही. ॲडमिन पोर्टलवरून नोंदणी करा.`
+                  : `Mobile number +91 ${rawPhone} not found in register. Please register in Admin Portal or contact front desk.`
+              );
+            }
+          })
+          .catch(() => {
+            showAuthAlert(`Mobile number +91 ${rawPhone} not found in register.`);
+          });
+        return;
+      }
+
       showAuthAlert(
         lang === "mr"
           ? `मोबाईल नंबर +91 ${rawPhone} नोंदणीत सापडला नाही. ॲडमिन पोर्टलवरून नोंदणी करा.`
@@ -261,13 +447,20 @@ const NSCAuth = (function () {
       return;
     }
 
+    proceedMemberLogin(member, rawPin);
+  }
+
+  function proceedMemberLogin(member, rawPin) {
+    const lang = localStorage.getItem("nsc_lang") || "en";
+    const pinInput = document.getElementById("memberPinInput");
+
     if (member.pin !== rawPin) {
       showAuthAlert(
         lang === "mr"
           ? "चुकीचा पिन. डिफ़ॉल्ट पिन: मोबाईल नंबरचे शेवटचे ४ अंक."
           : "Incorrect PIN. Default PIN is the last 4 digits of your phone number."
       );
-      pinInput.focus();
+      if (pinInput) pinInput.focus();
       return;
     }
 
@@ -281,8 +474,10 @@ const NSCAuth = (function () {
     hideAuthModal();
     renderMemberStatusHeader(member);
     clearAuthAlert();
-    phoneInput.value = "";
-    pinInput.value = "";
+
+    const phoneInput = document.getElementById("memberPhoneInput");
+    if (phoneInput) phoneInput.value = "";
+    if (pinInput) pinInput.value = "";
   }
 
   function showAuthAlert(msg) {
@@ -562,6 +757,17 @@ const NSCAuth = (function () {
 
     saveMembersDB(members);
 
+    // Save to Cloud Firestore if connected
+    if (firestoreDb && isCloudSyncActive) {
+      firestoreDb
+        .collection("members")
+        .doc(phone)
+        .set(newMemberRecord, { merge: true })
+        .catch(err => {
+          console.error("Firestore write failed:", err);
+        });
+    }
+
     // Reset inputs
     nameInput.value = "";
     phoneInput.value = "";
@@ -606,6 +812,17 @@ const NSCAuth = (function () {
     member.durationMonths = (member.durationMonths || 0) + monthsToAdd;
 
     saveMembersDB(members);
+
+    if (firestoreDb && isCloudSyncActive) {
+      firestoreDb
+        .collection("members")
+        .doc(cleanPhone)
+        .set(member, { merge: true })
+        .catch(err => {
+          console.error("Firestore renew write failed:", err);
+        });
+    }
+
     renderAdminDashboard();
 
     const session = getMemberSession();
@@ -622,6 +839,17 @@ const NSCAuth = (function () {
       m => sanitizePhoneNumber(m.phone) !== cleanPhone
     );
     saveMembersDB(members);
+
+    if (firestoreDb && isCloudSyncActive) {
+      firestoreDb
+        .collection("members")
+        .doc(cleanPhone)
+        .delete()
+        .catch(err => {
+          console.error("Firestore delete failed:", err);
+        });
+    }
+
     renderAdminDashboard();
 
     const session = getMemberSession();
@@ -777,6 +1005,8 @@ const NSCAuth = (function () {
     deleteMember,
     setRosterFilter,
     renderRosterTable,
-    loginAsMember
+    loginAsMember,
+    toggleSyncConfigBox,
+    saveFirebaseConfigFromUI
   };
 })();

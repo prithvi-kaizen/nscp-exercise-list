@@ -276,6 +276,7 @@
       <div class="admin-header-title-wrap">
         <div class="admin-badge">Management</div>
         <h2 id="adminModalTitle">Netaji Sports Club: Member Roster</h2>
+        <span class="cloud-sync-badge sync-local" id="cloudSyncBadge" title="Real-time cloud database status">Local Mode</span>
       </div>
       <button class="admin-close-btn" onclick="NSCAuth.closeAdminModal()" aria-label="Close Admin Portal">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -309,6 +310,37 @@
         <div class="stat-card danger">
           <span class="stat-num" id="statExpiredCount">0</span>
           <span class="stat-label">Expired Accounts</span>
+        </div>
+      </div>
+
+      <!-- Cloud Database Sync Bar (Firebase Firestore) -->
+      <div class="cloud-sync-card" id="cloudSyncCard">
+        <div class="cloud-sync-top">
+          <div class="cloud-sync-left">
+            <span class="cloud-status-dot" id="cloudStatusDot"></span>
+            <strong id="cloudStatusTitle">Firebase Cloud Sync: Local Mode</strong>
+            <span class="cloud-status-sub" id="cloudStatusSub">(Saved in this browser only)</span>
+          </div>
+          <button type="button" class="btn-toggle-sync-config" onclick="NSCAuth.toggleSyncConfigBox()" id="btnToggleSyncConfig">
+            Configure Cloud Sync
+          </button>
+        </div>
+        <div class="cloud-config-expand" id="cloudConfigExpand" style="display: none;">
+          <p class="sync-explain-text">
+            To synchronize registered members across all members phones and browsers in real-time, connect your free Firebase Cloud Firestore project:
+          </p>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label for="firebaseConfigTextarea">Firebase Project Config</label>
+            <textarea id="firebaseConfigTextarea" class="config-textarea" rows="4" placeholder='Paste your firebaseConfig object here, for example:&#10;{&#10;  "apiKey": "AIzaSy...",&#10;  "projectId": "netaji-sports-club",&#10;  "authDomain": "netaji-sports-club.firebaseapp.com"&#10;}'></textarea>
+          </div>
+          <div class="sync-btn-actions">
+            <button type="button" class="auth-submit-btn" style="min-height: 40px;" onclick="NSCAuth.saveFirebaseConfigFromUI()">
+              Connect & Synchronize Now
+            </button>
+            <a href="https://console.firebase.google.com" target="_blank" rel="noopener" class="auth-secondary-btn" style="min-height: 40px; text-decoration: none;">
+              Open Firebase Console
+            </a>
+          </div>
         </div>
       </div>
 
@@ -416,6 +448,10 @@
   </button>
 </nav>
 
+<!-- Firebase Cloud Firestore SDK (Compat v10 for instant multi-device sync) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script src="script.js"></script>
 </body>
