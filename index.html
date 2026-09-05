@@ -283,7 +283,7 @@
       <form onsubmit="event.preventDefault(); NSCAuth.verifyAdminPin();" class="admin-pin-form">
         <p id="adminPinPrompt">Enter Admin Master Passcode to manage memberships:</p>
         <div class="form-group">
-          <input type="password" id="adminPasscodeInput" placeholder="Master PIN (5000)" autocomplete="current-password" required>
+          <input type="password" id="adminPasscodeInput" placeholder="Enter Master Passcode" autocomplete="current-password" required>
         </div>
         <div class="auth-alert-box" id="adminPinError" style="display: none;" role="alert"></div>
         <button type="submit" class="auth-submit-btn" id="adminPinSubmitBtn">Unlock Member Management</button>
@@ -321,12 +321,16 @@
             <input type="tel" id="newMemberPhone" pattern="[0-9]{10}" maxlength="10" placeholder="98XXXXXXXX" oninput="NSCAuth.handlePhoneAutoPin(this.value)" required>
           </div>
           <div class="form-group">
-            <label>Plan Duration</label>
+            <label id="planDurationLabel">Plan Duration</label>
             <div class="duration-pills" id="durationPills">
               <button type="button" class="duration-pill active" data-months="1" onclick="NSCAuth.setPlanDuration(1)">1 Month</button>
               <button type="button" class="duration-pill" data-months="3" onclick="NSCAuth.setPlanDuration(3)">3 Months</button>
               <button type="button" class="duration-pill" data-months="6" onclick="NSCAuth.setPlanDuration(6)">6 Months</button>
               <button type="button" class="duration-pill" data-months="12" onclick="NSCAuth.setPlanDuration(12)">1 Year</button>
+              <button type="button" class="duration-pill" data-months="custom" onclick="NSCAuth.setPlanDuration('custom')">Custom Date</button>
+            </div>
+            <div class="custom-date-wrap" id="customDateWrap" style="display: none; margin-top: 8px;">
+              <input type="date" id="newMemberCustomDate" class="custom-date-input" aria-label="Select Custom Expiry Date">
             </div>
           </div>
           <div class="form-group">

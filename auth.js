@@ -32,7 +32,7 @@ const NSC_DEFAULT_MEMBERS = [
   }
 ];
 
-const ADMIN_MASTER_PIN = "5000";
+const ADMIN_MASTER_PIN = "2461";
 
 const NSCAuth = (function () {
   const STORAGE_KEY_MEMBERS = "nsc_members_db";
@@ -66,8 +66,8 @@ const NSCAuth = (function () {
 
   function getMemberSession() {
     try {
-      const s = localStorage.getItem(STORAGE_KEY_SESSION);
-      return s ? JSON.parse(s) : null;
+      const data = localStorage.getItem(STORAGE_KEY_SESSION);
+      return data ? JSON.parse(data) : null;
     } catch (e) {
       return null;
     }
@@ -75,101 +75,103 @@ const NSCAuth = (function () {
 
   function saveMemberSession(member) {
     try {
-      const sessionData = {
-        phone: member.phone,
-        name: member.name,
-        expiryDate: member.expiryDate,
-        loginTime: new Date().toISOString()
-      };
-      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(sessionData));
+      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(member));
     } catch (e) {
-      console.error("Failed to save member session", e);
+      console.error("Failed to save session", e);
     }
   }
 
   function clearMemberSession() {
-    localStorage.removeItem(STORAGE_KEY_SESSION);
+    try {
+      localStorage.removeItem(STORAGE_KEY_SESSION);
+    } catch (e) {
+      console.error("Failed to clear session", e);
+    }
   }
 
+  // ─── EXPIRY CALCULATOR ─────────────────────────────────────────────────────
   function calculateExpiry(expiryDateStr) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const exp = new Date(expiryDateStr);
-    exp.setHours(23, 59, 59, 999);
 
-    const diffTime = exp.getTime() - today.getTime();
+    const expiry = new Date(expiryDateStr);
+    expiry.setHours(23, 59, 59, 999);
+
+    const diffTime = expiry - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const isExpired = diffDays < 0;
+
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const formattedDate = expiry.toLocaleDateString("en-IN", options);
 
     return {
       isExpired,
       daysRemaining: Math.max(0, diffDays),
-      diffDays,
-      formattedDate: new Date(expiryDateStr).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-      })
+      formattedDate
     };
   }
 
-  // ─── AUTHENTICATION FLOW ───────────────────────────────────────────────────
+  // ─── UI & MODAL MANAGEMENT ─────────────────────────────────────────────────
   function init() {
+    checkInitialAccess();
+    setupAdminAutoTrigger();
+  }
+
+  function checkInitialAccess() {
     const session = getMemberSession();
+    const members = getMembersDB();
+
     if (!session) {
       showAuthModal(false);
       return;
     }
 
-    // Refresh member record from database to respect renewals
-    const members = getMembersDB();
-    const currentRecord = members.find(m => m.phone === session.phone);
-
-    if (!currentRecord) {
+    // Check if member is still in database and fresh expiry status
+    const currentMember = members.find(m => m.phone === session.phone);
+    if (!currentMember) {
       clearMemberSession();
       showAuthModal(false);
       return;
     }
 
-    const { isExpired } = calculateExpiry(currentRecord.expiryDate);
+    const { isExpired } = calculateExpiry(currentMember.expiryDate);
     if (isExpired) {
-      showAuthModal(true, currentRecord);
-      return;
+      showAuthModal(true, currentMember);
+    } else {
+      hideAuthModal();
+      renderMemberStatusHeader(currentMember);
     }
-
-    // Active session confirmed
-    hideAuthModal();
-    renderMemberStatusHeader(currentRecord);
   }
 
-  function showAuthModal(isExpired = false, member = null) {
+  function showAuthModal(isExpiredMode = false, memberData = null) {
     const modal = document.getElementById("memberAuthModal");
     const formView = document.getElementById("authFormView");
     const expiredView = document.getElementById("authExpiredView");
+    const modalTitle = document.getElementById("authModalTitle");
+    const modalSubhead = document.getElementById("authModalSubhead");
     if (!modal) return;
 
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    if (isExpired && member) {
+    if (isExpiredMode && memberData) {
       if (formView) formView.style.display = "none";
       if (expiredView) expiredView.style.display = "block";
-
-      const expMsg = document.getElementById("expiredLockMsg");
-      const { formattedDate } = calculateExpiry(member.expiryDate);
-      if (expMsg) {
-        const lang = localStorage.getItem("nsc_lang") || "en";
-        if (lang === "mr") {
-          expMsg.textContent = `${member.name}, तुमचे नेताजी स्पोर्ट्स क्लब सदस्यत्व ${formattedDate} रोजी संपले आहे. प्रवेश पुन्हा सुरू करण्यासाठी काउंटेरवर नूतनीकरण करा.`;
-        } else {
-          expMsg.textContent = `Hello ${member.name}, your Netaji Sports Club membership expired on ${formattedDate}. Please renew at the club front desk to restore full access.`;
-        }
+      if (modalTitle) modalTitle.textContent = "Membership Inactive";
+      if (modalSubhead) {
+        modalSubhead.textContent = `Member ${memberData.name} (+91 ${memberData.phone}) expired on ${calculateExpiry(memberData.expiryDate).formattedDate}.`;
       }
     } else {
       if (formView) formView.style.display = "block";
       if (expiredView) expiredView.style.display = "none";
+      if (modalTitle) modalTitle.textContent = "Member Access";
+      if (modalSubhead) {
+        modalSubhead.textContent = "Exclusive exercise and machine reference for registered members of Netaji Sports Club, Pandharpur.";
+      }
       const phoneInput = document.getElementById("memberPhoneInput");
-      if (phoneInput) setTimeout(() => phoneInput.focus(), 200);
+      if (phoneInput) {
+        setTimeout(() => phoneInput.focus(), 200);
+      }
     }
   }
 
@@ -189,30 +191,13 @@ const NSCAuth = (function () {
   function handleLoginSubmit() {
     const phoneInput = document.getElementById("memberPhoneInput");
     const pinInput = document.getElementById("memberPinInput");
-    const alertBox = document.getElementById("authAlertBox");
     if (!phoneInput || !pinInput) return;
 
     const rawPhone = phoneInput.value.trim().replace(/\D/g, "");
     const rawPin = pinInput.value.trim();
-    const lang = localStorage.getItem("nsc_lang") || "en";
 
-    if (rawPhone.length !== 10) {
-      showAuthAlert(
-        lang === "mr"
-          ? "कृपया १० अंकी वैध मोबाईल नंबर टाका."
-          : "Please enter a valid 10-digit mobile number."
-      );
-      phoneInput.focus();
-      return;
-    }
-
-    if (rawPin.length !== 4) {
-      showAuthAlert(
-        lang === "mr"
-          ? "कृपया ४ अंकी पिन टाका."
-          : "Please enter your 4-digit PIN."
-      );
-      pinInput.focus();
+    if (rawPhone.length !== 10 || rawPin.length !== 4) {
+      showAuthAlert("Please enter valid 10-digit phone and 4-digit PIN.");
       return;
     }
 
@@ -220,31 +205,22 @@ const NSCAuth = (function () {
     const member = members.find(m => m.phone === rawPhone);
 
     if (!member) {
-      showAuthAlert(
-        lang === "mr"
-          ? "हा मोबाईल नंबर क्लबच्या नोंदणीत सापडला नाही. कृपया काउंटेरवर (90 11 44 5000) संपर्क साधा."
-          : "Mobile number not found in Netaji Sports Club register. Please visit the front desk or call 90 11 44 5000."
-      );
+      showAuthAlert("Mobile number not found in register.");
       return;
     }
 
     if (member.pin !== rawPin) {
-      showAuthAlert(
-        lang === "mr"
-          ? "चुकीचा पिन. कृपया पुन्हा प्रयत्न करा किंवा क्लब डेस्कशी संपर्क साधा."
-          : "Incorrect PIN. Default PIN is the last 4 digits of your phone number."
-      );
+      showAuthAlert("Incorrect PIN.");
       pinInput.focus();
       return;
     }
 
-    const { isExpired, formattedDate } = calculateExpiry(member.expiryDate);
+    const { isExpired } = calculateExpiry(member.expiryDate);
     if (isExpired) {
       showAuthModal(true, member);
       return;
     }
 
-    // Success
     saveMemberSession(member);
     hideAuthModal();
     renderMemberStatusHeader(member);
@@ -278,44 +254,46 @@ const NSCAuth = (function () {
     showAuthModal(false);
   }
 
-  // ─── HEADER STATUS BADGE ───────────────────────────────────────────────────
   function renderMemberStatusHeader(member) {
     const badgeWrapper = document.getElementById("memberBadgeWrapper");
-    const nameEl = document.getElementById("memberPillName");
+    const pillName = document.getElementById("memberPillName");
     const dropName = document.getElementById("dropMemberName");
     const dropPhone = document.getElementById("dropMemberPhone");
     const dropExpiry = document.getElementById("dropExpiryVal");
     const dropDays = document.getElementById("dropDaysVal");
-    if (!badgeWrapper) return;
 
-    badgeWrapper.style.display = "block";
-    const { formattedDate, daysRemaining } = calculateExpiry(member.expiryDate);
-    const lang = localStorage.getItem("nsc_lang") || "en";
+    if (!member) {
+      if (badgeWrapper) badgeWrapper.style.display = "none";
+      return;
+    }
 
-    const firstName = member.name.split(" ")[0] || member.name;
-    if (nameEl) nameEl.textContent = firstName;
+    if (badgeWrapper) badgeWrapper.style.display = "inline-flex";
+    if (pillName) pillName.textContent = member.name.split(" ")[0]; // First name for header
     if (dropName) dropName.textContent = member.name;
     if (dropPhone) dropPhone.textContent = `+91 ${member.phone}`;
-    if (dropExpiry) {
-      dropExpiry.textContent =
-        lang === "mr" ? `वैधता: ${formattedDate}` : `Valid until ${formattedDate}`;
-    }
-    if (dropDays) {
-      dropDays.textContent =
-        lang === "mr" ? `${daysRemaining} दिवस शिल्लक` : `${daysRemaining} days remaining`;
-    }
+
+    const { formattedDate, daysRemaining } = calculateExpiry(member.expiryDate);
+    if (dropExpiry) dropExpiry.textContent = `Valid until ${formattedDate}`;
+    if (dropDays) dropDays.textContent = `${daysRemaining} days remaining`;
   }
 
   function toggleMemberDropdown() {
     const menu = document.getElementById("memberDropdownMenu");
     const btn = document.getElementById("memberStatusBtn");
     if (!menu) return;
-    const isOpen = menu.style.display === "block";
-    menu.style.display = isOpen ? "none" : "block";
-    if (btn) btn.setAttribute("aria-expanded", String(!isOpen));
+    const isShown = menu.style.display === "flex";
+    menu.style.display = isShown ? "none" : "flex";
+    if (btn) btn.setAttribute("aria-expanded", !isShown);
   }
 
-  // ─── ADMIN MANAGEMENT ──────────────────────────────────────────────────────
+  // ─── ADMIN MANAGEMENT PORTAL ───────────────────────────────────────────────
+  function setupAdminAutoTrigger() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("admin") === "true") {
+      openAdminModal();
+    }
+  }
+
   function openAdminModal() {
     const modal = document.getElementById("adminModal");
     const pinView = document.getElementById("adminPinView");
@@ -364,7 +342,7 @@ const NSCAuth = (function () {
       renderAdminDashboard();
     } else {
       if (errBox) {
-        errBox.textContent = "Incorrect master passcode. Try 5000.";
+        errBox.textContent = "Incorrect master passcode. Please check and try again.";
         errBox.style.display = "block";
       }
       pinInput.focus();
@@ -375,9 +353,34 @@ const NSCAuth = (function () {
     selectedPlanMonths = months;
     const pills = document.querySelectorAll("#durationPills .duration-pill");
     pills.forEach(btn => {
-      const m = parseInt(btn.getAttribute("data-months") || "0", 10);
-      btn.classList.toggle("active", m === months);
+      const attr = btn.getAttribute("data-months");
+      if (months === "custom") {
+        btn.classList.toggle("active", attr === "custom");
+      } else {
+        const m = parseInt(attr || "0", 10);
+        btn.classList.toggle("active", m === months);
+      }
     });
+
+    const customDateWrap = document.getElementById("customDateWrap");
+    const customDateInput = document.getElementById("newMemberCustomDate");
+    if (customDateWrap) {
+      if (months === "custom") {
+        customDateWrap.style.display = "block";
+        const todayStr = new Date().toISOString().split("T")[0];
+        if (customDateInput) {
+          customDateInput.min = todayStr;
+          if (!customDateInput.value) {
+            const defaultDate = new Date();
+            defaultDate.setMonth(defaultDate.getMonth() + 1);
+            customDateInput.value = defaultDate.toISOString().split("T")[0];
+          }
+          customDateInput.focus();
+        }
+      } else {
+        customDateWrap.style.display = "none";
+      }
+    }
   }
 
   function handlePhoneAutoPin(phoneValue) {
@@ -398,15 +401,8 @@ const NSCAuth = (function () {
     const phone = phoneInput.value.trim().replace(/\D/g, "");
     let pin = pinInput.value.trim();
 
-    if (!name) {
-      alert("Please enter member full name.");
-      nameInput.focus();
-      return;
-    }
-
-    if (phone.length !== 10) {
-      alert("Please enter a valid 10-digit mobile number.");
-      phoneInput.focus();
+    if (!name || phone.length !== 10) {
+      alert("Please enter valid name and 10-digit phone.");
       return;
     }
 
@@ -415,8 +411,30 @@ const NSCAuth = (function () {
     }
 
     const startDate = new Date();
-    const expiry = new Date();
-    expiry.setMonth(expiry.getMonth() + selectedPlanMonths);
+    let expiryDateStr = "";
+    let durationLabel = selectedPlanMonths;
+
+    if (selectedPlanMonths === "custom") {
+      const customDateInput = document.getElementById("newMemberCustomDate");
+      if (!customDateInput || !customDateInput.value) {
+        alert("Please select a valid custom expiry date.");
+        if (customDateInput) customDateInput.focus();
+        return;
+      }
+      expiryDateStr = customDateInput.value;
+      const chosen = new Date(expiryDateStr + "T23:59:59");
+      if (isNaN(chosen.getTime())) {
+        alert("Invalid custom expiry date format.");
+        return;
+      }
+      const diffTime = chosen - startDate;
+      const diffMonths = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24 * 30.4375)));
+      durationLabel = diffMonths;
+    } else {
+      const expiry = new Date();
+      expiry.setMonth(expiry.getMonth() + Number(selectedPlanMonths));
+      expiryDateStr = expiry.toISOString().split("T")[0];
+    }
 
     const members = getMembersDB();
     const existingIndex = members.findIndex(m => m.phone === phone);
@@ -426,8 +444,8 @@ const NSCAuth = (function () {
       name,
       pin,
       startDate: startDate.toISOString().split("T")[0],
-      expiryDate: expiry.toISOString().split("T")[0],
-      durationMonths: selectedPlanMonths,
+      expiryDate: expiryDateStr,
+      durationMonths: durationLabel,
       status: "active"
     };
 
@@ -444,6 +462,11 @@ const NSCAuth = (function () {
     phoneInput.value = "";
     pinInput.value = "";
     delete pinInput.dataset.userEdited;
+    const customDateWrap = document.getElementById("customDateWrap");
+    const customDateInput = document.getElementById("newMemberCustomDate");
+    if (customDateInput) customDateInput.value = "";
+    if (customDateWrap) customDateWrap.style.display = "none";
+    setPlanDuration(1);
 
     renderAdminDashboard();
 
