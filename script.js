@@ -2217,22 +2217,20 @@ function renderWarmupGrid() {
     return `
       <div class="warmup-card" id="warmup-${p.id}">
         <div class="warmup-card-header">
-          <div class="warmup-card-title-row">
-            <div class="warmup-title-wrap">
-              <span class="warmup-badge category">${p.tag}</span>
-              <h3 class="warmup-title">${title}</h3>
-            </div>
+          <div class="warmup-card-top-meta">
+            <span class="warmup-badge category">${p.tag}</span>
             <div class="warmup-duration-pill">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               <span>${p.duration}</span>
             </div>
           </div>
+          <h3 class="warmup-title">${title}</h3>
           <div class="warmup-meta">
             <div class="warmup-meta-item">
-              <strong>${t.targetJointsLabel}</strong> <span>${joints}</span>
+              <strong>${t.targetJointsLabel}:</strong> <span>${joints}</span>
             </div>
             <div class="warmup-meta-item">
-              <strong>${t.idealBeforeLabel}</strong> <span>${ideal}</span>
+              <strong>${t.idealBeforeLabel}:</strong> <span>${ideal}</span>
             </div>
           </div>
         </div>
@@ -2254,6 +2252,8 @@ function renderWarmupGrid() {
               </div>
             `;
           }).join('')}
+        </div>
+
         <div class="warmup-video-row">
           <a class="yt-btn warmup-yt-btn" href="${p.video || ytUrl(title)}" target="_blank" rel="noopener">
             <svg class="yt-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
