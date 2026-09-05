@@ -1480,6 +1480,13 @@ input:focus-visible,
     padding: 14px 18px;
   }
 
+  .member-dropdown-menu {
+    left: 0;
+    right: auto;
+    width: min(280px, calc(100vw - 36px));
+    min-width: unset;
+  }
+
   .container {
     padding: 20px 16px 80px;
   }
@@ -2104,8 +2111,9 @@ input:focus-visible,
 .member-dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
-  min-width: 250px;
+  left: 0;
+  min-width: 260px;
+  max-width: calc(100vw - 32px);
   background: var(--bg2);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius);
