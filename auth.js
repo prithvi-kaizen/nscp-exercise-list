@@ -38,7 +38,6 @@ const NSCAuth = (function () {
   const STORAGE_KEY_MEMBERS = "nsc_members_db";
   const STORAGE_KEY_SESSION = "nsc_member_session";
   const STORAGE_KEY_ADMIN = "nsc_admin_unlocked";
-  const STORAGE_KEY_FIREBASE = "nsc_firebase_config_custom";
 
   let selectedPlanMonths = 1;
   let rosterFilter = "all";
@@ -145,18 +144,12 @@ const NSCAuth = (function () {
 
   // ─── CLOUD DATABASE SYNCHRONIZATION (FIREBASE FIRESTORE) ───────────────────
   function initCloudDatabase() {
-    let config = window.NSC_FIREBASE_CONFIG || {};
     try {
-      const savedConfig = localStorage.getItem(STORAGE_KEY_FIREBASE);
-      if (savedConfig) {
-        config = JSON.parse(savedConfig);
-      }
-    } catch (e) {
-      console.warn("Could not parse saved Firebase config", e);
-    }
+      localStorage.removeItem("nsc_firebase_config_custom");
+    } catch (e) {}
 
+    const config = window.NSC_FIREBASE_CONFIG;
     if (!config || !config.apiKey || !config.projectId) {
-      updateSyncUI(false, "Local Mode (Not Connected)", "Saved in this browser only");
       return;
     }
 
@@ -175,82 +168,10 @@ const NSCAuth = (function () {
         });
 
         isCloudSyncActive = true;
-        updateSyncUI(true, "Cloud Connected", "Real-time sync active across all devices");
         subscribeToCloudRoster();
-      } else {
-        updateSyncUI(false, "Firebase SDK Loading...", "Connecting...");
       }
     } catch (err) {
       console.error("Firebase init failed:", err);
-      updateSyncUI(false, "Connection Error", err.message || "Failed to initialize");
-    }
-  }
-
-  function updateSyncUI(isConnected, titleText, subText) {
-    const badge = document.getElementById("cloudSyncBadge");
-    const dot = document.getElementById("cloudStatusDot");
-    const title = document.getElementById("cloudStatusTitle");
-    const sub = document.getElementById("cloudStatusSub");
-
-    if (badge) {
-      badge.textContent = isConnected ? "Cloud Synced" : "Local Mode";
-      badge.className = `cloud-sync-badge ${isConnected ? "sync-cloud" : "sync-local"}`;
-    }
-    if (dot) {
-      dot.className = `cloud-status-dot ${isConnected ? "dot-online" : "dot-offline"}`;
-    }
-    if (title) title.textContent = `Firebase Cloud Sync: ${titleText}`;
-    if (sub) sub.textContent = `(${subText})`;
-  }
-
-  function toggleSyncConfigBox() {
-    const box = document.getElementById("cloudConfigExpand");
-    const btn = document.getElementById("btnToggleSyncConfig");
-    const textarea = document.getElementById("firebaseConfigTextarea");
-    if (!box) return;
-    const isHidden = box.style.display === "none";
-    box.style.display = isHidden ? "block" : "none";
-    if (btn) btn.textContent = isHidden ? "Hide Config" : "Configure Cloud Sync";
-
-    if (isHidden && textarea && !textarea.value) {
-      const saved = localStorage.getItem(STORAGE_KEY_FIREBASE);
-      if (saved) {
-        textarea.value = saved;
-      } else if (window.NSC_FIREBASE_CONFIG && window.NSC_FIREBASE_CONFIG.apiKey) {
-        textarea.value = JSON.stringify(window.NSC_FIREBASE_CONFIG, null, 2);
-      }
-    }
-  }
-
-  function saveFirebaseConfigFromUI() {
-    const textarea = document.getElementById("firebaseConfigTextarea");
-    if (!textarea) return;
-    const raw = textarea.value.trim();
-    if (!raw) {
-      alert("Please paste your Firebase configuration object.");
-      return;
-    }
-
-    try {
-      let cleaned = raw;
-      if (cleaned.startsWith("const firebaseConfig =")) {
-        cleaned = cleaned.replace("const firebaseConfig =", "").replace(/;$/, "").trim();
-      }
-      const jsonStr = cleaned.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":').replace(/'/g, '"');
-      const parsed = JSON.parse(jsonStr);
-
-      if (!parsed.apiKey || !parsed.projectId) {
-        alert("Config must include at least apiKey and projectId.");
-        return;
-      }
-
-      localStorage.setItem(STORAGE_KEY_FIREBASE, JSON.stringify(parsed, null, 2));
-      alert("Firebase configuration saved! Connecting to cloud database now...");
-      initCloudDatabase();
-      toggleSyncConfigBox();
-    } catch (e) {
-      alert("Could not parse config. Please make sure it is a valid JSON or Javascript config object.");
-      console.error(e);
     }
   }
 
@@ -1005,8 +926,6 @@ const NSCAuth = (function () {
     deleteMember,
     setRosterFilter,
     renderRosterTable,
-    loginAsMember,
-    toggleSyncConfigBox,
-    saveFirebaseConfigFromUI
+    loginAsMember
   };
 })();
