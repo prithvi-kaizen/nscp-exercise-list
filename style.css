@@ -2628,63 +2628,70 @@ input:focus-visible,
   -webkit-backdrop-filter: blur(10px);
   z-index: 1000;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 20px;
-  overflow-y: auto;
+  padding: 0;
+  overflow: hidden;
 }
 
 .admin-modal-container {
   max-width: 980px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 94vh;
   display: flex;
   flex-direction: column;
   background: var(--bg2);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 .admin-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--card-border);
   background: var(--bg3);
+  flex-shrink: 0;
 }
 
 .admin-header-title-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .admin-badge {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 3px 8px;
+  letter-spacing: 0.06em;
+  padding: 3px 7px;
   border-radius: 4px;
   background: var(--terra);
   color: var(--btn-ink);
+  white-space: nowrap;
 }
 
 .admin-header-title-wrap h2 {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
 
 .admin-close-btn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2694,6 +2701,7 @@ input:focus-visible,
   color: var(--muted);
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
 .admin-close-btn:hover {
@@ -2723,30 +2731,36 @@ input:focus-visible,
 
 /* Admin Dashboard View */
 .admin-dashboard-view {
-  padding: 24px;
+  padding: 20px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
+/* Stats: compact 3-pill horizontal strip */
 .admin-stats-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 .stat-card {
-  padding: 16px 20px;
-  border-radius: var(--radius);
+  padding: 12px 10px;
+  border-radius: var(--radius-sm);
   background: var(--bg3);
   border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .stat-num {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--terra);
   display: block;
@@ -2754,13 +2768,14 @@ input:focus-visible,
 }
 
 .stat-label {
-  font-size: 11.5px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  margin-top: 6px;
+  margin-top: 5px;
   display: block;
+  line-height: 1.25;
 }
 
 .stat-card.warning .stat-num {
@@ -2771,9 +2786,9 @@ input:focus-visible,
   color: #ef4444;
 }
 
-/* Admin Add Member Card */
+/* Add Member Form */
 .admin-add-card {
-  padding: 20px 22px;
+  padding: 18px;
   background: var(--bg3);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
@@ -2781,53 +2796,75 @@ input:focus-visible,
 
 .admin-add-card h3 {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--ink);
-  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
 }
 
 .admin-add-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  align-items: end;
 }
 
+/* Duration: segmented 4-column control + custom date toggle */
 .duration-pills {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* custom date pill sits outside the segmented group */
+.duration-pill[data-months="custom"] {
+  grid-column: 1 / -1;
+  border-radius: 7px;
+  border: 1px dashed var(--border-subtle);
+  margin-top: 8px;
+  background: transparent;
 }
 
 .duration-pill {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 7px 11px;
-  border-radius: 6px;
-  border: 1px solid var(--border-subtle);
+  padding: 10px 6px;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--border-subtle);
   background: var(--bg2);
   color: var(--ink);
   cursor: pointer;
-  min-height: 36px;
-  transition: all 0.15s ease;
+  min-height: 44px;
+  transition: background 0.12s ease, color 0.12s ease;
+  text-align: center;
+}
+
+.duration-pill:last-of-type:not([data-months="custom"]) {
+  border-right: none;
 }
 
 .duration-pill:hover {
-  border-color: var(--terra);
+  background: var(--bg3);
+  color: var(--terra);
 }
 
 .duration-pill.active {
   background: var(--terra);
   color: var(--btn-ink);
-  border-color: var(--terra);
   font-weight: 800;
 }
 
 .duration-pill:focus-visible {
   outline: 2px solid var(--terra);
-  outline-offset: 2px;
+  outline-offset: -2px;
+  z-index: 1;
+  position: relative;
 }
 
 .custom-date-wrap {
@@ -2857,7 +2894,7 @@ input:focus-visible,
 
 .admin-add-btn-wrap {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
 }
 
 .admin-add-alert-box {
@@ -2911,16 +2948,13 @@ input:focus-visible,
 /* Filter and Search Bar */
 .admin-filter-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .admin-search-wrap {
   position: relative;
-  flex: 1;
-  min-width: 240px;
+  width: 100%;
 }
 
 .admin-search-wrap svg {
@@ -2934,66 +2968,76 @@ input:focus-visible,
 
 .admin-search-wrap input {
   width: 100%;
-  height: 40px;
-  padding: 8px 12px 8px 36px;
+  height: 44px;
+  padding: 8px 12px 8px 38px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   background: var(--bg3);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 16px;
   color: var(--ink);
   outline: none;
   transition: border-color 0.15s ease;
+  box-sizing: border-box;
 }
 
 .admin-search-wrap input:focus {
   border-color: var(--terra);
+  box-shadow: 0 0 0 3px var(--terra-dim);
 }
 
 .admin-status-tabs {
   display: flex;
   gap: 6px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 3px;
+  background: var(--bg3);
 }
 
 .admin-tab {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 8px 14px;
+  padding: 8px 0;
   border-radius: 6px;
-  border: 1px solid var(--card-border);
-  background: var(--bg3);
+  border: none;
+  background: transparent;
   color: var(--muted);
   cursor: pointer;
   min-height: 38px;
+  flex: 1;
   transition: all 0.15s ease;
 }
 
 .admin-tab:hover {
   color: var(--ink);
-  border-color: var(--border-subtle);
 }
 
 .admin-tab.active {
   background: var(--terra-dim);
-  border-color: var(--terra-border);
   color: var(--terra);
   font-weight: 800;
 }
 
 .admin-tab:focus-visible {
   outline: 2px solid var(--terra);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
-/* Roster Table */
+/* Member roster: card list replaces horizontal-scroll table */
 .admin-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
-  overflow-x: auto;
+  overflow: hidden;
   background: var(--bg2);
 }
 
+/* Keep the table hidden on mobile via JS-rendered cards */
 .admin-roster-table {
   width: 100%;
   border-collapse: collapse;
@@ -3028,6 +3072,78 @@ input:focus-visible,
   background: var(--bg3);
 }
 
+/* Mobile member cards */
+.member-roster-card {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.member-roster-card:last-child {
+  border-bottom: none;
+}
+
+.member-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.member-card-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.member-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.member-meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.member-meta-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  font-family: monospace;
+}
+
+.member-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.member-card-actions .renew-btn-group {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
 .font-mono {
   font-family: monospace;
   font-size: 12.5px;
@@ -3041,6 +3157,7 @@ input:focus-visible,
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .badge-active {
@@ -3063,20 +3180,21 @@ input:focus-visible,
 
 .renew-btn-group {
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
 
 .renew-pill-btn {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 0 10px;
+  border-radius: 6px;
   border: 1px solid var(--terra-border);
   background: var(--terra-dim);
   color: var(--terra);
   cursor: pointer;
-  min-height: 28px;
+  min-height: 38px;
+  flex: 1;
   transition: all 0.12s ease;
 }
 
@@ -3085,18 +3203,24 @@ input:focus-visible,
   color: var(--btn-ink);
 }
 
+.renew-pill-btn:focus-visible {
+  outline: 2px solid var(--terra);
+  outline-offset: 2px;
+}
+
 .roster-delete-btn {
   background: transparent;
   border: 1px solid rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 38px;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
 .roster-delete-btn:hover {
@@ -3106,14 +3230,52 @@ input:focus-visible,
 
 .admin-empty-cell {
   text-align: center;
-  padding: 32px !important;
+  padding: 36px 20px;
   color: var(--muted);
   font-size: 13.5px;
+  display: block;
 }
 
-/* Mobile Adjustments */
+/* Desktop: restore centered modal and table layout */
+@media (min-width: 769px) {
+  .admin-modal-backdrop {
+    align-items: center;
+    padding: 20px;
+  }
+
+  .admin-modal-container {
+    border-radius: var(--radius-lg);
+    max-height: 90vh;
+  }
+
+  /* On desktop show the full table, hide cards */
+  .member-roster-card {
+    display: none;
+  }
+
+  .admin-roster-table {
+    display: table;
+  }
+
+  .admin-filter-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .admin-search-wrap {
+    flex: 1;
+    min-width: 240px;
+    width: auto;
+  }
+
+  .admin-stats-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: hide table, show cards */
 @media (max-width: 768px) {
-  /* Prevent iOS Safari viewport auto-zoom by enforcing 16px font size */
+  /* Prevent iOS Safari viewport auto-zoom */
   input[type="tel"],
   input[type="text"],
   input[type="password"],
@@ -3125,41 +3287,36 @@ input:focus-visible,
   .site-footer {
     padding-bottom: 96px;
   }
-  
+
   .auth-modal-container {
     width: 94%;
     max-width: 440px;
     padding: 24px 18px;
     margin: auto;
   }
-  
+
   .admin-modal-container {
-    width: 96%;
+    width: 100%;
     max-height: 94vh;
-    margin: auto;
+    border-radius: 20px 20px 0 0;
   }
-  
+
   .admin-dashboard-view {
-    padding: 16px 14px;
-    gap: 16px;
+    padding: 16px;
+    gap: 14px;
   }
-  
+
   .admin-modal-header {
     padding: 14px 16px;
   }
 
-  .admin-add-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  /* Hide the horizontal-scroll table, show member cards */
+  .admin-roster-table {
+    display: none;
   }
 
-  .admin-stats-bar {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .admin-table-container {
-    -webkit-overflow-scrolling: touch;
+  .member-roster-card {
+    display: flex;
   }
 
   .btn-instant-login {

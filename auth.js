@@ -522,16 +522,16 @@ const NSCAuth = (function () {
 
   function setPlanDuration(months) {
     selectedPlanMonths = months;
+    // Toggle active on the 4-segment pills
     const pills = document.querySelectorAll("#durationPills .duration-pill");
     pills.forEach(btn => {
-      const attr = btn.getAttribute("data-months");
-      if (months === "custom") {
-        btn.classList.toggle("active", attr === "custom");
-      } else {
-        const m = parseInt(attr || "0", 10);
-        btn.classList.toggle("active", m === months);
-      }
+      const m = parseInt(btn.getAttribute("data-months") || "0", 10);
+      btn.classList.toggle("active", months !== "custom" && m === months);
     });
+
+    // Toggle active on the separate custom date pill
+    const customPill = document.getElementById("customDatePill");
+    if (customPill) customPill.classList.toggle("active", months === "custom");
 
     const customDateWrap = document.getElementById("customDateWrap");
     const customDateInput = document.getElementById("newMemberCustomDate");
@@ -817,9 +817,10 @@ const NSCAuth = (function () {
   }
 
   function renderRosterTable() {
-    const tbody = document.getElementById("adminRosterTbody");
+    const container = document.getElementById("adminRosterTbody");
+    const tableContainer = container && container.closest(".admin-table-container");
     const searchInput = document.getElementById("adminRosterSearch");
-    if (!tbody) return;
+    if (!container) return;
 
     const query = (searchInput ? searchInput.value : "").trim().toLowerCase();
     const members = getMembersDB();
@@ -837,7 +838,13 @@ const NSCAuth = (function () {
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `
+      // Clear any previous cards
+      const prevCards = tableContainer
+        ? tableContainer.querySelectorAll(".member-roster-card")
+        : [];
+      prevCards.forEach(c => c.remove());
+
+      container.innerHTML = `
         <tr>
           <td colspan="8" class="admin-empty-cell">
             No matching members found. Add a member above to grant access.
@@ -847,11 +854,10 @@ const NSCAuth = (function () {
       return;
     }
 
-    tbody.innerHTML = filtered
+    // Build table rows (desktop) and member cards (mobile)
+    const tableRows = filtered
       .map(m => {
-        const { isExpired, daysRemaining, formattedDate } = calculateExpiry(
-          m.expiryDate
-        );
+        const { isExpired, daysRemaining, formattedDate } = calculateExpiry(m.expiryDate);
         let badgeClass = "badge-active";
         let badgeText = "Active";
 
@@ -860,7 +866,7 @@ const NSCAuth = (function () {
           badgeText = "Expired";
         } else if (daysRemaining <= 7) {
           badgeClass = "badge-expiring";
-          badgeText = `${daysRemaining}d Left`;
+          badgeText = `${daysRemaining}d left`;
         }
 
         const cleanP = sanitizePhoneNumber(m.phone);
@@ -889,6 +895,65 @@ const NSCAuth = (function () {
         `;
       })
       .join("");
+
+    container.innerHTML = tableRows;
+
+    // Render mobile cards alongside the table (CSS shows/hides each per breakpoint)
+    const prevCards = tableContainer
+      ? tableContainer.querySelectorAll(".member-roster-card")
+      : [];
+    prevCards.forEach(c => c.remove());
+
+    if (tableContainer) {
+      filtered.forEach(m => {
+        const { isExpired, daysRemaining, formattedDate } = calculateExpiry(m.expiryDate);
+        let badgeClass = "badge-active";
+        let badgeText = "Active";
+
+        if (isExpired) {
+          badgeClass = "badge-expired";
+          badgeText = "Expired";
+        } else if (daysRemaining <= 7) {
+          badgeClass = "badge-expiring";
+          badgeText = `${daysRemaining}d left`;
+        }
+
+        const cleanP = sanitizePhoneNumber(m.phone);
+        const card = document.createElement("div");
+        card.className = "member-roster-card";
+        card.innerHTML = `
+          <div class="member-card-top">
+            <span class="member-card-name">${m.name}</span>
+            <span class="status-badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="member-card-meta">
+            <div class="member-meta-item">
+              <span class="member-meta-label">Phone</span>
+              <span class="member-meta-value">+91 ${cleanP}</span>
+            </div>
+            <div class="member-meta-item">
+              <span class="member-meta-label">PIN</span>
+              <span class="member-meta-value">${m.pin}</span>
+            </div>
+            <div class="member-meta-item">
+              <span class="member-meta-label">Expires</span>
+              <span class="member-meta-value">${formattedDate}</span>
+            </div>
+          </div>
+          <div class="member-card-actions">
+            <div class="renew-btn-group">
+              <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 1)">+1 Mo</button>
+              <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 3)">+3 Mo</button>
+              <button type="button" class="renew-pill-btn" onclick="NSCAuth.renewMember('${cleanP}', 6)">+6 Mo</button>
+            </div>
+            <button type="button" class="roster-delete-btn" onclick="NSCAuth.deleteMember('${cleanP}')" aria-label="Delete ${m.name}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
+          </div>
+        `;
+        tableContainer.appendChild(card);
+      });
+    }
   }
 
   // Close dropdown on click outside

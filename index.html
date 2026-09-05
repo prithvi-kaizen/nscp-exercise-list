@@ -327,12 +327,12 @@
           <div class="form-group duration-group">
             <label id="planDurationLabel">Plan Duration</label>
             <div class="duration-pills" id="durationPills">
-              <button type="button" class="duration-pill active" data-months="1" onclick="NSCAuth.setPlanDuration(1)">1 Month</button>
-              <button type="button" class="duration-pill" data-months="3" onclick="NSCAuth.setPlanDuration(3)">3 Months</button>
-              <button type="button" class="duration-pill" data-months="6" onclick="NSCAuth.setPlanDuration(6)">6 Months</button>
+              <button type="button" class="duration-pill active" data-months="1" onclick="NSCAuth.setPlanDuration(1)">1 Mo</button>
+              <button type="button" class="duration-pill" data-months="3" onclick="NSCAuth.setPlanDuration(3)">3 Mo</button>
+              <button type="button" class="duration-pill" data-months="6" onclick="NSCAuth.setPlanDuration(6)">6 Mo</button>
               <button type="button" class="duration-pill" data-months="12" onclick="NSCAuth.setPlanDuration(12)">1 Year</button>
-              <button type="button" class="duration-pill" data-months="custom" onclick="NSCAuth.setPlanDuration('custom')">Custom Date</button>
             </div>
+            <button type="button" class="duration-pill" data-months="custom" id="customDatePill" onclick="NSCAuth.setPlanDuration('custom')" style="margin-top: 8px; width: 100%; border: 1px dashed var(--border-subtle); border-radius: 8px; background: transparent;">Custom Date</button>
             <div class="custom-date-wrap" id="customDateWrap" style="display: none; margin-top: 8px;">
               <input type="date" id="newMemberCustomDate" class="custom-date-input" aria-label="Select Custom Expiry Date">
             </div>
